@@ -1,17 +1,14 @@
 const path = require('path')
 const mongoose = require('mongoose')
 const express = require ('express')
-const Joi = require('joi')
-const {campgroundSchema,reviewSchema} = require ('./schemas.js')
 const ejsMate = require('ejs-mate')
-const catchAsync = require('./utils/catchAsync.js')
-const ExpressError = require('./utils/ExpressError.js')
+const session = require('express-session')
+const flash = require('connect-flash')
+const ExpressError = require('./utils/ExpressError')
 const methodOverride = require('method-override')
-const Campground = require('./models/campground.js')
-const Review = require('./models/review.js')
-const campground = require('./models/campground.js')
-const campgrounds  = require('./routes/campgrounds.js')
-const reviews= require('./routes/reviews.js')
+
+const campgrounds  = require('./routes/campgrounds')
+const reviews= require('./routes/reviews')
 
 mongoose.connect('mongodb://localhost:27017/musafir')
 
@@ -31,6 +28,23 @@ app.use(express.urlencoded ({extended:true}))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname,'public')))
 
+const sessionConfig = {
+    secret : 'secrets',
+    resave : false ,
+    saveUninitialized : true,
+    cookie:{
+        expires : Date.now() +1000*60*60*24*7,
+        maxAge: 1000*60*60*24*7
+    }
+}
+app.use(session(sessionConfig))
+app.use(flash())
+
+app.use((req,res,next)=>{
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
+    next()
+})
 
 app.use('/campgrounds', campgrounds)
 app.use('/campgrounds/:id/reviews', reviews)
