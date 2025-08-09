@@ -4,10 +4,10 @@ const catchAsync = require('../utils/catchAsync.js')
 const campground = require('../models/campground.js')
 const Campground = require('../models/campground.js')
 const Review = require('../models/review.js')
-const {reviewSchema} = require ('../schemas.js') //joi schema
+const {ReviewSchema} = require ('../schemas.js') //joi schema
 
 const validateReview = (req, res, next)=>{
-    const {error} = reviewSchema.validate(req.body)
+    const {error} = ReviewSchema.validate(req.body)
     if(error){
         const msg = error.details.map(el=>el.message).join(',')
         throw new ExpressError(msg,400)
