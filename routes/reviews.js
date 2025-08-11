@@ -11,6 +11,5 @@ router.route('/')
 
 router.route('/:reviewId')
     .delete(isLoggedIn,isReviewAuthor, catchAsync(reviews.deleteReview))
-
-
+    
 module.exports = router
