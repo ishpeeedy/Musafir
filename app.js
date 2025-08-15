@@ -98,4 +98,3 @@ app.use((err, req, res , next)=>{
 app.listen(3000, () =>{
     console.log('serving on post 3000')
 })
-
