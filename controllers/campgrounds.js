@@ -18,12 +18,78 @@ if (!process.env.MAPTILER_API_KEY) {
 }
 
 module.exports.index = async (req, res) => {
-  const campgrounds = await Campground.find({});
+  // Get query parameters
+  const { search, minPrice, maxPrice, sort } = req.query;
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+
+  // Build query object
+  let query = {};
+
+  // Text search with partial matching using regex
+  if (search) {
+    const searchRegex = new RegExp(search, "i"); // Case-insensitive regex
+    query.$or = [
+      { title: searchRegex },
+      { location: searchRegex },
+      { description: searchRegex },
+    ];
+  }
+
+  // Price filter
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = parseFloat(minPrice);
+    if (maxPrice) query.price.$lte = parseFloat(maxPrice);
+  }
+
+  // Build sort object
+  let sortOption = {};
+  switch (sort) {
+    case "price-asc":
+      sortOption = { price: 1 };
+      break;
+    case "price-desc":
+      sortOption = { price: -1 };
+      break;
+    case "newest":
+      sortOption = { _id: -1 };
+      break;
+    case "oldest":
+      sortOption = { _id: 1 };
+      break;
+    default:
+      sortOption = { _id: -1 }; // Default: newest first
+  }
+
+  // Paginate campgrounds
+  const options = {
+    page,
+    limit,
+    sort: sortOption,
+    lean: false, // Need virtuals for popUpMarkup
+  };
+
+  const result = await Campground.paginate(query, options);
+
+  // Get all campgrounds for the cluster map (not paginated)
+  const allCampgrounds = await Campground.find({});
+
   res.render("campgrounds/index", {
-    campgrounds,
+    campgrounds: result.docs,
+    pagination: {
+      page: result.page,
+      totalPages: result.totalPages,
+      hasNextPage: result.hasNextPage,
+      hasPrevPage: result.hasPrevPage,
+      nextPage: result.nextPage,
+      prevPage: result.prevPage,
+      totalDocs: result.totalDocs,
+    },
+    filters: { search, minPrice, maxPrice, sort },
     clusterMapData: {
       type: "FeatureCollection",
-      features: campgrounds.map((campground) => ({
+      features: allCampgrounds.map((campground) => ({
         type: "Feature",
         geometry: campground.geometry,
         properties: {
