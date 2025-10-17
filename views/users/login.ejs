@@ -1,22 +1,57 @@
 <% layout('layouts/boilerplate') %>
-<h1>Login</h1>
-<form action="/login" method="post" class="validated-form" novalidate>
 
-            <div class="mb-3">
-                <label class="form-label" for="username">username</label>
-                <input class="form-control" type="text" id="username" name="username" required>        
-                <div class="valid-feedback">
-                    looks good!
-                </div>
-            </div>
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-lg" style="background-color: var(--powder-blue)">
+      <div class="card-body p-5">
+        <h1 class="text-center mb-4" style="color: var(--dusty-rose)">
+          Welcome Back!
+        </h1>
+        <p class="text-center mb-4" style="color: var(--charcoal-brown)">
+          Login to continue your adventure
+        </p>
 
-            <div class="mb-3">
-                <label class="form-label" for="password">password</label>
-                <input class="form-control" type="pasword" id="password" name="password" required>
-                <div class="valid-feedback">
-                    looks good!
-                </div>
-            </div>
+        <form action="/login" method="post" class="validated-form" novalidate>
+          <div class="mb-4">
+            <label class="form-label" for="username">Username</label>
+            <input
+              class="form-control"
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              required
+            />
+            <div class="valid-feedback">Looks good!</div>
+          </div>
 
-    <button class="btn btn-success">login</button>
-</form>
+          <div class="mb-4">
+            <label class="form-label" for="password">Password</label>
+            <input
+              class="form-control"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button class="btn btn-success btn-lg">Login</button>
+          </div>
+        </form>
+
+        <hr style="border-color: var(--charcoal-brown); margin: 2rem 0" />
+
+        <p class="text-center mb-0" style="color: var(--charcoal-brown)">
+          Don't have an account?
+          <a href="/register" style="color: var(--dusty-rose); font-weight: 600"
+            >Register here</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

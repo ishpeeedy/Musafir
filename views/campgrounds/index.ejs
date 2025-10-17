@@ -1,11 +1,20 @@
 <% layout('layouts/boilerplate')%>
-<div id="map" style="width: 100%; height: 500px"></div>
+
+<!-- Hero Section with Map -->
 <div class="container mt-4">
-  <h1>All Campgrounds</h1>
-  
+  <div style="position: relative; margin-bottom: 2rem;">
+
+    <div id="map" style="width: 100%; height: 500px"></div>
+  </div>
+</div>
+    <div style="text-align: center; margin-bottom: 1.5rem;">
+      <h1 style="color: var(--dusty-rose); font-size: 3rem; margin-bottom: 0.5rem;">Explore Campgrounds</h1>
+      <p style="color: var(--charcoal-brown); font-size: 1.2rem;">Discover your next adventure</p>
+    </div>
+<div class="container mt-4">
   <!-- Search and Filter Section -->
-  <div class="card mb-4">
-    <div class="card-body">
+  <div class="card mb-4" style="background-color: var(--sage-green);">
+    <div class="card-body p-4">
       <form action="/campgrounds" method="GET" class="row g-3">
         <!-- Search -->
         <div class="col-md-4">
@@ -15,7 +24,7 @@
             class="form-control" 
             id="search" 
             name="search" 
-            placeholder="Search by title, location, or description"
+            placeholder="Title, location, or description..."
             value="<%= filters.search || '' %>"
           >
         </div>
@@ -49,7 +58,7 @@
         </div>
         
         <!-- Sort -->
-        <div class="col-md-2">
+        <div class="col-md-3">
           <label for="sort" class="form-label">Sort By</label>
           <select class="form-select" id="sort" name="sort">
             <option value="newest" <%= filters.sort === 'newest' ? 'selected' : '' %>>Newest First</option>
@@ -60,57 +69,74 @@
         </div>
         
         <!-- Buttons -->
-        <div class="col-md-2 d-flex align-items-end">
-          <button type="submit" class="btn btn-primary me-2">Filter</button>
-          <a href="/campgrounds" class="btn btn-secondary">Clear</a>
+        <div class="col-md-3 d-flex align-items-end gap-2">
+          <button type="submit" class="btn btn-primary" style="flex: 1;">Filter</button>
+          <a href="/campgrounds" class="btn btn-secondary" style="flex: 1;">Clear</a>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Results Info and Add Button -->
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <p class="text-muted mb-0">
-      Showing <%= campgrounds.length %> of <%= pagination.totalDocs %> campgrounds
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <p class="mb-0" style="color: var(--charcoal-brown); font-weight: 600; font-size: 1.1rem;">
+        📍 Showing <%= campgrounds.length %> of <%= pagination.totalDocs %> campgrounds
+      </p>
       <% if (filters.search) { %>
-        - Search results for "<%= filters.search %>"
+        <p class="mb-0" style="color: var(--dusty-rose); font-size: 0.95rem;">
+          Search results for "<%= filters.search %>"
+        </p>
       <% } %>
-    </p>
-    <a href="/campgrounds/new" class="btn btn-success">Add Campground</a>
+    </div>
+    <a href="/campgrounds/new" class="btn btn-success btn-lg">
+      ➕ Add Campground
+    </a>
   </div>
 
   <!-- Campgrounds List -->
   <% if (campgrounds.length === 0) { %>
-    <div class="alert alert-info">
-      No campgrounds found. Try adjusting your filters or <a href="/campgrounds">clear all filters</a>.
+    <div class="alert alert-info text-center p-5">
+      <h3 style="color: var(--charcoal-brown);">No campgrounds found</h3>
+      <p>Try adjusting your filters or <a href="/campgrounds" style="color: var(--dusty-rose); font-weight: 600;">clear all filters</a>.</p>
     </div>
   <% } else { %>
     <% for (let campground of campgrounds) { %>
-      <div class="card mb-3">
-        <div class="row g-0">
-          <div class="col-md-4">
+      <div class="card mb-4 shadow campground-card" style="overflow: hidden;">
+        <div class="row g-0 m-0" style="height: 280px;">
+          <div class="col-md-4 p-0" style="height: 100%;">
             <% if(campground.images.length) { %>
-              <img class="img-fluid rounded-start" alt="" src="<%= campground.images[0].url %>" style="height: 100%; object-fit: cover;">
+              <img class="campground-img" alt="" src="<%= campground.images[0].url %>">
             <% } else { %>
               <img
-                class="img-fluid rounded-start"
+                class="campground-img"
                 alt=""
                 src="https://res.cloudinary.com/dzwjyg2ai/image/upload/v1756312011/musafir/e9z56wsbx8tl1hon1vhm.jpg"
-                style="height: 100%; object-fit: cover;"
               >
             <% } %>
           </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title"><%= campground.title %></h5>
-              <p class="card-text"><%= campground.description %></p>
-              <p class="card-text">
-                <small class="text-muted"><i class="fas fa-map-marker-alt"></i> <%= campground.location %></small>
-              </p>
-              <p class="card-text">
-                <strong class="text-success">₹<%= campground.price %>/night</strong>
-              </p>
-              <a class="btn btn-primary" href="/campgrounds/<%= campground._id %>">View Details</a>
+          <div class="col-md-8" style="height: 100%;">
+            <div class="card-body p-4" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h5 class="card-title" style="color: var(--dusty-rose); font-size: 1.8rem; margin-bottom: 1rem;">
+                  <%= campground.title %>
+                </h5>
+                <p class="card-text" style="color: var(--charcoal-brown); line-height: 1.7;">
+                  <%= campground.description.substring(0, 150) %><%= campground.description.length > 150 ? '...' : '' %>
+                </p>
+                <div class="d-flex align-items-center mb-3">
+                  <span style="color: var(--charcoal-brown); margin-right: 1rem;">
+                    📍 <%= campground.location %>
+                  </span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="mb-0">
+                  <strong style="color: var(--sage-green); font-size: 1.5rem;">₹<%= campground.price %></strong>
+                  <span style="color: var(--charcoal-brown);">/night</span>
+                </p>
+                <a class="btn btn-info" href="/campgrounds/<%= campground._id %>">View Details →</a>
+              </div>
             </div>
           </div>
         </div>
@@ -120,16 +146,16 @@
 
   <!-- Pagination -->
   <% if (pagination.totalPages > 1) { %>
-    <nav aria-label="Campgrounds pagination">
+    <nav aria-label="Campgrounds pagination" class="mt-5">
       <ul class="pagination justify-content-center">
         <!-- Previous Button -->
         <li class="page-item <%= !pagination.hasPrevPage ? 'disabled' : '' %>">
           <% if (pagination.hasPrevPage) { %>
             <a class="page-link" href="?page=<%= pagination.prevPage %><%= filters.search ? '&search=' + filters.search : '' %><%= filters.minPrice ? '&minPrice=' + filters.minPrice : '' %><%= filters.maxPrice ? '&maxPrice=' + filters.maxPrice : '' %><%= filters.sort ? '&sort=' + filters.sort : '' %>">
-              Previous
+              ← Previous
             </a>
           <% } else { %>
-            <span class="page-link">Previous</span>
+            <span class="page-link">← Previous</span>
           <% } %>
         </li>
 
@@ -171,10 +197,10 @@
         <li class="page-item <%= !pagination.hasNextPage ? 'disabled' : '' %>">
           <% if (pagination.hasNextPage) { %>
             <a class="page-link" href="?page=<%= pagination.nextPage %><%= filters.search ? '&search=' + filters.search : '' %><%= filters.minPrice ? '&minPrice=' + filters.minPrice : '' %><%= filters.maxPrice ? '&maxPrice=' + filters.maxPrice : '' %><%= filters.sort ? '&sort=' + filters.sort : '' %>">
-              Next
+              Next →
             </a>
           <% } else { %>
-            <span class="page-link">Next</span>
+            <span class="page-link">Next →</span>
           <% } %>
         </li>
       </ul>

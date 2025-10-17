@@ -1,54 +1,365 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Musafir - Your Camping Adventure Awaits</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Musafir</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
-        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-    <link rel="stylesheet" href="/stylesheets/home.css">
-</head>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-<body class="d-flex text-center text-white bg-dark">
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-        <header class="mb-auto">
-            <div>
-                <h3 class="float-md-left mb-0">Musafir</h3>
-                <nav class="nav nav-masthead justify-content-center float-md-right">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="nav-link" href="/campgrounds">Campgrounds</a>
-                    <% if(!currentUser) { %>
-                    <a class="nav-link" href="/login">Login</a>
-                    <a class="nav-link" href="/register">Register</a>
-                    <% } else { %>
-                    <a class="nav-link" href="/logout">Logout</a>
-                    <% } %>
-                </nav>
-            </div>
-        </header>
-        <main class="px-3">
-            <h1>Musafir</h1>
-            <p class="lead"> Welcome to Musafir! <br> Jump right in and explore our many campgrounds. <br>
-                Feel free to share some of your own and comment on others!</p>
-            <a href="/campgrounds" class="btn btn-lg btn-secondary font-weight-bold border-white bg-white">View
-                Campgrounds</a>
-        </main>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+      integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/stylesheets/wes-anderson-theme.css" />
 
-        <footer class="mt-auto text-white-50">
-            <p>&copy; 2020 </p>
-        </footer>
+    <style>
+      /* Home Page Specific Styles */
+      body {
+        background: linear-gradient(
+          135deg,
+          #8faadc 0%,
+          #a3b18a 50%,
+          #d6a94f 100%
+        );
+        min-height: 100vh;
+        font-family: "Georgia", "Playfair Display", serif;
+      }
 
+      .home-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
 
+      /* Symmetrical Header */
+      .home-header {
+        background-color: #a3b18a;
+        border: 4px solid #3e2c23;
+        border-radius: 2rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 6px 20px rgba(62, 44, 35, 0.15);
+      }
+
+      .home-header .brand {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #3e2c23;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 1rem;
+        border: 3px solid #3e2c23;
+        padding: 0.75rem 2rem;
+        background-color: #d6a94f;
+        border-radius: 2rem;
+        display: inline-block;
+      }
+
+      .home-nav {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .home-nav a {
+        color: #3e2c23;
+        text-decoration: none;
+        padding: 0.75rem 1.5rem;
+        border: 2px solid #3e2c23;
+        border-radius: 1.5rem;
+        background-color: #f5f0e6;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .home-nav a:hover,
+      .home-nav a.active {
+        background-color: #d87c6b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(62, 44, 35, 0.2);
+      }
+
+      /* Hero Section - Wide Illustrated Scene */
+      .hero-section {
+        background: linear-gradient(to bottom, #8faadc 0%, #f5f0e6 100%);
+        border: 5px solid #3e2c23;
+        border-radius: 3rem;
+        padding: 4rem 3rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(62, 44, 35, 0.2);
+        margin-bottom: 3rem;
+      }
+
+      /* Flat Illustration Elements */
+      .illustration-bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: 
+                /* Mountains */ linear-gradient(
+              135deg,
+              transparent 49%,
+              #a3b18a 50%
+            )
+            0 0 / 100px 100px,
+          linear-gradient(-135deg, transparent 49%, #a3b18a 50%) 0 0 / 100px
+            100px,
+          /* Trees */
+            radial-gradient(circle at 20% 80%, #3e2c23 10px, transparent 10px),
+          radial-gradient(circle at 40% 75%, #3e2c23 12px, transparent 12px),
+          radial-gradient(circle at 60% 78%, #3e2c23 8px, transparent 8px),
+          radial-gradient(circle at 80% 82%, #3e2c23 11px, transparent 11px),
+          /* Ground */ linear-gradient(to top, #a3b18a 50%, transparent 50%);
+        opacity: 0.3;
+        z-index: 0;
+      }
+
+      /* Decorative tent icon */
+      .hero-icon {
+        font-size: 8rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-title {
+        font-size: 4.5rem;
+        color: #3e2c23;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+        text-shadow: 2px 2px 0 #f5f0e6;
+      }
+
+      .hero-subtitle {
+        font-size: 1.5rem;
+        color: #3e2c23;
+        margin-bottom: 2rem;
+        line-height: 2;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-cta {
+        background-color: #d6a94f;
+        color: #3e2c23;
+        border: 3px solid #3e2c23;
+        padding: 1.25rem 3rem;
+        font-size: 1.3rem;
+        font-weight: 700;
+        border-radius: 2.5rem;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-cta:hover {
+        background-color: #d87c6b;
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 10px 30px rgba(62, 44, 35, 0.3);
+      }
+
+      /* Features Grid */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .feature-card {
+        background-color: #f5f0e6;
+        border: 3px solid #3e2c23;
+        border-radius: 2rem;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(62, 44, 35, 0.1);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 30px rgba(62, 44, 35, 0.2);
+      }
+
+      .feature-card:nth-child(1) {
+        background-color: #d6a94f;
+      }
+      .feature-card:nth-child(2) {
+        background-color: #d87c6b;
+      }
+      .feature-card:nth-child(3) {
+        background-color: #8faadc;
+      }
+
+      .feature-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-title {
+        font-size: 1.8rem;
+        color: #3e2c23;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+
+      .feature-text {
+        color: #3e2c23;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+
+      /* Footer - Ticket Stub */
+      .home-footer {
+        background: linear-gradient(to bottom, #a3b18a 50%, #d6a94f 50%);
+        border: 4px dashed #3e2c23;
+        border-radius: 2rem;
+        padding: 2rem;
+        text-align: center;
+        margin-top: 3rem;
+        position: relative;
+      }
+
+      .home-footer::before {
+        content: "✦ ✦ ✦";
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #f5f0e6;
+        padding: 0 1rem;
+        color: #3e2c23;
+        font-size: 1.2rem;
+      }
+
+      .footer-text {
+        color: #3e2c23;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+          font-size: 1.2rem;
+        }
+
+        .hero-icon {
+          font-size: 5rem;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="home-container">
+      <!-- Symmetrical Header -->
+      <header class="home-header">
+        <div class="text-center mb-3">
+          <div class="brand">🏕️ Musafir 🏕️</div>
+        </div>
+        <nav class="home-nav">
+          <a href="#" class="active">Home</a>
+          <a href="/campgrounds">Campgrounds</a>
+          <% if(!currentUser) { %>
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
+          <% } else { %>
+          <a href="/logout">Logout</a>
+          <% } %>
+        </nav>
+      </header>
+
+      <!-- Hero Section with Illustration -->
+      <section class="hero-section">
+        <div class="illustration-bg"></div>
+        <div class="hero-icon">⛺</div>
+        <h1 class="hero-title">Welcome to Musafir</h1>
+        <p class="hero-subtitle">
+          Embark on your next adventure.<br />
+          Discover hidden gems, share your favorite spots,<br />
+          and connect with fellow camping enthusiasts.
+        </p>
+        <a href="/campgrounds" class="hero-cta">Explore Campgrounds</a>
+      </section>
+
+      <!-- Features Grid -->
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🗺️</div>
+          <h3 class="feature-title">Discover</h3>
+          <p class="feature-text">
+            Browse through curated campgrounds across the country. Find your
+            perfect escape into nature.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📸</div>
+          <h3 class="feature-title">Share</h3>
+          <p class="feature-text">
+            Add your own campgrounds and share your experiences. Help others
+            discover amazing places.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3 class="feature-title">Connect</h3>
+          <p class="feature-text">
+            Leave reviews, read stories, and connect with a community of outdoor
+            enthusiasts.
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="home-footer">
+        <p class="footer-text">&copy; 2025 Musafir - Where Adventures Begin</p>
+      </footer>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
-        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
-        crossorigin="anonymous"></script>
-</body>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+      integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
