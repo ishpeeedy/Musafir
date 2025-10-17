@@ -717,3 +717,158 @@ h2::after {
 .list-group-item:last-child {
   border-radius: 0 0 2rem 2rem;
 }
+
+/* ========================================
+   HOMEPAGE SPECIFIC STYLES
+   ======================================== */
+
+.home-wrapper {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hero Section with Background Image */
+.hero-section {
+  background-image: url("/images/bgImg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  position: relative;
+  border-bottom: 4px solid var(--charcoal-brown);
+}
+
+.hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--dusty-rose);
+  text-align: center;
+  margin-bottom: 3rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  line-height: 1.2;
+}
+
+.book-btn {
+  background-color: var(--mustard-yellow);
+  color: var(--charcoal-brown);
+  border: 3px solid var(--charcoal-brown);
+  padding: 1rem 3rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.book-btn:hover {
+  background-color: var(--dusty-rose);
+  color: var(--charcoal-brown);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Available Campgrounds Section */
+.campgrounds-section {
+  background-color: var(--sage-green);
+  padding: 3rem 2rem;
+  border-bottom: 4px solid var(--charcoal-brown);
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--charcoal-brown);
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.campground-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+}
+
+.campground-preview-card {
+  background-color: var(--ivory-white);
+  border: 3px solid var(--charcoal-brown);
+  border-radius: 1rem;
+  width: 250px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.campground-preview-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  color: inherit;
+}
+
+.preview-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 3px solid var(--charcoal-brown);
+}
+
+.preview-content {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.preview-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--charcoal-brown);
+  margin-bottom: 0.5rem;
+}
+
+.preview-subtitle {
+  color: var(--charcoal-brown);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.preview-subtitle::before {
+  content: "• ";
+}
+
+/* Bottom CTA Section */
+.bottom-cta {
+  background-color: var(--sage-green);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .campground-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+}
