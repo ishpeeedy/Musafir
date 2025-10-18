@@ -93,9 +93,60 @@ small,
 }
 
 .navbar-collapse {
-  display: flex;
-  justify-content: space-between;
   flex-grow: 1;
+}
+
+/* Desktop navbar layout */
+@media (min-width: 992px) {
+  .navbar-collapse {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+/* Mobile navbar styles */
+@media (max-width: 991px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .navbar-brand img {
+    height: 30px !important;
+  }
+
+  .navbar-brand img:first-child {
+    height: 35px !important;
+  }
+
+  .navbar-toggler {
+    border: 2px solid var(--charcoal-brown);
+    padding: 0.5rem 0.75rem;
+    background-color: transparent;
+  }
+
+  .navbar-toggler-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(62, 44, 35, 0.25);
+    outline: none;
+  }
+
+  .navbar-collapse {
+    margin-top: 1rem;
+  }
+
+  .navbar-nav {
+    align-items: stretch;
+  }
+
+  .navbar-nav .nav-link {
+    margin: 0.25rem 0;
+    text-align: center;
+  }
 }
 
 .navbar-nav .nav-link {
