@@ -40,7 +40,7 @@
 
       <!-- Available Campgrounds Section -->
       <section class="campgrounds-section">
-        <h2 class="section-title">Available Campgrounds</h2>
+        <h2 class="section-title">Popular Campgrounds</h2>
 
         <div class="campground-cards">
           <% if (featuredCampgrounds && featuredCampgrounds.length > 0) { %> <%
@@ -105,10 +105,12 @@
         </div>
 
         <div class="text-center bottom-cta">
-          <a href="/campgrounds" class="book-btn">Book Your Stay</a>
+          <a href="/campgrounds/new" class="book-btn">Share Your Campsite</a>
         </div>
       </section>
     </div>
+
+    <%- include('partials/footer') %>
 
     <script
       src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"

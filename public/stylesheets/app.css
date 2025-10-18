@@ -92,6 +92,12 @@ small,
   opacity: 0.8;
 }
 
+.navbar-collapse {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
 .navbar-nav .nav-link {
   color: var(--charcoal-brown) !important;
   font-weight: 500;
@@ -367,50 +373,77 @@ small,
 }
 
 /* ========================================
-   FOOTER - TICKET STUB INSPIRED
+   FOOTER - SIMPLE AND CLEAN
    ======================================== */
 
-footer {
-  background: linear-gradient(
-    to bottom,
-    var(--sage-green) 50%,
-    var(--mustard-yellow) 50%
-  );
-  border-top: 4px dashed var(--charcoal-brown);
-  padding: 2rem 0;
-  margin-top: 3rem;
-  position: relative;
-}
-
-footer::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--charcoal-brown);
-}
-
-footer::after {
-  content: "✦ ✦ ✦";
-  position: absolute;
-  top: -2px;
-  left: 50%;
-  transform: translateX(-50%);
+.footer {
   background-color: var(--ivory-white);
-  padding: 0 1rem;
-  color: var(--charcoal-brown);
-  font-size: 0.8rem;
+  border-top: 3px solid var(--charcoal-brown);
+  padding: 2rem 0;
+  margin-top: auto;
 }
 
-footer span {
-  font-weight: 600;
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-icon {
+  height: 35px;
+}
+
+.footer-logo {
+  height: 25px;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer-link {
   color: var(--charcoal-brown);
-  font-family: "Georgia", serif;
-  text-align: center;
-  display: block;
-  margin-top: 1rem;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+  color: var(--dusty-rose);
+  text-decoration: none;
+}
+
+.footer-divider {
+  color: var(--charcoal-brown);
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
 }
 
 /* ========================================
