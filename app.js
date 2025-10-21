@@ -109,6 +109,7 @@ app.use(
         "https://res.cloudinary.com/dzwjyg2ai/",
         "https://images.unsplash.com/",
         "https://api.maptiler.com/",
+        "https://cdn.weatherapi.com/",
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
     },

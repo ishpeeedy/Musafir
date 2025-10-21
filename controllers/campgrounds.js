@@ -3,6 +3,7 @@ const Campground = require("../models/campground");
 const maptilerClient = require("@maptiler/client");
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 const { cloudinary } = require("../cloudinary");
+const { getWeatherData } = require("../utils/weatherService");
 // Safe diagnostic: log whether an API key is present (length only) so we don't print secrets
 if (!process.env.MAPTILER_API_KEY) {
   console.warn("MAPTILER_API_KEY is not set in process.env");
@@ -169,7 +170,20 @@ module.exports.showCampground = async (req, res) => {
     req.flash("error", "Cannot find that campground!");
     return res.redirect("/campgrounds");
   }
-  res.render("campgrounds/show", { campground });
+
+  // Fetch weather data using campground coordinates
+  let weatherData = null;
+  if (campground.geometry && campground.geometry.coordinates) {
+    const [lon, lat] = campground.geometry.coordinates;
+    try {
+      weatherData = await getWeatherData(lat, lon);
+    } catch (error) {
+      console.error("Failed to fetch weather data:", error.message);
+      // Continue without weather data - page will still render
+    }
+  }
+
+  res.render("campgrounds/show", { campground, weather: weatherData });
 };
 
 module.exports.renderEditForm = async (req, res) => {
