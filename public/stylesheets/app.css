@@ -1,8 +1,4 @@
-/* ========================================
-   MUSAFIR - WES ANDERSON INSPIRED THEME
-   ======================================== */
-
-/* Color Palette */
+/* --------------------------------------------------------------Color Palette */
 :root {
   --mustard-yellow: #d6a94f;
   --dusty-rose: #d87c6b;
@@ -10,47 +6,25 @@
   --powder-blue: #8faadc;
   --ivory-white: #f5f0e6;
   --charcoal-brown: #3e2c23;
-
-  /* Shades for depth */
-  --mustard-light: #e5c889;
-  --rose-light: #e8a097;
-  --green-light: #c5d5b5;
-  --blue-light: #b5c9e8;
-
-  /* Shadows */
-  --soft-shadow: 0 4px 12px rgba(62, 44, 35, 0.08);
-  --card-shadow: 0 6px 20px rgba(62, 44, 35, 0.12);
-  --hover-shadow: 0 8px 25px rgba(62, 44, 35, 0.15);
 }
 
-/* ========================================
-   GLOBAL STYLES
-   ======================================== */
-
+/* --------------------------------------------------------------Global */
 body {
   background-color: var(--ivory-white);
   color: var(--charcoal-brown);
-  font-family: "Georgia", "Playfair Display", serif;
-  line-height: 1.7;
+  font-family: Georgia, serif;
 }
 
-/* Typography - Storybook Feel */
 h1,
 h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Georgia", "Playfair Display", serif;
+h3 {
   color: var(--charcoal-brown);
   font-weight: 600;
-  letter-spacing: 0.5px;
+  text-align: center;
 }
 
 h1 {
   font-size: 3rem;
-  text-align: center;
-  margin-bottom: 2rem;
   color: var(--dusty-rose);
 }
 
@@ -59,386 +33,113 @@ h2 {
   color: var(--dusty-rose);
 }
 
-p,
-small,
-.card-text {
-  font-family: "Georgia", serif;
-  font-size: 1rem;
-}
-
-/* ========================================
-   NAVBAR - SYMMETRICAL & RETRO
-   ======================================== */
-
+/* --------------------------------------------------------------Navbar */
 .navbar {
   background-color: var(--ivory-white) !important;
   border-bottom: 3px solid var(--charcoal-brown);
-  padding: 1rem 2rem;
-  box-shadow: var(--soft-shadow);
 }
 
 .navbar-brand {
-  font-family: "Georgia", serif;
   font-size: 1.8rem;
   font-weight: bold;
   color: var(--charcoal-brown) !important;
   letter-spacing: 2px;
   text-transform: uppercase;
-  padding: 0.5rem 0;
-  transition: all 0.3s ease;
-}
-
-.navbar-brand:hover {
-  opacity: 0.8;
-}
-
-.navbar-collapse {
-  flex-grow: 1;
-}
-
-/* Desktop navbar layout */
-@media (min-width: 992px) {
-  .navbar-collapse {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
-/* Mobile navbar styles */
-@media (max-width: 991px) {
-  .navbar {
-    padding: 1rem;
-  }
-
-  .navbar-brand img {
-    height: 30px !important;
-  }
-
-  .navbar-brand img:first-child {
-    height: 35px !important;
-  }
-
-  .navbar-toggler {
-    border: 2px solid var(--charcoal-brown);
-    padding: 0.5rem 0.75rem;
-    background-color: transparent;
-  }
-
-  .navbar-toggler-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .navbar-toggler:focus {
-    box-shadow: 0 0 0 0.2rem rgba(62, 44, 35, 0.25);
-    outline: none;
-  }
-
-  .navbar-collapse {
-    margin-top: 1rem;
-  }
-
-  .navbar-nav {
-    align-items: stretch;
-  }
-
-  .navbar-nav .nav-link {
-    margin: 0.25rem 0;
-    text-align: center;
-  }
 }
 
 .navbar-nav .nav-link {
   color: var(--charcoal-brown) !important;
   font-weight: 500;
-  margin: 0 0.5rem;
-  padding: 0.5rem 1rem;
-  transition: color 0.3s ease;
-  text-decoration: none;
 }
 
 .navbar-nav .nav-link:hover {
   color: var(--dusty-rose) !important;
-  text-decoration: none;
 }
 
-.navbar-nav .btn {
-  border-radius: 1.5rem;
-  font-weight: 500;
-}
-
-/* ========================================
-   BUTTONS - FLAT RETRO STYLE
-   ======================================== */
-
+/* --------------------------------------------------------------Buttons */
 .btn {
   border-radius: 2rem;
   padding: 0.75rem 2rem;
   font-weight: 600;
-  font-family: "Georgia", serif;
   border: 2px solid var(--charcoal-brown);
-  transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 0.9rem;
-}
-
-.btn-primary {
   background-color: var(--mustard-yellow);
-  border-color: var(--charcoal-brown);
   color: var(--charcoal-brown);
 }
-
-.btn-primary:hover {
-  background-color: var(--mustard-light);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-  transform: translateY(-2px);
-  box-shadow: var(--hover-shadow);
+.btn:hover {
+  color: --var(--ivory-white); /* Text color on hover */
+  background-color: var(--ivory-white);
 }
 
-.btn-success {
-  background-color: var(--sage-green);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
+.btn:focus,
+.btn:active {
+  outline: none;
+  box-shadow: --var(--charcoal-brown);
 }
 
-.btn-success:hover {
-  background-color: var(--green-light);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-  transform: translateY(-2px);
-  box-shadow: var(--hover-shadow);
-}
-
-.btn-info {
-  background-color: var(--powder-blue);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-}
-
-.btn-info:hover {
-  background-color: var(--blue-light);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-}
-
-.btn-danger {
-  background-color: var(--dusty-rose);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-}
-
-.btn-danger:hover {
-  background-color: var(--rose-light);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-}
-
-.btn-secondary {
-  background-color: transparent;
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-}
-
-.btn-secondary:hover {
-  background-color: var(--powder-blue);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-}
-
-/* ========================================
-   CARDS - ROUNDED CORNERS & PASTEL
-   ======================================== */
-
+/* --------------------------------------------------------------Cards */
 .card {
   border-radius: 2rem !important;
   border: 3px solid var(--charcoal-brown);
   background-color: white;
-  box-shadow: var(--card-shadow);
-  overflow: hidden;
-  transition: all 0.3s ease;
   margin-bottom: 2rem;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--hover-shadow);
-}
-
-.card-body {
-  background-color: white;
-  padding: 1.5rem;
+  overflow: hidden;
 }
 
 .card-title {
   color: var(--dusty-rose);
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.card-text {
-  color: var(--charcoal-brown);
-}
-
-.card img {
-  border-bottom: none;
-  height: 100%;
-  min-height: 250px;
-  max-height: 300px;
-  object-fit: cover;
-}
-
-/* Campground card specific styles */
-.campground-card {
-  background-color: white !important;
-  overflow: hidden;
-}
-
-.campground-card .col-md-4 {
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: hidden;
 }
 
 .campground-img {
-  height: 280px !important;
-  width: 100% !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: 0px;
+  padding: 0px;
 }
-
-/* Filter Card */
-.card.mb-4:first-of-type {
-  background-color: var(--sage-green);
+.campground-img + .card-body {
+  padding-top: 1rem;
 }
-
-/* ========================================
-   FORMS - RETRO INPUT STYLE
-   ======================================== */
-
-.form-control,
-.form-select {
+/* --------------------------------------------------------------Forms */
+.form-control {
   border: 2px solid var(--charcoal-brown);
   border-radius: 1.5rem;
   padding: 0.75rem 1.25rem;
-  background-color: white;
-  color: var(--charcoal-brown);
-  font-family: "Georgia", serif;
-  transition: none;
-  line-height: 1.5;
 }
 
-.form-select {
-  color: var(--charcoal-brown) !important;
-  padding-right: 2.5rem; /* Extra space for dropdown arrow */
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem;
-  height: auto;
-  min-height: 48px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%233e2c23' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 12px;
-}
-
-.form-select option {
-  color: var(--charcoal-brown);
-  background-color: white;
-  padding: 0.5rem;
-}
-
-.form-control:focus,
-.form-select:focus {
+.form-control:focus {
   border-color: var(--mustard-yellow);
-  box-shadow: 0 0 0 0.2rem rgba(214, 169, 79, 0.25);
-  background-color: var(--ivory-white);
 }
 
-.form-label {
-  font-weight: 600;
-  color: var(--charcoal-brown);
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-}
-
-/* ========================================
-   MAP - BORDERED STYLE
-   ======================================== */
-
+/* --------------------------------------------------------------Map */
 #map {
   border: 4px solid var(--charcoal-brown);
   border-radius: 2rem;
-  box-shadow: var(--card-shadow);
-  margin-bottom: 2rem;
-  overflow: hidden;
 }
 
-/* ========================================
-   PAGINATION - RETRO TICKET STYLE
-   ======================================== */
-
-.pagination {
-  margin-top: 2rem;
+/* --------------------------------------------------------------Weather Cards */
+.weather-forecast-row,
+.weather-history-row {
+  padding: 0.5rem 0 !important;
+  margin: 0 !important;
+  border-bottom: 1px solid #ddd;
 }
 
-.page-item .page-link {
-  background-color: var(--powder-blue);
-  border: 2px solid var(--charcoal-brown);
-  color: var(--charcoal-brown);
-  border-radius: 1rem !important;
-  margin: 0 0.25rem;
-  font-weight: 600;
-  font-family: "Georgia", serif;
-  transition: all 0.3s ease;
+.weather-forecast-row:last-child,
+.weather-history-row:last-child {
+  border-bottom: none;
 }
 
-.page-item:first-child .page-link {
-  border-radius: 1rem !important;
-}
-
-.page-item:last-child .page-link {
-  border-radius: 1rem !important;
-}
-
-.page-item.active .page-link {
-  background-color: var(--mustard-yellow);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-}
-
-.page-item .page-link:hover {
-  background-color: var(--dusty-rose);
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-}
-
-.page-item.disabled .page-link {
-  background-color: #e9ecef;
-  border-color: var(--charcoal-brown);
-  color: var(--charcoal-brown);
-  opacity: 0.5;
-}
-
-/* ========================================
-   FOOTER - SIMPLE AND CLEAN
-   ======================================== */
-
+/* --------------------------------------------------------------Footer */
 .footer {
   background-color: var(--ivory-white);
   border-top: 3px solid var(--charcoal-brown);
-  padding: 2rem 0;
-  margin-top: auto;
+  padding: 0.5rem 0;
 }
 
 .footer-content {
@@ -449,7 +150,7 @@ small,
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .footer-brand {
@@ -459,11 +160,13 @@ small,
 }
 
 .footer-icon {
-  height: 35px;
+  height: 25px;
+  width: auto;
 }
 
 .footer-logo {
-  height: 25px;
+  height: 30px;
+  width: auto;
 }
 
 .footer-links {
@@ -480,7 +183,7 @@ small,
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .footer-link:hover {
@@ -490,7 +193,6 @@ small,
 
 .footer-divider {
   color: var(--charcoal-brown);
-  font-weight: 300;
 }
 
 @media (max-width: 768px) {
@@ -504,15 +206,10 @@ small,
   }
 }
 
-/* ========================================
-   ALERTS & FLASH MESSAGES
-   ======================================== */
-
+/* --------------------------------------------------------------Alerts */
 .alert {
   border-radius: 1.5rem;
   border: 2px solid var(--charcoal-brown);
-  font-family: "Georgia", serif;
-  font-weight: 500;
 }
 
 .alert-success {
@@ -525,428 +222,14 @@ small,
   color: var(--charcoal-brown);
 }
 
-.alert-info {
-  background-color: var(--powder-blue);
-  color: var(--charcoal-brown);
-}
-
-/* ========================================
-   HERO SECTION (For Home Page)
-   ======================================== */
-
-.hero {
-  background: linear-gradient(
-    135deg,
-    var(--powder-blue) 0%,
-    var(--sage-green) 100%
-  );
-  border: 4px solid var(--charcoal-brown);
-  border-radius: 2rem;
-  padding: 4rem 2rem;
-  margin: 2rem 0;
-  text-align: center;
-  box-shadow: var(--card-shadow);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: "⛺";
-  position: absolute;
-  font-size: 15rem;
-  opacity: 0.1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.hero h1 {
-  color: var(--charcoal-brown);
-  font-size: 3.5rem;
+/* --------------------------------------------------------------  weather card*/
+.card-body h2 {
   margin-bottom: 1rem;
-  position: relative;
-  z-index: 1;
-}
-
-.hero p {
-  font-size: 1.3rem;
-  color: var(--charcoal-brown);
-  margin-bottom: 2rem;
-  position: relative;
-  z-index: 1;
-}
-
-/* ========================================
-   SYMMETRY & GRID LAYOUTS
-   ======================================== */
-
-.container {
-  max-width: 1200px;
-}
-
-.row {
-  margin-bottom: 1rem;
-}
-
-/* Center align headings */
-h1,
-h2 {
-  text-align: center;
-  position: relative;
-  padding-bottom: 1rem;
-}
-
-h1::after,
-h2::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 3px;
-  background-color: var(--mustard-yellow);
-}
-
-/* ========================================
-   CUSTOM ELEMENTS
-   ======================================== */
-
-/* Badge/Tag style */
-.badge {
-  background-color: var(--mustard-yellow);
-  color: var(--charcoal-brown);
-  border: 2px solid var(--charcoal-brown);
-  border-radius: 1rem;
-  padding: 0.5rem 1rem;
-  font-weight: 600;
-}
-
-/* Price display */
-.text-success {
-  color: var(--sage-green) !important;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-/* Location/muted text */
-.text-muted {
-  color: var(--charcoal-brown) !important;
-  opacity: 0.7;
-}
-
-/* Animated hover effects */
-.card,
-.btn,
-.navbar-brand,
-.nav-link {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Decorative border animation */
-@keyframes borderPulse {
-  0%,
-  100% {
-    border-color: var(--charcoal-brown);
-  }
-  50% {
-    border-color: var(--mustard-yellow);
-  }
-}
-
-.card:hover {
-  animation: none;
-}
-
-/* Vintage corner brackets */
-.vintage-frame {
-  position: relative;
-}
-
-.vintage-frame::before,
-.vintage-frame::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 3px solid var(--charcoal-brown);
-}
-
-.vintage-frame::before {
-  top: 10px;
-  left: 10px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.vintage-frame::after {
-  bottom: 10px;
-  right: 10px;
-  border-left: none;
-  border-top: none;
-}
-
-/* ========================================
-   RESPONSIVE ADJUSTMENTS
-   ======================================== */
-
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2rem;
-  }
-
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
-  .navbar-brand {
-    font-size: 1.3rem;
-    padding: 0.4rem 1rem;
-  }
-
-  .btn {
-    padding: 0.6rem 1.5rem;
-    font-size: 0.85rem;
-  }
-}
-
-/* ========================================
-   CAROUSEL STYLING
-   ======================================== */
-
-.carousel {
-  border-radius: 2rem 2rem 0 0;
-  overflow: hidden;
-  border: 3px solid var(--charcoal-brown);
-  border-bottom: none;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  background-color: var(--mustard-yellow);
-  border: 2px solid var(--charcoal-brown);
-  border-radius: 50%;
-  padding: 1.5rem;
-}
-
-/* ========================================
-   STORYBOOK DECORATIVE ELEMENTS
-   ======================================== */
-
-.decorative-corner {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border: 3px solid var(--charcoal-brown);
-}
-
-.decorative-corner.top-left {
-  top: 10px;
-  left: 10px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.decorative-corner.top-right {
-  top: 10px;
-  right: 10px;
-  border-left: none;
-  border-bottom: none;
-}
-
-.decorative-corner.bottom-left {
-  bottom: 10px;
-  left: 10px;
-  border-right: none;
-  border-top: none;
-}
-
-.decorative-corner.bottom-right {
-  bottom: 10px;
-  right: 10px;
-  border-left: none;
-  border-top: none;
-}
-
-/* ========================================
-   STAR RATING INTEGRATION
-   ======================================== */
-
-.starability-result {
-  color: var(--mustard-yellow) !important;
-  position: relative;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.starability-result::before {
-  color: var(--mustard-yellow);
-}
-
-.starability-basic {
-  display: block;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-/* ========================================
-   LIST GROUP STYLING
-   ======================================== */
-
-.list-group-item {
-  background-color: var(--ivory-white);
-  border: 2px solid var(--charcoal-brown);
-  color: var(--charcoal-brown);
-  font-family: "Georgia", serif;
-}
-
-.list-group-item:first-child {
-  border-radius: 0;
-}
-
-.list-group-item:last-child {
-  border-radius: 0 0 2rem 2rem;
-}
-
-/* ========================================
-   HOMEPAGE SPECIFIC STYLES
-   ======================================== */
-
-.home-wrapper {
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* Hero Section with Background Image */
-.hero-section {
-  background-image: url("/images/bgImg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 500px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 4rem 2rem;
-  position: relative;
-  border-bottom: 4px solid var(--charcoal-brown);
-}
-
-.hero-title {
-  font-family: "Playfair Display", serif;
-  font-size: 5rem;
-  font-weight: 700;
-  color: var(--dusty-rose);
-  text-align: center;
-  margin-bottom: 3rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  line-height: 1.2;
-}
-
-.book-btn {
-  background-color: var(--mustard-yellow);
-  color: var(--charcoal-brown);
-  border: 3px solid var(--charcoal-brown);
-  padding: 1rem 3rem;
-  font-size: 1.3rem;
-  font-weight: 700;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.book-btn:hover {
-  background-color: var(--dusty-rose);
-  color: var(--ivory-white);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Available Campgrounds Section */
-.campgrounds-section {
-  background-color: var(--sage-green);
-  padding: 3rem 2rem;
-  border-bottom: 4px solid var(--charcoal-brown);
-}
-
-.section-title {
-  font-family: "Playfair Display", serif;
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--charcoal-brown);
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.campground-cards {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  margin: 0 auto 3rem;
-}
-
-.campground-preview-card {
-  background-color: var(--ivory-white);
-  border: 3px solid var(--charcoal-brown);
-  border-radius: 1rem;
-  width: 250px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.campground-preview-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  text-decoration: none;
-  color: inherit;
-}
-
-.preview-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-bottom: 3px solid var(--charcoal-brown);
-}
-
-.preview-content {
-  padding: 1.5rem;
-  text-align: center;
-}
-
-.preview-title {
-  font-family: "Playfair Display", serif;
   font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--charcoal-brown);
-  margin-bottom: 0.5rem;
 }
 
-.preview-subtitle {
-  color: var(--charcoal-brown);
-  font-size: 1rem;
-  margin: 0;
-}
-
-.preview-subtitle::before {
-  content: "• ";
-}
-
-/* Bottom CTA Section */
-.bottom-cta {
-  background-color: var(--sage-green);
-  padding: 3rem 2rem;
-  text-align: center;
+.card-body hr {
+  margin: 1.5rem 0;
 }
 
 @media (max-width: 768px) {

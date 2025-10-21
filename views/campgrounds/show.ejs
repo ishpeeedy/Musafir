@@ -1,6 +1,37 @@
 <% layout('layouts/boilerplate')%>
 <link rel="stylesheet" href="/stylesheets/stars.css" />
 
+<%
+// Function to get weather icon based on condition
+function getWeatherIcon(condition) {
+  const conditionLower = condition.toLowerCase();
+  
+  if (conditionLower.includes('sun') || conditionLower.includes('clear')) {
+    return '/images/weather/sunny.gif';
+  } else if (conditionLower.includes('partly cloudy') || conditionLower.includes('partial')) {
+    return '/images/weather/partly-cloudy.gif';
+  } else if (conditionLower.includes('cloudy') || conditionLower.includes('overcast')) {
+    return '/images/weather/cloudy.gif';
+  } else if (conditionLower.includes('thunder') || conditionLower.includes('storm')) {
+    return '/images/weather/thunderstorm.gif';
+  } else if (conditionLower.includes('heavy rain') || conditionLower.includes('torrential')) {
+    return '/images/weather/heavy-rain.gif';
+  } else if (conditionLower.includes('rain') || conditionLower.includes('drizzle') || conditionLower.includes('shower')) {
+    return '/images/weather/rain.gif';
+  } else if (conditionLower.includes('snow') || conditionLower.includes('blizzard')) {
+    return '/images/weather/snow.gif';
+  } else if (conditionLower.includes('sleet') || conditionLower.includes('ice')) {
+    return '/images/weather/sleet.gif';
+  } else if (conditionLower.includes('fog') || conditionLower.includes('mist') || conditionLower.includes('haze')) {
+    return '/images/weather/foggy.gif';
+  } else if (conditionLower.includes('wind')) {
+    return '/images/weather/windy.gif';
+  } else {
+    return '/images/weather/cloudy.gif'; // default fallback
+  }
+}
+%>
+
 <div class="container mt-4">
   <!-- Images Section - Full Width -->
   <div class="row">
@@ -47,11 +78,12 @@
     </div>
   </div>
 
-  <!-- Details and Map Row - Split 50/50 -->
+  <!-- Two Column Layout -->
   <div class="row">
+    <!-- LEFT COLUMN: Details + Weather -->
     <div class="col-lg-6 mb-4">
       <!-- Campground Details Card -->
-      <div class="card shadow" style="background-color: white">
+      <div class="card shadow mb-4" style="background-color: white">
         <div class="card-body p-4">
           <h2
             class="card-title"
@@ -91,64 +123,25 @@
         <% if( currentUser && campground.author.equals(currentUser._id)) {%>
         <div class="card-body p-4">
           <div class="d-grid gap-2">
-            <a
-              class="btn btn-info btn-lg"
-              href="/campgrounds/<%=campground._id%>/edit"
+            <a class="btn btn-lg" href="/campgrounds/<%=campground._id%>/edit"
               >✏️ Edit Campground</a
             >
             <form
               action="/campgrounds/<%=campground._id%>?_method=DELETE"
               method="POST"
             >
-              <button class="btn btn-danger btn-lg w-100">
-                🗑️ Delete Campground
-              </button>
+              <button class="btn btn-lg w-100">🗑️ Delete Campground</button>
             </form>
           </div>
         </div>
         <% } %>
       </div>
-    </div>
-    <div class="col-lg-6 mb-4">
-      <% if (weather) { %>
-      <div class="card">
-        <div class="card-body">
-          <h2>Current Weather</h2>
-          <h3 class="text-center"><%= weather.current.temp_c %>°C</h3>
-          <p class="text-center">
-            (Feels like <%= Math.round(weather.current.feelslike_c) %>°C)
-          </p>
-          <div class="d-flex justify-content-around text-center mt-3">
-            <div>
-              <div><strong>💧 Humidity</strong></div>
-              <div><%= weather.current.humidity %>%</div>
-            </div>
-            <div>
-              <div><strong>💨 Wind</strong></div>
-              <div><%= weather.current.wind_kph %> km/h</div>
-            </div>
-            <div>
-              <div><strong>🌧️ Precip</strong></div>
-              <div><%= weather.current.precip_mm %> mm</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <% } else { %>
-      <div class="card shadow mb-4" style="background-color: var(--sage-green)">
-        <div class="card-body p-4 text-center">
-          <h5 style="color: var(--charcoal-brown)">Weather data unavailable</h5>
-          <p style="color: var(--charcoal-brown); opacity: 0.8">
-            Unable to fetch weather information at this time.
-          </p>
-        </div>
-      </div>
-      <% } %>
+
       <!-- Weather Forecast Card -->
       <% if (weather) { %>
-      <div class="card mb-4">
+      <div class="card shadow mb-4">
         <div class="card-body">
-          <h2>Current Weather</h2>
+          <h2 style="color: var(--dusty-rose)">Current Weather</h2>
           <h3 class="text-center"><%= weather.current.temp_c %>°C</h3>
           <p class="text-center">
             (Feels like <%= Math.round(weather.current.feelslike_c) %>°C)
@@ -168,22 +161,41 @@
             </div>
           </div>
 
-          <hr class="my-4">
+          <hr class="my-4" />
 
-          <h2>3-Day Forecast</h2>
+          <h2 style="color: var(--dusty-rose)">3-Day Forecast</h2>
           <% weather.forecast.forEach((day, index) => { %>
-          <div class="d-flex justify-content-between align-items-center mb-3 p-2" style="border-bottom: 1px solid #eee;">
-            <div>
-              <strong><%= index === 0 ? 'Today' : new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }) %></strong>
+          <div
+            class="weather-forecast-row d-flex justify-content-between align-items-center"
+          >
+            <div style="min-width: 60px">
+              <strong
+                ><%= index === 0 ? 'Today' : new
+                Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })
+                %></strong
+              >
             </div>
-            <div class="text-center">
-              <img src="<%= day.icon %>" alt="<%= day.condition %>" style="width: 48px; height: 48px;">
-            </div>
             <div>
-              <strong><%= Math.round(day.maxtemp_c) %>°</strong> / <%= Math.round(day.mintemp_c) %>°
-              <% if (day.daily_chance_of_rain > 0) { %>
-                <small class="text-muted">🌧️ <%= day.daily_chance_of_rain %>%</small>
-              <% } %>
+              <img
+                src="<%= getWeatherIcon(day.condition) %>"
+                alt="<%= day.condition %>"
+                style="
+                  max-width: 48px;
+                  max-height: 48px;
+                  width: auto;
+                  height: auto;
+                  object-fit: contain;
+                "
+              />
+            </div>
+            <div style="min-width: 80px">
+              <strong><%= Math.round(day.maxtemp_c) %>°</strong> / <%=
+              Math.round(day.mintemp_c) %>°
+            </div>
+            <div class=" " style="font-size: 0.8rem">
+              <strong>💧 <%= day.avghumidity %>%</strong>
+              <strong class="ms-2">💨 <%= Math.round(day.maxwind_kph) %></strong>
+              <strong class="ms-2">🌧️ <%= day.daily_chance_of_rain %>%</strong>
             </div>
           </div>
           <% }); %>
@@ -191,198 +203,199 @@
       </div>
 
       <!-- Historical Data Card -->
-      <div class="card mb-4">
+      <div class="card shadow mb-4">
         <div class="card-body">
-          <h2>📊 Past 7 Days History</h2>
+          <h2 style="color: var(--dusty-rose)"> Past 7 Days</h2>
           <% weather.history.forEach((day, index) => { %>
-          <div class="d-flex justify-content-between align-items-center mb-3 p-2" style="border-bottom: 1px solid #eee;">
+          <div
+            class="weather-history-row d-flex justify-content-between align-items-center"
+          >
+            <div style="min-width: 100px">
+              <strong
+                ><%= new Date(day.date).toLocaleDateString('en-US', { weekday:
+                'short', month: 'short', day: 'numeric' }) %></strong
+              >
+            </div>
             <div>
-              <strong><%= new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) %></strong>
+              <img
+                src="<%= getWeatherIcon(day.condition) %>"
+                alt="<%= day.condition %>"
+                style="
+                  max-width: 48px;
+                  max-height: 48px;
+                  width: auto;
+                  height: auto;
+                  object-fit: contain;
+                "
+              />
             </div>
-            <div class="text-center">
-              <img src="<%= day.icon %>" alt="<%= day.condition %>" style="width: 48px; height: 48px;">
+            <div style="min-width: 80px">
+              <strong><%= Math.round(day.maxtemp_c) %>°</strong> / <%=
+              Math.round(day.mintemp_c) %>°
             </div>
-            <div>
-              <strong><%= Math.round(day.maxtemp_c) %>°</strong> / <%= Math.round(day.mintemp_c) %>°
-            </div>
-            <div class="text-muted">
-              <small>💧 <%= day.avghumidity %>%</small>
-              <% if (day.totalprecip_mm > 0) { %>
-                <small class="ms-2">🌧️ <%= day.totalprecip_mm %> mm</small>
-              <% } %>
+            <div class=" " style="font-size: 0.8rem">
+              <strong>💧 <%= day.avghumidity %>%</strong>
+              <strong class="ms-2">🌧️ <%= day.totalprecip_mm %> mm</strong>
             </div>
           </div>
           <% }); %>
         </div>
       </div>
-      <% } else { %>
+      <% } %>
+    </div>
+
+    <!-- RIGHT COLUMN: Map + Review Form + Reviews -->
+    <div class="col-lg-6 mb-4">
+      <!-- Map -->
+      <div
+        id="map"
+        class="shadow mb-4"
+        style="width: 100%; height: 400px"
+      ></div>
+
+      <!-- Review Form -->
+      <% if(currentUser){ %>
       <div class="card shadow mb-4" style="background-color: var(--sage-green)">
-        <div class="card-body p-4 text-center">
-          <h5 style="color: var(--charcoal-brown)">Weather data unavailable</h5>
-          <p style="color: var(--charcoal-brown); opacity: 0.8">
-            Unable to fetch weather information at this time.
-          </p>
+        <div class="card-body p-4">
+          <h2 class="text-center mb-4" style="color: var(--dusty-rose)">
+            ✍️ Leave a Review
+          </h2>
+          <form
+            action="/campgrounds/<%=campground._id%>/reviews"
+            method="POST"
+            class="validated-form"
+            novalidate
+          >
+            <div class="mb-4">
+              <label class="form-label" style="font-size: 1.1rem">Rating</label>
+              <fieldset class="starability-basic">
+                <input
+                  type="radio"
+                  id="no-rate"
+                  class="input-no-rate"
+                  name="review[rating]"
+                  value="1"
+                  checked
+                  aria-label="No rating."
+                />
+                <input
+                  type="radio"
+                  id="first-rate1"
+                  name="review[rating]"
+                  value="1"
+                />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input
+                  type="radio"
+                  id="first-rate2"
+                  name="review[rating]"
+                  value="2"
+                />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input
+                  type="radio"
+                  id="first-rate3"
+                  name="review[rating]"
+                  value="3"
+                />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input
+                  type="radio"
+                  id="first-rate4"
+                  name="review[rating]"
+                  value="4"
+                />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input
+                  type="radio"
+                  id="first-rate5"
+                  name="review[rating]"
+                  value="5"
+                />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+              </fieldset>
+            </div>
+            <div class="mb-4">
+              <label class="form-label" for="body">Your Experience</label>
+              <textarea
+                class="form-control"
+                name="review[body]"
+                id="body"
+                cols="30"
+                rows="4"
+                placeholder="Share your thoughts about this campground..."
+                required
+              ></textarea>
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-lg">Submit Review</button>
+            </div>
+          </form>
         </div>
       </div>
       <% } %>
 
-      <!-- Map -->
-      <div id="map" style="width: 100%; height: 400px; margin-bottom: 0"></div>
-    </div>
-  </div>
+      <!-- Reviews List -->
+      <% if(campground.reviews.length > 0) { %>
+      <h3 class="mb-4 center" style="color: var(--charcoal-brown)">
+        Reviews (<%= campground.reviews.length %>)
+      </h3>
 
-    <!-- Reviews Section - Full Width -->
-    <div class="row">
-      <div class="col-12">
-        <!-- Review Form -->
-        <% if(currentUser){ %>
-        <div
-          class="card shadow mb-4"
-          style="background-color: var(--sage-green)"
-        >
-          <div class="card-body p-4">
-            <h2 class="text-center mb-4" style="color: var(--dusty-rose)">
-              ✍️ Leave a Review
-            </h2>
-            <form
-              action="/campgrounds/<%=campground._id%>/reviews"
-              method="POST"
-              class="validated-form"
-              novalidate
-            >
-              <div class="mb-4">
-                <label class="form-label" style="font-size: 1.1rem"
-                  >Rating</label
-                >
-                <fieldset class="starability-basic">
-                  <input
-                    type="radio"
-                    id="no-rate"
-                    class="input-no-rate"
-                    name="review[rating]"
-                    value="1"
-                    checked
-                    aria-label="No rating."
-                  />
-                  <input
-                    type="radio"
-                    id="first-rate1"
-                    name="review[rating]"
-                    value="1"
-                  />
-                  <label for="first-rate1" title="Terrible">1 star</label>
-                  <input
-                    type="radio"
-                    id="first-rate2"
-                    name="review[rating]"
-                    value="2"
-                  />
-                  <label for="first-rate2" title="Not good">2 stars</label>
-                  <input
-                    type="radio"
-                    id="first-rate3"
-                    name="review[rating]"
-                    value="3"
-                  />
-                  <label for="first-rate3" title="Average">3 stars</label>
-                  <input
-                    type="radio"
-                    id="first-rate4"
-                    name="review[rating]"
-                    value="4"
-                  />
-                  <label for="first-rate4" title="Very good">4 stars</label>
-                  <input
-                    type="radio"
-                    id="first-rate5"
-                    name="review[rating]"
-                    value="5"
-                  />
-                  <label for="first-rate5" title="Amazing">5 stars</label>
-                </fieldset>
-              </div>
-              <div class="mb-4">
-                <label class="form-label" for="body">Your Experience</label>
-                <textarea
-                  class="form-control"
-                  name="review[body]"
-                  id="body"
-                  cols="30"
-                  rows="4"
-                  placeholder="Share your thoughts about this campground..."
-                  required
-                ></textarea>
-                <div class="valid-feedback">Looks good!</div>
-              </div>
-              <div class="d-grid">
-                <button class="btn btn-success btn-lg">Submit Review</button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <% } %>
-
-        <!-- Reviews List -->
-        <% if(campground.reviews.length > 0) { %>
-        <h3 class="text-center mb-4" style="color: var(--dusty-rose)">
-          💬 Reviews (<%= campground.reviews.length %>)
-        </h3>
-        <% } %> <% for(let review of campground.reviews) { %>
-        <div
-          class="card mb-3 shadow"
-          style="background-color: var(--ivory-white)"
-        >
-          <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <h5
-                  class="card-title"
-                  style="
-                    color: var(--dusty-rose);
-                    font-size: 1.3rem;
-                    margin-bottom: 0.5rem;
-                  "
-                >
-                  👤 <%= review.author.username%>
-                </h5>
-                <p
-                  class="starability-result"
-                  data-rating="<%=review.rating%>"
-                  style="margin-bottom: 0"
-                >
-                  Rated: <%= review.rating %> stars
-                </p>
-              </div>
-              <% if( currentUser && review.author.equals(currentUser._id)) {%>
-              <form
-                action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
-                method="POST"
+      <% for(let review of campground.reviews) { %>
+      <div
+        class="card mb-3 shadow"
+      >
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h5
+                class="card-title"
+                style="
+                  color: var(--dusty-rose);
+                  font-size: 1.3rem;
+                  margin-bottom: 0.5rem;
+                "
               >
-                <button class="btn btn-sm btn-danger">Delete</button>
-              </form>
-              <% } %>
+                 <%= review.author.username%>
+              </h5>
+              <p
+                class="starability-result"
+                data-rating="<%=review.rating%>"
+                style="margin-bottom: 0"
+              >
+                Rated: <%= review.rating %> stars
+              </p>
             </div>
-            <p
-              class="card-text"
-              style="
-                color: var(--charcoal-brown);
-                font-size: 1.05rem;
-                line-height: 1.7;
-              "
+            <% if( currentUser && review.author.equals(currentUser._id)) {%>
+            <form
+              action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
+              method="POST"
             >
-              <%= review.body %>
-            </p>
+              <button class="btn btn-sm">Delete</button>
+            </form>
+            <% } %>
           </div>
+          <p
+            class="card-text"
+            style="
+              color: var(--charcoal-brown);
+              font-size: 1.05rem;
+              line-height: 1.7;
+            "
+          >
+            <%= review.body %>
+          </p>
         </div>
-        <% } %>
       </div>
+      <% } %> <% } %>
     </div>
   </div>
-
-  <script>
-    const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
-    const campground = <%- JSON.stringify(campground) %>
-  </script>
-
-  <script src="/javascripts/showPageMap.js"></script>
 </div>
+
+<script>
+  const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
+  const campground = <%- JSON.stringify(campground) %>
+</script>
+
+<script src="/javascripts/showPageMap.js"></script>
