@@ -3,16 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campground Adventures - Musafir</title>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-
+    <title>Musafir - Discover Campgrounds</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
@@ -22,92 +13,51 @@
     <link rel="stylesheet" href="/stylesheets/app.css" />
   </head>
 
-  <body>
+  <body style="background-color: var(--ivory-white);">
     <%- include('partials/navbar') %>
 
-    <div class="home-wrapper">
-      <!-- Hero Section with Background Image -->
-      <section class="hero-section">
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+    <!-- Hero Section -->
+    <div style="background: linear-gradient(135deg, var(--powder-blue) 0%, var(--sage-green) 100%); padding: 6rem 0; text-align: center;">
+      <div class="container">
+        <h1 style="color: var(--charcoal-brown); font-size: 4rem; margin-bottom: 1.5rem; font-weight: 700;">Find Your Perfect Campsite</h1>
+        <p style="color: var(--charcoal-brown); font-size: 1.4rem; margin-bottom: 2.5rem; opacity: 0.9;">Discover amazing camping destinations across India</p>
+        <a href="/campgrounds" class="btn btn-lg" style="padding: 1rem 3rem; font-size: 1.2rem;">Explore Now</a>
+      </div>
+    </div>
 
-        <a href="/campgrounds" class="book-btn">Explore Campgrounds</a>
-      </section>
+    <!-- Featured Campgrounds -->
+    <div class="container mt-5 mb-5">
+      <h2 class="text-center mb-5" style="color: var(--dusty-rose); font-size: 2.5rem; font-weight: 600;">Popular Destinations</h2>
 
-      <!-- Available Campgrounds Section -->
-      <section class="campgrounds-section">
-        <h2 class="section-title">Popular Campgrounds</h2>
-
-        <div class="campground-cards">
-          <% if (featuredCampgrounds && featuredCampgrounds.length > 0) { %> <%
-          featuredCampgrounds.forEach(campground => { %>
-          <a
-            href="/campgrounds/<%= campground._id %>"
-            class="campground-preview-card"
-            style="text-decoration: none; color: inherit"
-          >
-            <% if (campground.images && campground.images.length > 0) { %>
-            <img
-              src="<%= campground.images[0].url %>"
-              alt="<%= campground.title %>"
-              class="preview-image"
-            />
-            <% } else { %>
-            <img
-              src="/images/bgImg.png"
-              alt="<%= campground.title %>"
-              class="preview-image"
-            />
-            <% } %>
-            <div class="preview-content">
-              <h3 class="preview-title"><%= campground.title %></h3>
-              <p class="preview-subtitle"><%= campground.location %></p>
+      <div class="row g-4">
+        <% if (featuredCampgrounds && featuredCampgrounds.length > 0) { %>
+          <% featuredCampgrounds.forEach(campground => { %>
+            <div class="col-md-4">
+              <a href="/campgrounds/<%= campground._id %>" style="text-decoration: none;">
+                <div class="card shadow" style="border-radius: 2rem; overflow: hidden; height: 100%; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-8px)'" onmouseout="this.style.transform='translateY(0)'">
+                  <% if (campground.images && campground.images.length > 0) { %>
+                    <img src="<%= campground.images[0].url %>" alt="<%= campground.title %>" style="width: 100%; height: 250px; object-fit: cover; display: block;">
+                  <% } %>
+                  <div class="card-body p-4">
+                    <h3 class="card-title" style="color: var(--dusty-rose); font-size: 1.5rem; margin-bottom: 0.5rem;"><%= campground.title %></h3>
+                    <p style="color: var(--charcoal-brown); margin-bottom: 1rem;">📍 <%= campground.location %></p>
+                    <p style="color: var(--charcoal-brown); font-size: 0.95rem; line-height: 1.6;"><%= campground.description.substring(0, 100) %>...</p>
+                    <div style="margin-top: 1rem;">
+                      <strong style="color: var(--sage-green); font-size: 1.3rem;">₹<%= campground.price %></strong>
+                      <span style="color: var(--charcoal-brown);">/night</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
             </div>
-          </a>
-          <% }); %> <% } else { %>
-          <!-- Fallback cards if no campgrounds found -->
-          <div class="campground-preview-card">
-            <img
-              src="/images/bgImg.png"
-              alt="Mountain View"
-              class="preview-image"
-            />
-            <div class="preview-content">
-              <h3 class="preview-title">Mountain View</h3>
-              <p class="preview-subtitle">Scenic</p>
-            </div>
-          </div>
+          <% }); %>
+        <% } %>
+      </div>
 
-          <div class="campground-preview-card">
-            <img src="/images/bgImg.png" alt="Lakeside" class="preview-image" />
-            <div class="preview-content">
-              <h3 class="preview-title">Lakeside</h3>
-              <p class="preview-subtitle">Waterfront</p>
-            </div>
-          </div>
-
-          <div class="campground-preview-card">
-            <img
-              src="/images/bgImg.png"
-              alt="Pine Grove"
-              class="preview-image"
-            />
-            <div class="preview-content">
-              <h3 class="preview-title">Pine Grove</h3>
-              <p class="preview-subtitle">Wooded</p>
-            </div>
-          </div>
-          <% } %>
-        </div>
-
-        <div class="text-center bottom-cta">
-          <a href="/campgrounds/new" class="book-btn">Share Your Campsite</a>
-        </div>
-      </section>
+      <div class="text-center mt-5">
+        <a href="/campgrounds" class="btn btn-lg me-3" style="padding: 0.8rem 2.5rem;">View All Campgrounds</a>
+        <a href="/campgrounds/new" class="btn btn-lg" style="padding: 0.8rem 2.5rem; background-color: var(--sage-green);">Add Your Campsite</a>
+      </div>
     </div>
 
     <%- include('partials/footer') %>

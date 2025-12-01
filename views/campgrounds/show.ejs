@@ -122,15 +122,15 @@ function getWeatherIcon(condition) {
         </ul>
         <% if( currentUser && campground.author.equals(currentUser._id)) {%>
         <div class="card-body p-4">
-          <div class="d-grid gap-2">
-            <a class="btn btn-lg" href="/campgrounds/<%=campground._id%>/edit"
-              >✏️ Edit Campground</a
+          <div class="d-flex justify-content-between">
+            <a class="btn" href="/campgrounds/<%=campground._id%>/edit"
+              >Edit Campground</a
             >
             <form
               action="/campgrounds/<%=campground._id%>?_method=DELETE"
               method="POST"
             >
-              <button class="btn btn-lg w-100">🗑️ Delete Campground</button>
+              <button class="btn">Delete Campground</button>
             </form>
           </div>
         </div>
@@ -255,10 +255,10 @@ function getWeatherIcon(condition) {
 
       <!-- Review Form -->
       <% if(currentUser){ %>
-      <div class="card shadow mb-4" style="background-color: var(--sage-green)">
+      <div class="card shadow mb-4" >
         <div class="card-body p-4">
-          <h2 class="text-center mb-4" style="color: var(--dusty-rose)">
-            ✍️ Leave a Review
+          <h2 class="text-center mb-4" style="color: var(--charcoal-brown)">
+          Leave a Review
           </h2>
           <form
             action="/campgrounds/<%=campground._id%>/reviews"
