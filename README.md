@@ -15,11 +15,11 @@ A campground review platform for discovering, sharing, and reviewing campgrounds
 ![MapTiler](https://img.shields.io/badge/MapTiler-%23000000.svg?style=for-the-badge&logo=googlemaps&logoColor=a985ff)
 ![Vercel](https://img.shields.io/badge/Vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=a985ff)
 
-<center>
-
-[![Live](https://img.shields.io/badge/Live_Deployment-%23ffffff.svg?style=for-the-badge&logo=googlechrome&logoColor=000000)](https://musafir-1ukx.onrender.com/)
-
-</center>
+<div align="center">
+  <a href="https://musafir-1ukx.onrender.com/">
+    <img src="https://res.cloudinary.com/dzwjyg2ai/image/upload/v1773207657/IMP_Resources/github_assets/Musafir_loader_m3iizy.svg" width="400" />
+  </a>
+</div>
 
 ## Features
 
