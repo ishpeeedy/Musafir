@@ -13,10 +13,10 @@ A campground review platform for discovering, sharing, and reviewing campgrounds
 ![Joi](https://img.shields.io/badge/Joi-%23000000.svg?style=for-the-badge&logo=npm&logoColor=a985ff)
 ![Helmet](https://img.shields.io/badge/Helmet-%23000000.svg?style=for-the-badge&logo=letsencrypt&logoColor=a985ff)
 ![MapTiler](https://img.shields.io/badge/MapTiler-%23000000.svg?style=for-the-badge&logo=googlemaps&logoColor=a985ff)
-![Vercel](https://img.shields.io/badge/Vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=a985ff)
+![Render](https://img.shields.io/badge/Render-%23000000.svg?style=for-the-badge&logo=Render&logoColor=a985ff)
 
 <div align="center">
-  <a href="https://musafir-1ukx.onrender.com/">
+  <a href="https://musafir.ishpeeedy.dev">
     <img src="https://res.cloudinary.com/dzwjyg2ai/image/upload/v1773207657/IMP_Resources/github_assets/Musafir_loader_m3iizy.svg" width="400" />
   </a>
 </div>
