@@ -42,6 +42,14 @@ db.once("open", () => {
 
 const app = express();
 
+// Redirect onrender URL to custom domain
+app.use((req, res, next) => {
+  if (req.hostname === 'musafir-1ukx.onrender.com') {
+    return res.redirect(301, 'https://musafir.ishpeeedy.dev' + req.originalUrl);
+  }
+  next();
+});
+
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
