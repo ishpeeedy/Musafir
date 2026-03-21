@@ -11,7 +11,7 @@ if (!process.env.MAPTILER_API_KEY) {
   try {
     console.log(
       "MAPTILER_API_KEY length:",
-      process.env.MAPTILER_API_KEY.length
+      process.env.MAPTILER_API_KEY.length,
     );
   } catch (e) {
     /* ignore */
@@ -29,12 +29,15 @@ module.exports.index = async (req, res) => {
 
   // Text search with partial matching using regex
   if (search) {
-    const searchRegex = new RegExp(search, "i"); // Case-insensitive regex
-    query.$or = [
-      { title: searchRegex },
-      { location: searchRegex },
-      { description: searchRegex },
-    ];
+    const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").trim();
+    if (escaped.length > 0 && escaped.length <= 60) {
+      const searchRegex = new RegExp(escaped, "i"); // Case-insensitive regex
+      query.$or = [
+        { title: searchRegex },
+        { location: searchRegex },
+        { description: searchRegex },
+      ];
+    }
   }
 
   // Price filter
@@ -116,16 +119,16 @@ module.exports.createCampground = async (req, res, next) => {
   try {
     geoData = await maptilerClient.geocoding.forward(
       req.body.campground.location,
-      { limit: 1 }
+      { limit: 1 },
     );
   } catch (err) {
     console.error(
       "MapTiler geocoding error (create):",
-      err && err.message ? err.message : err
+      err && err.message ? err.message : err,
     );
     req.flash(
       "error",
-      "Location lookup failed (MapTiler). Try again or check your API key/network."
+      "Location lookup failed (MapTiler). Try again or check your API key/network.",
     );
     return res.redirect("back");
   }
@@ -139,7 +142,7 @@ module.exports.createCampground = async (req, res, next) => {
   ) {
     req.flash(
       "error",
-      "Could not find that location. Please try a different location name."
+      "Could not find that location. Please try a different location name.",
     );
     return res.redirect("back");
   }
@@ -207,7 +210,7 @@ module.exports.updateCampground = async (req, res) => {
   try {
     const geoData = await maptilerClient.geocoding.forward(
       req.body.campground.location,
-      { limit: 1 }
+      { limit: 1 },
     );
 
     // Validate that we got valid geocoding results
@@ -219,7 +222,7 @@ module.exports.updateCampground = async (req, res) => {
     ) {
       req.flash(
         "error",
-        "Could not find that location. Please try a different location name."
+        "Could not find that location. Please try a different location name.",
       );
       return res.redirect("back");
     }
@@ -228,11 +231,11 @@ module.exports.updateCampground = async (req, res) => {
   } catch (err) {
     console.error(
       "MapTiler geocoding error (update):",
-      err && err.message ? err.message : err
+      err && err.message ? err.message : err,
     );
     req.flash(
       "error",
-      "Location lookup failed while updating (MapTiler). Try again or check your API key/network."
+      "Location lookup failed while updating (MapTiler). Try again or check your API key/network.",
     );
     return res.redirect("back");
   }
