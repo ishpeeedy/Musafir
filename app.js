@@ -157,6 +157,10 @@ app.get("/", async (req, res) => {
   res.render("home", { featuredCampgrounds });
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 app.all(/(.*)/, (req, res, next) => {
   next(new ExpressError("paige not found ", 404));
 });
