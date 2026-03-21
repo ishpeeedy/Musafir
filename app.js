@@ -21,6 +21,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const userRoutes = require("./routes/users");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
+const healthRoutes = require("./routes/health");
 const dbUrl = process.env.DB_URL;
 const MongoDBStore = require("connect-mongo")(session);
 
@@ -141,6 +142,7 @@ app.use((req, res, next) => {
 app.use("/", userRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/reviews", reviewRoutes);
+app.use("/", healthRoutes);
 
 app.get("/", async (req, res) => {
   // Fetch specific campgrounds by their IDs
@@ -155,10 +157,6 @@ app.get("/", async (req, res) => {
   }).limit(3);
 
   res.render("home", { featuredCampgrounds });
-});
-
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "ok" });
 });
 
 app.all(/(.*)/, (req, res, next) => {
