@@ -50,7 +50,9 @@
           style="color: var(--charcoal-brown); font-weight: 600"
           >👤 <%= currentUser.username %></span
         >
-        <a class="nav-link" href="/logout">Logout</a>
+        <form action="/logout" method="POST" class="d-inline">
+          <button class="nav-link btn btn-link p-0 border-0" type="submit">Logout</button>
+        </form>
         <%} %>
       </div>
     </div>
