@@ -44,8 +44,8 @@ const app = express();
 
 // Redirect onrender URL to custom domain
 app.use((req, res, next) => {
-  if (req.hostname === 'musafir-1ukx.onrender.com') {
-    return res.redirect(301, 'https://musafir.ishpeeedy.dev' + req.originalUrl);
+  if (req.hostname === "musafir-1ukx.onrender.com") {
+    return res.redirect(301, "https://musafir.ishpeeedy.dev" + req.originalUrl);
   }
   next();
 });
@@ -121,7 +121,7 @@ app.use(
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
     },
-  })
+  }),
 );
 
 app.use(passport.initialize());
@@ -136,15 +136,6 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
-});
-
-app.get("/fakeuser", async (req, res) => {
-  const user = new User({
-    email: "colt@gmail.com",
-    username: "colttt",
-  });
-  const newUser = await User.register(user, "chicken");
-  res.send(newUser);
 });
 
 app.use("/", userRoutes);
