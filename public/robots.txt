@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://musafir.ishpeeedy.dev/sitemap.xml

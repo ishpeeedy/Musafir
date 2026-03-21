@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://musafir.ishpeeedy.dev/</loc>
+  </url>
+  <url>
+    <loc>https://musafir.ishpeeedy.dev/campgrounds</loc>
+  </url>
+  <url>
+    <loc>https://musafir.ishpeeedy.dev/register</loc>
+  </url>
+  <url>
+    <loc>https://musafir.ishpeeedy.dev/login</loc>
+  </url>
+  <url>
+    <loc>https://musafir.ishpeeedy.dev/campgrounds/new</loc>
+  </url>
+</urlset>
