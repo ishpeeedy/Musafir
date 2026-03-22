@@ -1,145 +1,343 @@
-/* --------------------------------------------------------------Color Palette */
+/* ============================================================
+   MUSAFIR — Design System
+   Dark rugged outdoor aesthetic
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   CSS Variables
+   ------------------------------------------------------------ */
 :root {
-  --mustard-yellow: #d6a94f;
-  --dusty-rose: #d87c6b;
-  --sage-green: #a3b18a;
-  --powder-blue: #8faadc;
-  --ivory-white: #f5f0e6;
-  --charcoal-brown: #3e2c23;
+  --bg: #0d1510;
+  --surface: #1a2a1e;
+  --surface-alt: #1f3024;
+  --amber: #e8913a;
+  --amber-dim: rgba(232, 145, 58, 0.15);
+  --amber-border: rgba(232, 145, 58, 0.25);
+  --sage: #6a9e72;
+  --sage-dim: rgba(106, 158, 114, 0.15);
+  --white: #ffffff;
+  --muted: #8fa898;
+  --muted-dim: rgba(143, 168, 152, 0.08);
+  --blue-dot: #5b9bd6;
+  --radius-card: 12px;
+  --radius-input: 8px;
+  --radius-chip: 20px;
+  --font-display: "Syne", "Space Grotesk", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
 }
 
-/* --------------------------------------------------------------Global */
+/* ------------------------------------------------------------
+   Google Fonts import — add to boilerplate.ejs <head> if not present:
+   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+   ------------------------------------------------------------ */
+
+/* ------------------------------------------------------------
+   Reset & Base
+   ------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background-color: var(--ivory-white);
-  color: var(--charcoal-brown);
-  font-family: Georgia, serif;
+  background-color: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2,
-h3 {
-  color: var(--charcoal-brown);
-  font-weight: 600;
-  text-align: center;
+img {
+  display: block;
+  max-width: 100%;
 }
 
-h1 {
-  font-size: 3rem;
-  color: var(--dusty-rose);
+a {
+  color: var(--amber);
+  text-decoration: none;
 }
 
-h2 {
-  font-size: 2rem;
-  color: var(--dusty-rose);
+a:hover {
+  color: var(--white);
 }
 
-/* --------------------------------------------------------------Navbar */
+/* ------------------------------------------------------------
+   Navbar
+   ------------------------------------------------------------ */
 .navbar {
-  background-color: var(--ivory-white) !important;
-  border-bottom: 3px solid var(--charcoal-brown);
+  background-color: var(--bg) !important;
+  border-bottom: 1px solid rgba(106, 158, 114, 0.12);
+  padding: 0.75rem 2rem;
 }
 
 .navbar-brand {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: var(--charcoal-brown) !important;
-  letter-spacing: 2px;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--amber) !important;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .navbar-nav .nav-link {
-  color: var(--charcoal-brown) !important;
+  color: var(--white) !important;
   font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s;
 }
 
-.navbar-nav .nav-link:hover {
-  color: var(--dusty-rose) !important;
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--amber) !important;
 }
 
-/* --------------------------------------------------------------Buttons */
-.btn {
-  border-radius: 2rem;
-  padding: 0.75rem 2rem;
+.navbar-toggler {
+  border-color: var(--sage);
+}
+
+/* ------------------------------------------------------------
+   Shared Utility
+   ------------------------------------------------------------ */
+.section-label {
+  font-size: 0.65rem;
   font-weight: 600;
-  border: 2px solid var(--charcoal-brown);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  background-color: var(--mustard-yellow);
-  color: var(--charcoal-brown);
-}
-.btn:hover {
-  color: --var(--ivory-white); /* Text color on hover */
-  background-color: var(--ivory-white);
+  color: var(--muted);
 }
 
-.btn:focus,
-.btn:active {
-  outline: none;
-  box-shadow: --var(--charcoal-brown);
+.section-heading {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
 }
 
-/* --------------------------------------------------------------Cards */
-.card {
-  border-radius: 2rem !important;
-  border: 3px solid var(--charcoal-brown);
-  background-color: white;
-  margin-bottom: 2rem;
-  overflow: hidden;
+.sub-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 1.25rem 0 0.6rem;
 }
 
-.card-title {
-  color: var(--dusty-rose);
-  font-size: 1.5rem;
-  font-weight: bold;
+/* ------------------------------------------------------------
+   Buttons
+   ------------------------------------------------------------ */
+.btn-musafir {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-input);
+  padding: 0.65rem 1.5rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+  border: none;
+  text-decoration: none;
 }
 
-.campground-img {
+.btn-musafir--primary {
+  background-color: var(--amber);
+  color: var(--bg);
+}
+
+.btn-musafir--primary:hover {
+  background-color: #f0a050;
+  color: var(--bg);
+}
+
+.btn-musafir--outline {
+  background: transparent;
+  border: 1px solid var(--amber-border);
+  color: var(--amber);
+}
+
+.btn-musafir--outline:hover {
+  border-color: var(--amber);
+  background: var(--amber-dim);
+}
+
+.btn-musafir--ghost {
+  background: transparent;
+  border: 1px solid rgba(143, 168, 152, 0.2);
+  color: var(--muted);
+}
+
+.btn-musafir--ghost:hover {
+  border-color: var(--muted);
+  color: var(--white);
+}
+
+.btn-musafir--danger {
+  background: transparent;
+  border: 1px solid rgba(220, 80, 80, 0.3);
+  color: #e08080;
+}
+
+.btn-musafir--danger:hover {
+  background: rgba(220, 80, 80, 0.1);
+  border-color: #e08080;
+}
+
+.btn-musafir--sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.72rem;
+}
+
+.btn-musafir--full {
   width: 100%;
-  height: 260px;
-  object-fit: cover;
-  object-position: center;
+}
+
+/* Keep Bootstrap btn working elsewhere on the site */
+.btn {
+  border-radius: var(--radius-input);
+  background-color: var(--amber);
+  color: var(--bg);
+  border: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  padding: 0.6rem 1.4rem;
+}
+
+.btn:hover {
+  background-color: #f0a050;
+  color: var(--bg);
+}
+
+/* ------------------------------------------------------------
+   Chips
+   ------------------------------------------------------------ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius-chip);
+  padding: 0.3rem 0.75rem;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.chip--amenity {
+  background: var(--sage-dim);
+  border: 1px solid rgba(106, 158, 114, 0.3);
+  color: var(--sage);
+}
+
+.chip--tag {
+  background: var(--muted-dim);
+  border: 1px solid rgba(143, 168, 152, 0.2);
+  color: var(--muted);
+}
+
+.chip--terrain {
+  background: var(--sage-dim);
+  border: 1px solid rgba(106, 158, 114, 0.25);
+  color: var(--sage);
+  font-size: 0.7rem;
+}
+
+/* ------------------------------------------------------------
+   Forms
+   ------------------------------------------------------------ */
+.form-control,
+.textarea-musafir {
+  background: var(--surface);
+  border: 1px solid rgba(106, 158, 114, 0.2);
+  border-radius: var(--radius-input);
+  color: var(--white);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  width: 100%;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+
+.form-control:focus,
+.textarea-musafir:focus {
+  outline: none;
+  border-color: var(--amber);
+  background: var(--surface-alt);
+}
+
+.form-control::placeholder,
+.textarea-musafir::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label-musafir {
   display: block;
-  margin: 0px;
-  padding: 0px;
-}
-.campground-img + .card-body {
-  padding-top: 1rem;
-}
-/* --------------------------------------------------------------Forms */
-.form-control {
-  border: 2px solid var(--charcoal-brown);
-  border-radius: 1.5rem;
-  padding: 0.75rem 1.25rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
 }
 
-.form-control:focus {
-  border-color: var(--mustard-yellow);
+/* ------------------------------------------------------------
+   Alerts
+   ------------------------------------------------------------ */
+.alert {
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(106, 158, 114, 0.3);
+  background: var(--surface);
+  color: var(--white);
 }
 
-/* --------------------------------------------------------------Map */
-#map {
-  border: 4px solid var(--charcoal-brown);
-  border-radius: 2rem;
+.alert-success {
+  border-color: rgba(106, 158, 114, 0.4);
+  background: rgba(106, 158, 114, 0.1);
 }
 
-/* --------------------------------------------------------------Weather Cards */
-.weather-forecast-row,
-.weather-history-row {
-  padding: 0.5rem 0 !important;
-  margin: 0 !important;
-  border-bottom: 1px solid #ddd;
+.alert-danger {
+  border-color: rgba(220, 80, 80, 0.4);
+  background: rgba(220, 80, 80, 0.1);
 }
 
-.weather-forecast-row:last-child,
-.weather-history-row:last-child {
-  border-bottom: none;
-}
-
-/* --------------------------------------------------------------Footer */
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
 .footer {
-  background-color: var(--ivory-white);
-  border-top: 3px solid var(--charcoal-brown);
-  padding: 0.5rem 0;
+  background-color: var(--bg);
+  border-top: 1px solid rgba(106, 158, 114, 0.12);
+  padding: 1.25rem 0;
 }
 
 .footer-content {
@@ -159,14 +357,11 @@ h2 {
   gap: 10px;
 }
 
-.footer-icon {
+.footer-icon,
+.footer-logo {
   height: 25px;
   width: auto;
-}
-
-.footer-logo {
-  height: 30px;
-  width: auto;
+  opacity: 0.7;
 }
 
 .footer-links {
@@ -177,22 +372,19 @@ h2 {
 }
 
 .footer-link {
-  color: var(--charcoal-brown);
+  color: var(--muted);
   text-decoration: none;
+  font-size: 0.8rem;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s ease;
+  transition: color 0.2s;
 }
 
 .footer-link:hover {
-  color: var(--dusty-rose);
-  text-decoration: none;
+  color: var(--white);
 }
 
 .footer-divider {
-  color: var(--charcoal-brown);
+  color: rgba(143, 168, 152, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -200,49 +392,746 @@ h2 {
     flex-direction: column;
     text-align: center;
   }
-
   .footer-links {
     justify-content: center;
   }
 }
 
-/* --------------------------------------------------------------Alerts */
-.alert {
-  border-radius: 1.5rem;
-  border: 2px solid var(--charcoal-brown);
+/* ============================================================
+   DETAIL PAGE
+   ============================================================ */
+
+.detail-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
 }
 
-.alert-success {
-  background-color: var(--sage-green);
-  color: var(--charcoal-brown);
+/* ------------------------------------------------------------
+   Gallery
+   ------------------------------------------------------------ */
+.detail-gallery {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 4px;
+  height: 420px;
+  margin: 0 -2rem 2.5rem;
+  overflow: hidden;
 }
 
-.alert-danger {
-  background-color: var(--dusty-rose);
-  color: var(--charcoal-brown);
+.gallery-main {
+  height: 100%;
+  overflow: hidden;
 }
 
-/* --------------------------------------------------------------  weather card*/
-.card-body h2 {
+.gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-main img:hover {
+  transform: scale(1.02);
+}
+
+.gallery-stack {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+  height: 100%;
+}
+
+.gallery-thumb {
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-thumb img:hover {
+  transform: scale(1.03);
+}
+
+.gallery-thumb--more {
+  cursor: pointer;
+}
+
+.gallery-more-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 21, 16, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(2px);
+}
+
+/* ------------------------------------------------------------
+   Hero two-column
+   ------------------------------------------------------------ */
+.detail-hero {
+  display: grid;
+  grid-template-columns: 58% 42%;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+  align-items: start;
+}
+
+/* LEFT column */
+.detail-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.camp-title {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+
+.camp-location {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--sage);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.loc-icon {
+  font-size: 0.85rem;
+  color: var(--sage);
+}
+
+.camp-description {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.camp-discoverer {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+.camp-discoverer a {
+  color: var(--sage);
+  font-weight: 600;
+}
+
+.camp-discoverer a:hover {
+  color: var(--white);
+}
+
+.owner-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* RIGHT column */
+.detail-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+/* Price badge */
+.price-badge {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  border: 1px solid rgba(106, 158, 114, 0.15);
+}
+
+.price-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.price-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--amber);
+  letter-spacing: -0.01em;
+}
+
+/* 2x2 Stat grid */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.stat-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  border: 1px solid rgba(106, 158, 114, 0.12);
+  transition: border-color 0.2s;
+}
+
+.stat-card:hover {
+  border-color: rgba(106, 158, 114, 0.3);
+}
+
+.stat-icon {
+  font-size: 1rem;
+  line-height: 1;
+  margin-bottom: 0.1rem;
+}
+
+.stat-icon.sage {
+  color: var(--sage);
+}
+.stat-icon.amber {
+  color: var(--amber);
+}
+
+.stat-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+
+/* ------------------------------------------------------------
+   Conditions Card
+   ------------------------------------------------------------ */
+.conditions-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  border: 1px solid rgba(106, 158, 114, 0.12);
+}
+
+.conditions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1rem;
-  font-size: 1.5rem;
 }
 
-.card-body hr {
-  margin: 1.5rem 0;
+.conditions-updated {
+  font-size: 0.65rem;
+  color: var(--muted);
+  font-style: italic;
 }
 
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 3rem;
+/* Current strip */
+.conditions-current {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(143, 168, 152, 0.1);
+  margin-bottom: 0.25rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.current-temp-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.current-temp {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+}
+
+.current-feels {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.current-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: flex-end;
+}
+
+.cond-chip {
+  background: var(--muted-dim);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+/* 3-day forecast */
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.forecast-col {
+  background: rgba(13, 21, 16, 0.5);
+  border: 1px solid rgba(143, 168, 152, 0.1);
+  border-radius: 8px;
+  padding: 0.65rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+}
+
+.forecast-col--today {
+  border-color: var(--amber-border);
+  background: var(--amber-dim);
+}
+
+.forecast-day {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+}
+
+.forecast-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.forecast-temps {
+  font-size: 0.85rem;
+  color: var(--white);
+}
+
+.forecast-temps strong {
+  color: var(--white);
+}
+
+.forecast-stats {
+  font-size: 0.62rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* 7-day history */
+.history-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.history-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.25rem;
+  border-bottom: 1px solid rgba(143, 168, 152, 0.06);
+  font-size: 0.78rem;
+  position: relative;
+}
+
+.history-row:nth-child(even) {
+  background: rgba(143, 168, 152, 0.03);
+}
+
+.history-row:last-child {
+  border-bottom: none;
+}
+
+.history-row--rain {
+  padding-left: 0.85rem;
+}
+
+.rain-dot {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--blue-dot);
+}
+
+.history-date {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.history-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.history-temps {
+  color: var(--white);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.history-temps strong {
+  color: var(--white);
+}
+
+.history-meta {
+  color: var(--muted);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.history-precip {
+  color: var(--blue-dot);
+  margin-left: 0.4rem;
+}
+
+/* ------------------------------------------------------------
+   Terrain Section — full width breakout
+   ------------------------------------------------------------ */
+.terrain-section {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding: 0 2rem;
+  margin-bottom: 3rem;
+}
+
+.terrain-section__label {
+  margin-bottom: 1rem;
+  padding: 0 calc(50vw - 50% - 2rem + 2rem);
+}
+
+#map {
+  width: 100%;
+  height: 460px;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  margin-bottom: 4px;
+  border: none;
+}
+
+/* Topo card */
+.topo-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(106, 158, 114, 0.12);
+  min-height: 260px;
+}
+
+.topo-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.1rem 0.6rem;
+  border-bottom: 1px solid rgba(143, 168, 152, 0.08);
+}
+
+.topo-card__meta {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.topo-card__body {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.topo-card__body svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Terrain chips row */
+.terrain-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+/* ------------------------------------------------------------
+   Community Section
+   ------------------------------------------------------------ */
+.community-section {
+  padding-top: 1rem;
+}
+
+.community-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.review-count-badge {
+  background: var(--amber-dim);
+  border: 1px solid var(--amber-border);
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--amber);
+}
+
+/* Reviews grid */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.review-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  border: 1px solid rgba(106, 158, 114, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.review-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.review-date {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.review-body {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.65;
+  font-style: italic;
+  flex: 1;
+}
+
+.review-card__bottom {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.reviewer-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--sage-dim);
+  border: 1px solid rgba(106, 158, 114, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--sage);
+  flex-shrink: 0;
+}
+
+.reviewer-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.no-reviews {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  padding: 2rem;
+  border: 1px dashed rgba(143, 168, 152, 0.15);
+  border-radius: var(--radius-card);
+}
+
+/* Field Note form */
+.field-note-form {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 2rem;
+  border: 1px solid rgba(106, 158, 114, 0.12);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.field-note-form__header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.field-note-form__title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+
+.field-note-form__sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------
+   Map (show page specific override)
+   ------------------------------------------------------------ */
+.maplibregl-canvas {
+  border-radius: var(--radius-card);
+}
+
+/* ------------------------------------------------------------
+   Index page cards (preserve for other pages)
+   ------------------------------------------------------------ */
+.card {
+  border-radius: var(--radius-card) !important;
+  border: 1px solid rgba(106, 158, 114, 0.15);
+  background-color: var(--surface);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  color: var(--white);
+}
+
+.card-title {
+  color: var(--amber);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+.campground-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.list-group-item {
+  background: transparent;
+  border-color: rgba(106, 158, 114, 0.12);
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------ */
+@media (max-width: 900px) {
+  .detail-hero {
+    grid-template-columns: 1fr;
   }
 
-  .section-title {
-    font-size: 2rem;
+  .detail-sidebar {
+    position: static;
   }
 
-  .campground-cards {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-gallery {
+    grid-template-columns: 1fr;
+    height: 300px;
+  }
+
+  .gallery-stack {
+    display: none;
+  }
+
+  .gallery-main {
+    height: 300px;
+  }
+
+  .terrain-section {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .detail-page {
+    padding: 0 1rem 3rem;
+  }
+
+  .camp-title {
+    font-size: 1.8rem;
+  }
+
+  .current-chips {
+    align-items: flex-start;
+  }
+
+  .conditions-current {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+  }
+
+  .forecast-stats {
+    font-size: 0.58rem;
+  }
+
+  .community-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }

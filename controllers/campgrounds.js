@@ -186,7 +186,19 @@ module.exports.showCampground = async (req, res) => {
     }
   }
 
-  res.render("campgrounds/show", { campground, weather: weatherData });
+  const mockSunData = [
+    { sunrise: "05:24 AM", sunset: "08:46 PM", daylight: "14h 22m" },
+    { sunrise: "05:31 AM", sunset: "08:39 PM", daylight: "14h 08m" },
+    { sunrise: "05:42 AM", sunset: "08:28 PM", daylight: "13h 46m" },
+  ];
+
+  const sunData = mockSunData[0];
+
+  res.render("campgrounds/show", {
+    campground,
+    weather: weatherData,
+    sunData,
+  });
 };
 
 module.exports.renderEditForm = async (req, res) => {

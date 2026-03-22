@@ -23,7 +23,7 @@ const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 const healthRoutes = require("./routes/health");
 const dbUrl = process.env.DB_URL;
-const MongoDBStore = require("connect-mongo")(session);
+const { MongoStore } = require("connect-mongo");
 
 // mongodb://localhost:27017/musafir
 
@@ -60,8 +60,8 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize());
 
-const store = new MongoDBStore({
-  url: dbUrl,
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
   secret: process.env.SECRET,
   touchAfter: 24 * 60 * 60,
 });
@@ -96,12 +96,13 @@ const styleSrcUrls = [
   "https://kit-free.fontawesome.com/",
   "https://stackpath.bootstrapcdn.com/",
   "https://fonts.googleapis.com/",
+  "https://fonts.gstatic.com/",
   "https://use.fontawesome.com/",
   "https://cdn.jsdelivr.net",
   "https://cdn.maptiler.com/",
 ];
 const connectSrcUrls = ["https://api.maptiler.com/"];
-const fontSrcUrls = [];
+const fontSrcUrls = ["https://fonts.gstatic.com/"];
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
