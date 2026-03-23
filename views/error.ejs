@@ -1,11 +1,24 @@
-<% layout('layouts/boilerplate')%>
-<div class="row">
-    <div class="col-6 offset-3">
-        <div class="alert alert-danger" role="alert">
-            <h4 class="alert-heading"><%=err.message%></h4>
-            <% if (process.env.NODE_ENV !== "production") { %>
-            <p><%= err.stack %></p>
-            <% } %>
-        </div>
+<% layout('layouts/boilerplate') %>
+
+<div class="error-page">
+  <div class="error-card">
+
+    <div class="error-icon" aria-hidden="true">⚠</div>
+
+    <h1 class="error-title"><%= err.message || 'Something went wrong' %></h1>
+    <p class="error-sub">The trail you're looking for doesn't exist or something broke along the way.</p>
+
+    <% if (process.env.NODE_ENV !== 'production') { %>
+    <div class="error-stack">
+      <p class="error-stack__label">STACK TRACE</p>
+      <pre class="error-stack__body"><%= err.stack %></pre>
     </div>
+    <% } %>
+
+    <div class="error-actions">
+      <a href="/campgrounds" class="btn-musafir btn-musafir--primary">Back to Campgrounds</a>
+      <a href="/" class="btn-musafir btn-musafir--ghost">Go Home</a>
+    </div>
+
+  </div>
 </div>

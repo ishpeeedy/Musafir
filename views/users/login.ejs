@@ -1,57 +1,52 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="row justify-content-center">
-  <div class="col-md-6 col-lg-5">
-    <div class="card shadow-lg" style="background-color: var(--powder-blue)">
-      <div class="card-body p-5">
-        <h1 class="text-center mb-4" style="color: var(--dusty-rose)">
-          Welcome Back!
-        </h1>
-        <p class="text-center mb-4" style="color: var(--charcoal-brown)">
-          Login to continue your adventure
-        </p>
+<div class="auth-page">
+  <div class="auth-card">
 
-        <form action="/login" method="post" class="validated-form" novalidate>
-          <div class="mb-4">
-            <label class="form-label" for="username">Username</label>
-            <input
-              class="form-control"
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Enter your username"
-              required
-            />
-            <div class="valid-feedback">Looks good!</div>
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label" for="password">Password</label>
-            <input
-              class="form-control"
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              required
-            />
-            <div class="valid-feedback">Looks good!</div>
-          </div>
-
-          <div class="d-grid gap-2">
-            <button class="btn btn-lg">Login</button>
-          </div>
-        </form>
-
-        <hr style="border-color: var(--charcoal-brown); margin: 2rem 0" />
-
-        <p class="text-center mb-0" style="color: var(--charcoal-brown)">
-          Don't have an account?
-          <a href="/register" style="color: var(--dusty-rose); font-weight: 600"
-            >Register here</a
-          >
-        </p>
-      </div>
+    <div class="auth-header">
+      <h1 class="auth-title">Welcome back.</h1>
+      <p class="auth-sub">Login to continue your journey</p>
     </div>
+
+    <form action="/login" method="POST" class="validated-form auth-form" novalidate>
+
+      <div class="form-group">
+        <label class="form-label-musafir" for="username">USERNAME</label>
+        <input
+          class="form-control"
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username"
+          required
+          autocomplete="username"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label-musafir" for="password">PASSWORD</label>
+        <input
+          class="form-control"
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button class="btn-musafir btn-musafir--primary btn-musafir--full" type="submit">
+        Login
+      </button>
+
+    </form>
+
+    <div class="auth-divider"></div>
+
+    <p class="auth-switch">
+      No account? <a href="/register">Register here</a>
+    </p>
+
   </div>
 </div>

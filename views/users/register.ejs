@@ -1,75 +1,65 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="row justify-content-center">
-  <div class="col-md-6 col-lg-5">
-    <div class="card shadow-lg" style="background-color: var(--sage-green)">
-      <div class="card-body p-5">
-        <h1 class="text-center mb-4" style="color: var(--dusty-rose)">
-          Join Musafir!
-        </h1>
-        <p class="text-center mb-4" style="color: var(--charcoal-brown)">
-          Start your camping journey today
-        </p>
+<div class="auth-page">
+  <div class="auth-card">
 
-        <form
-          action="/register"
-          method="post"
-          class="validated-form"
-          novalidate
-        >
-          <div class="mb-4">
-            <label class="form-label" for="username">Username</label>
-            <input
-              class="form-control"
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Choose a username"
-              required
-            />
-            <div class="valid-feedback">Looks good!</div>
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label" for="email">Email</label>
-            <input
-              class="form-control"
-              type="email"
-              id="email"
-              name="email"
-              placeholder="your@email.com"
-              required
-            />
-            <div class="valid-feedback">Looks good!</div>
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label" for="password">Password</label>
-            <input
-              class="form-control"
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Create a password"
-              required
-            />
-            <div class="valid-feedback">Looks good!</div>
-          </div>
-
-          <div class="d-grid gap-2">
-            <button class="btn btn-lg">Register</button>
-          </div>
-        </form>
-
-        <hr style="border-color: var(--charcoal-brown); margin: 2rem 0" />
-
-        <p class="text-center mb-0" style="color: var(--charcoal-brown)">
-          Already have an account?
-          <a href="/login" style="color: var(--dusty-rose); font-weight: 600"
-            >Login here</a
-          >
-        </p>
-      </div>
+    <div class="auth-header">
+      <h1 class="auth-title">Join Musafir.</h1>
+      <p class="auth-sub">Start discovering campgrounds today</p>
     </div>
+
+    <form action="/register" method="POST" class="validated-form auth-form" novalidate>
+
+      <div class="form-group">
+        <label class="form-label-musafir" for="username">USERNAME</label>
+        <input
+          class="form-control"
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Choose a username"
+          required
+          autocomplete="username"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label-musafir" for="email">EMAIL</label>
+        <input
+          class="form-control"
+          type="email"
+          id="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label-musafir" for="password">PASSWORD</label>
+        <input
+          class="form-control"
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Create a password"
+          required
+          autocomplete="new-password"
+        />
+      </div>
+
+      <button class="btn-musafir btn-musafir--primary btn-musafir--full" type="submit">
+        Create Account
+      </button>
+
+    </form>
+
+    <div class="auth-divider"></div>
+
+    <p class="auth-switch">
+      Already have an account? <a href="/login">Login here</a>
+    </p>
+
   </div>
 </div>

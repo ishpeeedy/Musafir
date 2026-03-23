@@ -4,100 +4,162 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Musafir | Campground Discovery Platform</title>
-    <meta
-      name="description"
-      content="Find and share campgrounds. Interactive maps, real-time weather, and community reviews. Built by Anuj Sharma."
-    />
+    <meta name="description" content="Find and share campgrounds. Interactive maps, real-time weather, and community reviews. Built by Anuj Sharma." />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://musafir.ishpeeedy.dev" />
     <meta property="og:title" content="Musafir | Campground Discovery Platform" />
-    <meta
-      property="og:description"
-      content="Find and share campgrounds. Interactive maps, real-time weather, and community reviews."
-    />
-    <meta
-      property="og:image"
-      content="https://res.cloudinary.com/dzwjyg2ai/image/upload/v1774102310/IMP_Resources/Musafir-og-image_pwbmpy.png"
-    />
+    <meta property="og:description" content="Find and share campgrounds. Interactive maps, real-time weather, and community reviews." />
+    <meta property="og:image" content="https://res.cloudinary.com/dzwjyg2ai/image/upload/v1774102310/IMP_Resources/Musafir-og-image_pwbmpy.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Musafir | Campground Discovery Platform" />
-    <meta
-      name="twitter:description"
-      content="Find and share campgrounds. Interactive maps, real-time weather, and community reviews."
-    />
-    <meta
-      name="twitter:image"
-      content="https://res.cloudinary.com/dzwjyg2ai/image/upload/v1774102310/IMP_Resources/Musafir-og-image_pwbmpy.png"
-    />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
-      integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
-      crossorigin="anonymous"
-    />
+    <meta name="twitter:description" content="Find and share campgrounds. Interactive maps, real-time weather, and community reviews." />
+    <meta name="twitter:image" content="https://res.cloudinary.com/dzwjyg2ai/image/upload/v1774102310/IMP_Resources/Musafir-og-image_pwbmpy.png" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/stylesheets/app.css" />
+    <link rel="stylesheet" href="/stylesheets/home.css" />
   </head>
 
-  <body style="background-color: var(--ivory-white);">
+  <body>
     <%- include('partials/navbar') %>
 
-    <!-- Hero Section -->
-    <div style="background: linear-gradient(135deg, var(--powder-blue) 0%, var(--sage-green) 100%); padding: 6rem 0; text-align: center;">
-      <div class="container">
-        <h1 style="color: var(--charcoal-brown); font-size: 4rem; margin-bottom: 1.5rem; font-weight: 700;">Find Your Perfect Campsite</h1>
-        <p style="color: var(--charcoal-brown); font-size: 1.4rem; margin-bottom: 2.5rem; opacity: 0.9;">Discover amazing camping destinations across India</p>
-        <a href="/campgrounds" class="btn btn-lg" style="padding: 1rem 3rem; font-size: 1.2rem;">Explore Now</a>
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <section class="home-hero">
+      <div class="home-hero__bg"></div>
+      <div class="home-hero__content">
+        <p class="home-hero__eyebrow">Campground Discovery</p>
+        <h1 class="home-hero__title">Find your next<br/>wild campsite.</h1>
+        <p class="home-hero__sub">Real-time weather, interactive maps, and community field notes — everything you need before you leave.</p>
+        <div class="home-hero__actions">
+          <a href="/campgrounds" class="btn-musafir btn-musafir--primary home-hero__cta">Explore Campgrounds</a>
+          <a href="/campgrounds/new" class="btn-musafir btn-musafir--outline">Add a Campsite</a>
+        </div>
+      </div>
+      <!-- Topo decoration -->
+      <div class="home-hero__topo" aria-hidden="true">
+        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <path d="M100,300 C150,200 250,150 350,200 C450,250 500,200 600,250 C700,300 750,280 800,300" fill="none" stroke="#6a9e72" stroke-width="1" opacity="0.08"/>
+          <path d="M80,330 C140,220 250,165 360,215 C470,265 515,215 620,265 C720,315 760,295 800,320" fill="none" stroke="#6a9e72" stroke-width="1" opacity="0.1"/>
+          <path d="M60,360 C130,240 255,180 370,230 C485,280 530,230 635,280 C735,330 770,310 800,340" fill="none" stroke="#6a9e72" stroke-width="1" opacity="0.12"/>
+          <path d="M40,390 C120,260 260,195 380,245 C500,295 545,245 650,295 C748,345 778,325 800,360" fill="none" stroke="#6a9e72" stroke-width="1" opacity="0.1"/>
+          <path d="M20,420 C110,280 265,210 390,260 C515,310 560,260 665,310 C760,358 782,340 800,380" fill="none" stroke="#6a9e72" stroke-width="1" opacity="0.08"/>
+          <path d="M0,450 C100,300 270,225 400,275 C530,325 575,275 678,325 C770,372 785,355 800,400" fill="none" stroke="#6a9e72" stroke-width="1" opacity="0.06"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STATS BAR
+         ============================================================ -->
+    <div class="home-stats">
+      <div class="home-stats__inner">
+        <div class="home-stat">
+          <span class="home-stat__value">India</span>
+          <span class="home-stat__label">Across the country</span>
+        </div>
+        <div class="home-stat__divider"></div>
+        <div class="home-stat">
+          <span class="home-stat__value">Live</span>
+          <span class="home-stat__label">Real-time weather</span>
+        </div>
+        <div class="home-stat__divider"></div>
+        <div class="home-stat">
+          <span class="home-stat__value">Free</span>
+          <span class="home-stat__label">Always open source</span>
+        </div>
       </div>
     </div>
 
-    <!-- Featured Campgrounds -->
-    <div class="container mt-5 mb-5">
-      <h2 class="text-center mb-5" style="color: var(--dusty-rose); font-size: 2.5rem; font-weight: 600;">Popular Destinations</h2>
+    <!-- ============================================================
+         FEATURED CAMPGROUNDS
+         ============================================================ -->
+    <section class="home-featured">
+      <div class="home-featured__inner">
 
-      <div class="row g-4">
+        <div class="home-section-header">
+          <h2 class="home-section-title">Popular Destinations</h2>
+          <a href="/campgrounds" class="home-section-link">View all →</a>
+        </div>
+
         <% if (featuredCampgrounds && featuredCampgrounds.length > 0) { %>
-          <% featuredCampgrounds.forEach(campground => { %>
-            <div class="col-md-4">
-              <a href="/campgrounds/<%= campground._id %>" style="text-decoration: none;">
-                <div class="card shadow" style="border-radius: 2rem; overflow: hidden; height: 100%; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-8px)'" onmouseout="this.style.transform='translateY(0)'">
-                  <% if (campground.images && campground.images.length > 0) { %>
-                    <img src="<%= campground.images[0].url %>" alt="<%= campground.title %>" style="width: 100%; height: 250px; object-fit: cover; display: block;">
-                  <% } %>
-                  <div class="card-body p-4">
-                    <h3 class="card-title" style="color: var(--dusty-rose); font-size: 1.5rem; margin-bottom: 0.5rem;"><%= campground.title %></h3>
-                    <p style="color: var(--charcoal-brown); margin-bottom: 1rem;">📍 <%= campground.location %></p>
-                    <p style="color: var(--charcoal-brown); font-size: 0.95rem; line-height: 1.6;"><%= campground.description.substring(0, 100) %>...</p>
-                    <div style="margin-top: 1rem;">
-                      <strong style="color: var(--sage-green); font-size: 1.3rem;">₹<%= campground.price %></strong>
-                      <span style="color: var(--charcoal-brown);">/night</span>
-                    </div>
-                  </div>
-                </div>
-              </a>
+        <div class="featured-grid">
+          <% featuredCampgrounds.forEach((campground, i) => { %>
+          <a href="/campgrounds/<%= campground._id %>" class="featured-card <%= i === 0 ? 'featured-card--large' : '' %>">
+            <div class="featured-card__img">
+              <% if (campground.images && campground.images.length > 0) { %>
+                <img src="<%= campground.images[0].url %>" alt="<%= campground.title %>" />
+              <% } %>
+              <div class="featured-card__overlay"></div>
             </div>
-          <% }); %>
+            <div class="featured-card__body">
+              <p class="featured-card__location">⊙ <%= campground.location %></p>
+              <h3 class="featured-card__title"><%= campground.title %></h3>
+              <span class="featured-card__price">₹<%= campground.price %><span>/night</span></span>
+            </div>
+          </a>
+          <% }) %>
+        </div>
         <% } %>
-      </div>
 
-      <div class="text-center mt-5">
-        <a href="/campgrounds" class="btn btn-lg me-3" style="padding: 0.8rem 2.5rem;">View All Campgrounds</a>
-        <a href="/campgrounds/new" class="btn btn-lg" style="padding: 0.8rem 2.5rem; background-color: var(--sage-green);">Add Your Campsite</a>
       </div>
-    </div>
+    </section>
+
+    <!-- ============================================================
+         FEATURE HIGHLIGHTS
+         ============================================================ -->
+    <section class="home-features">
+      <div class="home-features__inner">
+
+        <div class="home-section-header home-section-header--center">
+          <h2 class="home-section-title">Built for explorers</h2>
+          <p class="home-section-sub">Everything you need to plan your next camp</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-card__icon">🗺</div>
+            <h3 class="feature-card__title">Interactive Maps</h3>
+            <p class="feature-card__body">Cluster maps, outdoor terrain tiles, and geocoded locations for every campground.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon">🌤</div>
+            <h3 class="feature-card__title">Live Weather</h3>
+            <p class="feature-card__body">Real-time conditions, 3-day forecast, and 7-day history for every site.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon">⛰</div>
+            <h3 class="feature-card__title">Elevation & Terrain</h3>
+            <p class="feature-card__body">Topographic data, sunrise/sunset times, and daylight hours for each campground.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon">📝</div>
+            <h3 class="feature-card__title">Field Notes</h3>
+            <p class="feature-card__body">Community reviews with star ratings from explorers who've been there.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CTA FOOTER BAND
+         ============================================================ -->
+    <section class="home-cta-band">
+      <div class="home-cta-band__inner">
+        <h2 class="home-cta-band__title">Know a great spot?</h2>
+        <p class="home-cta-band__sub">Add it to Musafir and share it with the community.</p>
+        <a href="/campgrounds/new" class="btn-musafir btn-musafir--primary">Add a Campsite</a>
+      </div>
+    </section>
 
     <%- include('partials/footer') %>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
-      integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
   </body>
 </html>

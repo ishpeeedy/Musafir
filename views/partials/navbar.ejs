@@ -1,13 +1,13 @@
 <nav class="navbar sticky-top navbar-expand-lg">
-  <div class="container-fluid">
-    <a class="navbar-brand d-flex align-items-center" href="/">
-      <img
-        src="/images/icon.png"
-        alt="Musafir Icon"
-        style="height: 40px; margin-right: 10px"
-      />
-      <img src="/images/logo.png" alt="Musafir" style="height: 30px" />
+  <div class="navbar-inner">
+
+    <!-- Brand -->
+    <a class="navbar-brand" href="/">
+      <img src="/images/icon.png" alt="Musafir Icon" class="navbar-icon" />
+      <img src="/images/logo.png" alt="Musafir" class="navbar-logo" />
     </a>
+
+    <!-- Mobile toggle -->
     <button
       class="navbar-toggler"
       type="button"
@@ -17,44 +17,34 @@
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon">
-        <svg
-          width="30"
-          height="30"
-          viewBox="0 0 30 30"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M4 7h22M4 15h22M4 23h22"
-            stroke="var(--charcoal-brown)"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-        </svg>
-      </span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
     </button>
+
+    <!-- Nav links -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <div class="navbar-nav">
-        <a class="nav-link" aria-current="page" href="/">Home</a>
-        <a class="nav-link" href="/campgrounds">Campgrounds</a>
-        <a class="nav-link" href="/campgrounds/new">New Campground</a>
+      <div class="navbar-nav navbar-nav--left">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/campgrounds">Explore</a>
+        <a class="nav-link" href="/campgrounds/new">Add Campground</a>
       </div>
-      <div class="navbar-nav ms-auto">
-        <% if(!currentUser){%>
-        <a class="nav-link me-2" href="/login">Login</a>
-        <a class="nav-link" href="/register">Register</a>
-        <%}else{ %>
-        <span
-          class="nav-link"
-          style="color: var(--charcoal-brown); font-weight: 600"
-          >👤 <%= currentUser.username %></span
-        >
-        <form action="/logout" method="POST" class="d-inline">
-          <button class="nav-link btn btn-link p-0 border-0" type="submit">Logout</button>
-        </form>
-        <%} %>
+
+      <div class="navbar-nav navbar-nav--right">
+        <% if (!currentUser) { %>
+          <a class="nav-link" href="/login">Login</a>
+          <a class="nav-link nav-link--register" href="/register">Register</a>
+        <% } else { %>
+          <span class="navbar-user">
+            <span class="navbar-user__avatar"><%= currentUser.username.charAt(0).toUpperCase() %></span>
+            <span class="navbar-user__name">@<%= currentUser.username %></span>
+          </span>
+          <form action="/logout" method="POST" class="navbar-logout">
+            <button type="submit" class="nav-link nav-link--logout">Logout</button>
+          </form>
+        <% } %>
       </div>
     </div>
+
   </div>
 </nav>
