@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-
+Disallow: /campgrounds/
 Sitemap: https://musafir.ishpeeedy.dev/sitemap.xml
