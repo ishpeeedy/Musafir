@@ -102,14 +102,12 @@ a:hover {
 .navbar-icon {
   height: 32px;
   width: auto;
-  mix-blend-mode: multiply;
   opacity: 0.85;
 }
 
 .navbar-logo {
   height: 22px;
   width: auto;
-  mix-blend-mode: multiply;
   opacity: 0.85;
 }
 
@@ -2056,14 +2054,12 @@ a:hover {
 .footer-icon {
   height: 22px;
   width: auto;
-  mix-blend-mode: multiply;
   opacity: 0.8;
 }
 
 .footer-logo {
   height: 26px;
   width: auto;
-  mix-blend-mode: multiply;
   opacity: 0.8;
 }
 
