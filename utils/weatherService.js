@@ -85,6 +85,12 @@ async function getWeatherData(lat, lon) {
 
     const forecast = forecastData.forecast.forecastday.map((day) => ({
       date: day.date,
+      // Local-time sun and moon data, already included in this response. Saves a
+      // separate sunrise/sunset API call and avoids the timezone conversion that
+      // an external UTC-based service would need. See utils/sunService.js.
+      astro: day.astro
+        ? { sunrise: day.astro.sunrise, sunset: day.astro.sunset }
+        : null,
       maxtemp_c: day.day.maxtemp_c,
       maxtemp_f: day.day.maxtemp_f,
       mintemp_c: day.day.mintemp_c,

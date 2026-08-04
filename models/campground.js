@@ -32,6 +32,71 @@ const CampgroundSchema = new Schema(
     price: Number,
     description: String,
     location: String,
+
+    // Elevation at the campground itself, in metres. Derived from the centre of
+    // elevationGrid at no extra API cost.
+    elevation: Number,
+
+    // 10x10 grid of elevation samples covering a square box around the campground.
+    // Fetched lazily on first show-page view and cached permanently. See PLAN.md.
+    elevationGrid: {
+      data: [Number], // flat, row-major, 100 floats. row 0 = south, col 0 = west
+      gridSize: { type: Number, default: 10 },
+      radiusKm: { type: Number, default: 5 },
+      cachedAt: Date,
+    },
+
+    // Terrain character derived from elevationGrid. Stored so we compute it once.
+    terrain: {
+      relief: Number, // max - min across the grid, metres
+      minElevation: Number,
+      maxElevation: Number,
+      percentile: Number, // where the campground sits in the local distribution, 0-100
+      positionLabel: String, // "Valley floor", "Mid slope", "Ridge", ...
+      aspectBearing: Number, // compass degrees the land falls away toward, 0-360
+      aspectCompass: String, // "N", "NE", "E", ...
+      aspectName: String, // "North", "Northeast", ...
+      slopeDegrees: Number,
+      slopeLabel: String,
+      ruggedness: Number, // terrain ruggedness index, metres
+      ruggednessLabel: String,
+      summary: String, // one-line prose readout
+    },
+
+    amenities: {
+      type: [String],
+      enum: [
+        "Firepit",
+        "Toilets",
+        "Running Water",
+        "Electricity",
+        "Wi-Fi",
+        "Pet Friendly",
+        "Wheelchair Accessible",
+        "Parking",
+        "Showers",
+      ],
+      default: [],
+    },
+
+    tags: {
+      type: [String],
+      enum: [
+        "Remote",
+        "Family Friendly",
+        "Dog Friendly",
+        "Near Trail",
+        "Lakeside",
+        "Forest",
+        "Desert",
+        "Mountain",
+        "Beach",
+      ],
+      default: [],
+    },
+
+    region: String,
+
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",

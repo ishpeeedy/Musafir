@@ -4,6 +4,12 @@ const maptilerClient = require("@maptiler/client");
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 const { cloudinary } = require("../cloudinary");
 const { getWeatherData } = require("../utils/weatherService");
+const { buildSunData } = require("../utils/sunService");
+const getElevationGrid = require("../utils/elevationService");
+const analyseTerrain = require("../utils/terrainAnalysis");
+
+const ELEVATION_RADIUS_KM = 5;
+const ELEVATION_GRID_SIZE = 10;
 // Safe diagnostic: log whether an API key is present (length only) so we don't print secrets
 if (!process.env.MAPTILER_API_KEY) {
   console.warn("MAPTILER_API_KEY is not set in process.env");
@@ -174,9 +180,14 @@ module.exports.showCampground = async (req, res) => {
     return res.redirect("/campgrounds");
   }
 
+  const hasCoords =
+    campground.geometry &&
+    Array.isArray(campground.geometry.coordinates) &&
+    campground.geometry.coordinates.length === 2;
+
   // Fetch weather data using campground coordinates
   let weatherData = null;
-  if (campground.geometry && campground.geometry.coordinates) {
+  if (hasCoords) {
     const [lon, lat] = campground.geometry.coordinates;
     try {
       weatherData = await getWeatherData(lat, lon);
@@ -186,13 +197,59 @@ module.exports.showCampground = async (req, res) => {
     }
   }
 
-  const mockSunData = [
-    { sunrise: "05:24 AM", sunset: "08:46 PM", daylight: "14h 22m" },
-    { sunrise: "05:31 AM", sunset: "08:39 PM", daylight: "14h 08m" },
-    { sunrise: "05:42 AM", sunset: "08:28 PM", daylight: "13h 46m" },
-  ];
+  // Daylight is derived from the weather response, so it costs no extra request.
+  // Never stored: it changes every day.
+  const sunData = buildSunData(weatherData);
 
-  const sunData = mockSunData[0];
+  // Elevation grid: fetched lazily on first view of this page, then cached on the
+  // document forever. OpenTopoData allows 1000 calls/day, so this must never move
+  // to campground creation or to any list view. See PLAN.md.
+  if (hasCoords && !campground.elevationGrid?.data?.length) {
+    const [lon, lat] = campground.geometry.coordinates;
+    try {
+      const grid = await getElevationGrid(
+        lat,
+        lon,
+        ELEVATION_RADIUS_KM,
+        ELEVATION_GRID_SIZE,
+      );
+
+      campground.elevationGrid = {
+        data: grid,
+        gridSize: ELEVATION_GRID_SIZE,
+        radiusKm: ELEVATION_RADIUS_KM,
+        cachedAt: new Date(),
+      };
+
+      const terrain = analyseTerrain(grid, {
+        gridSize: ELEVATION_GRID_SIZE,
+        radiusKm: ELEVATION_RADIUS_KM,
+      });
+      if (terrain) {
+        campground.terrain = terrain;
+        campground.elevation = terrain.elevation;
+      }
+
+      await campground.save();
+    } catch (error) {
+      console.error("Elevation fetch failed:", error.message);
+      // Fail silently. The topo card is enhancement, not the critical path.
+    }
+  } else if (
+    campground.elevationGrid?.data?.length &&
+    !campground.terrain?.summary
+  ) {
+    // Grid cached before terrain analysis existed. Derive it now, no new API call.
+    const terrain = analyseTerrain(campground.elevationGrid.data, {
+      gridSize: campground.elevationGrid.gridSize || ELEVATION_GRID_SIZE,
+      radiusKm: campground.elevationGrid.radiusKm || ELEVATION_RADIUS_KM,
+    });
+    if (terrain) {
+      campground.terrain = terrain;
+      campground.elevation = terrain.elevation;
+      await campground.save();
+    }
+  }
 
   res.render("campgrounds/show", {
     campground,
@@ -213,25 +270,38 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateCampground = async (req, res) => {
   const { id } = req.params;
-  console.log(req.body);
-  const campground = await Campground.findByIdAndUpdate(id, {
-    ...req.body.campground,
-  });
 
-  // Try to geocode the location
-  try {
-    const geoData = await maptilerClient.geocoding.forward(
-      req.body.campground.location,
-      { limit: 1 },
-    );
+  const campground = await Campground.findById(id);
+  if (!campground) {
+    req.flash("error", "Cannot find that campground!");
+    return res.redirect("/campgrounds");
+  }
 
-    // Validate that we got valid geocoding results
-    if (
-      !geoData ||
-      !geoData.features ||
-      !geoData.features.length ||
-      !geoData.features[0].geometry
-    ) {
+  const newLocation = req.body.campground.location;
+  const locationTextChanged = newLocation !== campground.location;
+  const needsGeocode = locationTextChanged || !campground.geometry?.coordinates?.length;
+
+  // Geocode BEFORE writing anything. The previous version wrote the update first
+  // and bailed out afterwards on a geocode failure, which left the record with a
+  // new location string still pointing at the old coordinates.
+  let newGeometry = null;
+  if (needsGeocode) {
+    let geoData;
+    try {
+      geoData = await maptilerClient.geocoding.forward(newLocation, { limit: 1 });
+    } catch (err) {
+      console.error(
+        "MapTiler geocoding error (update):",
+        err && err.message ? err.message : err,
+      );
+      req.flash(
+        "error",
+        "Location lookup failed while updating (MapTiler). Try again or check your API key/network.",
+      );
+      return res.redirect("back");
+    }
+
+    if (!geoData?.features?.length || !geoData.features[0].geometry) {
       req.flash(
         "error",
         "Could not find that location. Please try a different location name.",
@@ -239,30 +309,52 @@ module.exports.updateCampground = async (req, res) => {
       return res.redirect("back");
     }
 
-    campground.geometry = geoData.features[0].geometry;
-  } catch (err) {
-    console.error(
-      "MapTiler geocoding error (update):",
-      err && err.message ? err.message : err,
-    );
-    req.flash(
-      "error",
-      "Location lookup failed while updating (MapTiler). Try again or check your API key/network.",
-    );
-    return res.redirect("back");
+    newGeometry = geoData.features[0].geometry;
+  }
+
+  const oldCoords = campground.geometry?.coordinates || [];
+  const coordsChanged =
+    newGeometry &&
+    (newGeometry.coordinates[0] !== oldCoords[0] ||
+      newGeometry.coordinates[1] !== oldCoords[1]);
+
+  Object.assign(campground, req.body.campground);
+  if (newGeometry) campground.geometry = newGeometry;
+
+  // The cached grid describes the old spot, so it is now wrong. Clearing it makes
+  // the next show-page view refetch and re-derive for the new coordinates.
+  if (coordsChanged) {
+    campground.elevationGrid = undefined;
+    campground.elevation = undefined;
+    campground.terrain = undefined;
+    campground.region = undefined;
   }
 
   const imgs = req.files.map((f) => ({ url: f.path, filename: f.filename }));
   campground.images.push(...imgs);
-  await campground.save();
-  if (req.body.deleteImages) {
-    for (let filename of req.body.deleteImages) {
-      await cloudinary.uploader.destroy(filename);
-    }
-    await campground.updateOne({
-      $pull: { images: { filename: { $in: req.body.deleteImages } } },
-    });
+
+  if (req.body.deleteImages?.length) {
+    campground.images = campground.images.filter(
+      (img) => !req.body.deleteImages.includes(img.filename),
+    );
   }
+
+  await campground.save();
+
+  // Cloudinary cleanup runs only once the database is consistent. Doing it the
+  // other way round means a mid-loop failure leaves the record pointing at assets
+  // that no longer exist, which shows up as broken images. An orphaned asset is
+  // the cheaper failure.
+  if (req.body.deleteImages?.length) {
+    for (let filename of req.body.deleteImages) {
+      try {
+        await cloudinary.uploader.destroy(filename);
+      } catch (err) {
+        console.error("Cloudinary delete failed for", filename, err.message);
+      }
+    }
+  }
+
   req.flash("success", "Successfully updated campground!");
   res.redirect(`/campgrounds/${campground._id}`);
 };

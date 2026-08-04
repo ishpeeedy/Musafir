@@ -27,12 +27,16 @@ module.exports.storeReturnTo = (req, res, next) => {
 }
 
 module.exports.validateCampground= (req , res , next ) => {
-    const {error} = campgroundSchema.validate(req.body)
+    // allowUnknown so top-level keys the form carries (deleteImages) survive validation
+    const {error, value} = campgroundSchema.validate(req.body, {allowUnknown: true})
     if(error){
         const msg = error.details.map(el=>el.message).join(',')
         throw new ExpressError(msg,400)
     }
     else {
+        // keep Joi's coerced result: it turns a single checked box from a bare
+        // string into an array, and fills in [] defaults when none are ticked
+        req.body = value
         next()
     }
 }
