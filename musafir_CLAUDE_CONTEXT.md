@@ -205,7 +205,7 @@ const getElevationGrid = async (lat, lng, radiusKm = 5, gridSize = 10) => {
   }
 
   const { data } = await axios.get(
-    `https://api.open-topo-data.com/v1/srtm30m?locations=${locations.join('|')}`
+    `https://api.opentopodata.org/v1/srtm30m?locations=${locations.join('|')}`
   );
 
   return data.results.map(r => r.elevation);

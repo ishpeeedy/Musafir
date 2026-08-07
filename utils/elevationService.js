@@ -12,7 +12,7 @@ const axios = require("axios");
  * Never call this on campground creation. See PLAN.md.
  */
 
-const API_URL = "https://api.open-topo-data.com/v1/srtm30m";
+const API_URL = "https://api.opentopodata.org/v1/srtm30m";
 const KM_PER_DEGREE_LAT = 111.32;
 
 /**
