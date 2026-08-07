@@ -203,6 +203,10 @@ function getWeatherIcon(condition) {
   <div class="terrain-section">
     <p class="section-label terrain-section__label">LOCATION & TERRAIN</p>
 
+    <% if (campground.terrain && campground.terrain.summary) { %>
+      <p class="terrain-readout"><%= campground.terrain.summary %>.</p>
+    <% } %>
+
     <div id="map"></div>
 
     <div
@@ -218,6 +222,39 @@ function getWeatherIcon(condition) {
         <!-- topoMap.js injects SVG here in Pass 2 -->
       </div>
     </div>
+
+    <% if (campground.terrain && campground.terrain.summary) { %>
+      <% const t = campground.terrain; %>
+      <div class="terrain-metrics">
+        <div class="stat-card">
+          <span class="stat-label">RELIEF</span>
+          <span class="stat-value"><%= t.relief %>m</span>
+          <span class="terrain-metric__note"><%= t.minElevation %>–<%= t.maxElevation %>m across 10km</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">POSITION</span>
+          <span class="stat-value"><%= t.positionLabel %></span>
+          <span class="terrain-metric__note"><%= t.percentile %>th percentile locally</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">SLOPE</span>
+          <span class="stat-value"><%= t.slopeLabel %></span>
+          <span class="terrain-metric__note"><%= t.slopeDegrees %>° underfoot</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">ASPECT</span>
+          <span class="stat-value"><%= t.aspectCompass || '—' %></span>
+          <span class="terrain-metric__note">
+            <%= t.aspectBearing !== null && t.aspectBearing !== undefined ? t.aspectBearing + '° · faces ' + t.aspectName : 'no meaningful fall line' %>
+          </span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">GROUND</span>
+          <span class="stat-value"><%= t.ruggednessLabel %></span>
+          <span class="terrain-metric__note">TRI <%= t.ruggedness %></span>
+        </div>
+      </div>
+    <% } %>
 
     <div class="terrain-chips">
       <% if (campground.tags && campground.tags.includes('Near Trail')) { %>
