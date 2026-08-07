@@ -98,6 +98,7 @@
   });
 
   body.appendChild(svg);
+  attachHover(svg, paths, thresholds, body);
 
   // Same terrain from the side. The map above answers "what shape is this
   // country", the profile answers "what am I standing on".
@@ -124,6 +125,65 @@
     { threshold: 0.25 },
   );
   observer.observe(container);
+
+  /**
+   * Hovering a contour highlights it and reads out its elevation, which turns
+   * the card from a picture into an instrument.
+   *
+   * Each visible line gets an invisible twin with a fat stroke: a 1.2px line is
+   * near impossible to hit with a pointer, and widening the real one would
+   * wreck the drawing. The twins go on top of every visible line so hit testing
+   * does not depend on paint order.
+   */
+  function attachHover(svgEl, lines, levels, host) {
+    const readout = document.createElement("div");
+    readout.className = "topo-readout";
+    host.appendChild(readout);
+
+    const hits = document.createElementNS(SVG_NS, "g");
+    let active = null;
+
+    const clear = () => {
+      if (!active) return;
+      active.style.opacity = ""; // falls back to the opacity attribute
+      active.setAttribute("stroke-width", "1.2");
+      active = null;
+    };
+
+    lines.forEach((line, i) => {
+      const hit = document.createElementNS(SVG_NS, "path");
+      hit.setAttribute("d", line.getAttribute("d"));
+      hit.setAttribute("fill", "none");
+      hit.setAttribute("stroke", "transparent");
+      hit.setAttribute("stroke-width", "10");
+      hit.setAttribute("vector-effect", "non-scaling-stroke");
+      hit.setAttribute("pointer-events", "stroke");
+
+      hit.addEventListener("mouseenter", () => {
+        clear();
+        active = line;
+        line.style.opacity = "1";
+        line.setAttribute("stroke-width", "2.4");
+        readout.textContent = `${Math.round(levels[i]).toLocaleString()} m`;
+        readout.style.opacity = "1";
+      });
+
+      hits.appendChild(hit);
+    });
+
+    svgEl.appendChild(hits);
+
+    svgEl.addEventListener("mousemove", (event) => {
+      const rect = host.getBoundingClientRect();
+      readout.style.left = `${event.clientX - rect.left}px`;
+      readout.style.top = `${event.clientY - rect.top}px`;
+    });
+
+    svgEl.addEventListener("mouseleave", () => {
+      clear();
+      readout.style.opacity = "0";
+    });
+  }
 
   /**
    * The grid row running west to east through the campground, drawn side-on.

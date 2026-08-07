@@ -1782,6 +1782,24 @@ a:hover {
   display: block;
 }
 
+/* Elevation readout that follows the pointer across the contour map */
+.topo-readout {
+  position: absolute;
+  transform: translate(12px, -50%);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-chip);
+  background: rgba(13, 21, 16, 0.92);
+  border: 1px solid var(--amber-border);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+}
+
 /* Cross-section profile, injected under the contour map by topoMap.js */
 .topo-card__profile {
   height: 92px;
