@@ -335,4 +335,9 @@ function getWeatherIcon(condition) {
   const campground = <%- JSON.stringify(campground) %>;
 </script>
 <script src="/javascripts/showPageMap.js"></script>
+<!-- d3-array first: d3-geo and d3-contour both resolve it off the global d3 -->
+<script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-contour@4"></script>
+<script src="/javascripts/topoMap.js"></script>
 <script src="/javascripts/validateForms.js"></script>
