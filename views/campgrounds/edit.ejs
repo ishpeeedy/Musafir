@@ -67,6 +67,40 @@
         ><%= campground.description %></textarea>
       </div>
 
+      <div class="form-group">
+        <label class="form-label-musafir">AMENITIES</label>
+        <div class="check-grid">
+          <% AMENITIES.forEach(a => { %>
+            <label class="check-chip">
+              <input
+                type="checkbox"
+                name="campground[amenities]"
+                value="<%= a %>"
+                <%= campground.amenities && campground.amenities.includes(a) ? 'checked' : '' %>
+              />
+              <span><%= a %></span>
+            </label>
+          <% }) %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label-musafir">TAGS</label>
+        <div class="check-grid">
+          <% TAGS.forEach(t => { %>
+            <label class="check-chip">
+              <input
+                type="checkbox"
+                name="campground[tags]"
+                value="<%= t %>"
+                <%= campground.tags && campground.tags.includes(t) ? 'checked' : '' %>
+              />
+              <span><%= t %></span>
+            </label>
+          <% }) %>
+        </div>
+      </div>
+
       <!-- Add more images -->
       <div class="form-group">
         <label class="form-label-musafir" for="image">ADD MORE IMAGES</label>

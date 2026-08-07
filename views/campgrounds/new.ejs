@@ -69,6 +69,30 @@
       </div>
 
       <div class="form-group">
+        <label class="form-label-musafir">AMENITIES</label>
+        <div class="check-grid">
+          <% AMENITIES.forEach(a => { %>
+            <label class="check-chip">
+              <input type="checkbox" name="campground[amenities]" value="<%= a %>" />
+              <span><%= a %></span>
+            </label>
+          <% }) %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label-musafir">TAGS</label>
+        <div class="check-grid">
+          <% TAGS.forEach(t => { %>
+            <label class="check-chip">
+              <input type="checkbox" name="campground[tags]" value="<%= t %>" />
+              <span><%= t %></span>
+            </label>
+          <% }) %>
+        </div>
+      </div>
+
+      <div class="form-group">
         <label class="form-label-musafir" for="image">IMAGES</label>
         <label class="file-upload-zone" for="image">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">

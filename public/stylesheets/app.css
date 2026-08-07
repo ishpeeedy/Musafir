@@ -1836,6 +1836,56 @@ a:hover {
   opacity: 0.6;
 }
 
+/* Amenity and tag pickers on the new / edit forms */
+.check-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.check-chip {
+  cursor: pointer;
+  user-select: none;
+}
+
+.check-chip input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.check-chip span {
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-chip);
+  border: 1px solid rgba(143, 168, 152, 0.25);
+  background: var(--muted-dim);
+  color: var(--muted);
+  font-size: 0.8rem;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    color 0.15s;
+}
+
+.check-chip:hover span {
+  border-color: rgba(106, 158, 114, 0.4);
+  color: var(--white);
+}
+
+.check-chip input:checked + span {
+  border-color: var(--amber-border);
+  background: var(--amber-dim);
+  color: var(--amber);
+}
+
+/* Keyboard users need to see where they are, since the box itself is hidden */
+.check-chip input:focus-visible + span {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
 /* Prose readout derived from the elevation grid, no extra API call */
 .terrain-readout {
   font-family: var(--font-display);

@@ -7,6 +7,8 @@ const { getWeatherData } = require("../utils/weatherService");
 const { buildSunData } = require("../utils/sunService");
 const getElevationGrid = require("../utils/elevationService");
 const analyseTerrain = require("../utils/terrainAnalysis");
+// Single source of truth for the checkbox grids, shared with Joi validation
+const { AMENITIES, TAGS } = require("../schemas");
 
 const ELEVATION_RADIUS_KM = 5;
 const ELEVATION_GRID_SIZE = 10;
@@ -117,7 +119,7 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.renderNewForm = (req, res) => {
-  res.render("campgrounds/new");
+  res.render("campgrounds/new", { AMENITIES, TAGS });
 };
 
 module.exports.createCampground = async (req, res, next) => {
@@ -265,7 +267,7 @@ module.exports.renderEditForm = async (req, res) => {
     req.flash("error", "Cannot find that campground!");
     return res.redirect("/campgrounds");
   }
-  res.render("campgrounds/edit", { campground });
+  res.render("campgrounds/edit", { campground, AMENITIES, TAGS });
 };
 
 module.exports.updateCampground = async (req, res) => {
