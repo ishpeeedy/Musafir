@@ -99,6 +99,13 @@
 
   body.appendChild(svg);
 
+  // Same terrain from the side. The map above answers "what shape is this
+  // country", the profile answers "what am I standing on".
+  const profile = buildProfile(upsampled, OUT_SIZE, reduceMotion);
+  container.appendChild(profile.el);
+
+  const revealed = paths.concat(profile.line);
+
   if (reduceMotion) return;
 
   // One shot, on scroll into view.
@@ -108,14 +115,103 @@
       observer.disconnect();
       // Next frame, so the hidden state is painted before the transition runs.
       requestAnimationFrame(() => {
-        paths.forEach((el) => {
+        revealed.forEach((el) => {
           el.style.strokeDashoffset = "0";
         });
+        profile.marker.style.opacity = "1";
       });
     },
     { threshold: 0.25 },
   );
   observer.observe(container);
+
+  /**
+   * The grid row running west to east through the campground, drawn side-on.
+   *
+   * Vertical scale is the profile's own range, not the whole grid's, so the
+   * shape of the ground you are actually on stays readable even when a peak
+   * elsewhere in the box dominates the map above. That is standard practice for
+   * a cross-section and the reason real ones always quote their exaggeration.
+   *
+   * @returns {{el: Element, line: Element, marker: Element}}
+   */
+  function buildProfile(up, size, reduced) {
+    const VIEW_H = 100; // arbitrary units; the div stretches the svg to fit
+    const PAD = 12; // headroom so the peak does not touch the edge
+    const span = size - 1;
+
+    // The campground sits at the exact centre, which on an even grid falls
+    // between two rows. Averaging them is the same bilinear value the contour
+    // map is built from.
+    const lo = Math.floor(span / 2);
+    const hi = Math.ceil(span / 2);
+    const values = [];
+    for (let col = 0; col < size; col++) {
+      values.push((up[lo * size + col] + up[hi * size + col]) / 2);
+    }
+
+    const lowest = Math.min.apply(null, values);
+    const highest = Math.max.apply(null, values);
+    const range = highest - lowest || 1;
+    const y = (v) => PAD + ((highest - v) / range) * (VIEW_H - PAD * 2);
+
+    let line = `M0,${y(values[0]).toFixed(2)}`;
+    for (let col = 1; col < size; col++) {
+      line += `L${col},${y(values[col]).toFixed(2)}`;
+    }
+
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("viewBox", `0 0 ${span} ${VIEW_H}`);
+    // A cross-section is a plot, not a map. Vertical exaggeration is expected,
+    // so stretching to the panel is correct here in a way it is not above.
+    svg.setAttribute("preserveAspectRatio", "none");
+
+    const area = document.createElementNS(SVG_NS, "path");
+    area.setAttribute("d", `${line}L${span},${VIEW_H}L0,${VIEW_H}Z`);
+    area.style.fill = "var(--sage-dim)";
+    area.setAttribute("stroke", "none");
+
+    const ridge = document.createElementNS(SVG_NS, "path");
+    ridge.setAttribute("d", line);
+    ridge.setAttribute("fill", "none");
+    ridge.style.stroke = "var(--sage)";
+    ridge.setAttribute("stroke-width", "1.5");
+    ridge.setAttribute("vector-effect", "non-scaling-stroke");
+    ridge.setAttribute("stroke-linejoin", "round");
+
+    if (!reduced) {
+      ridge.setAttribute("pathLength", "1");
+      ridge.style.strokeDasharray = "1";
+      ridge.style.strokeDashoffset = "1";
+      ridge.style.transition = `stroke-dashoffset ${DRAW_MS}ms ease-out ${LAYERS * STAGGER_MS}ms`;
+    }
+
+    svg.appendChild(area);
+    svg.appendChild(ridge);
+
+    // The marker and label are HTML, not SVG: preserveAspectRatio="none" would
+    // stretch a circle into an ellipse and the text with it.
+    const standing = (values[lo] + values[hi]) / 2;
+    const marker = document.createElement("span");
+    marker.className = "topo-profile__marker";
+    marker.style.top = `${y(standing)}%`;
+    if (!reduced) {
+      marker.style.opacity = "0";
+      marker.style.transition = `opacity 400ms ease-out ${LAYERS * STAGGER_MS + DRAW_MS}ms`;
+    }
+
+    const label = document.createElement("span");
+    label.className = "topo-profile__label";
+    label.textContent = `${Math.round(standing)}m · W→E section`;
+
+    const el = document.createElement("div");
+    el.className = "topo-card__profile";
+    el.appendChild(svg);
+    el.appendChild(marker);
+    el.appendChild(label);
+
+    return { el: el, line: ridge, marker: marker };
+  }
 
   /**
    * @returns {{values: number[], size: number}|null} null if the attribute is

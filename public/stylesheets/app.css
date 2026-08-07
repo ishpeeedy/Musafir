@@ -1782,6 +1782,42 @@ a:hover {
   display: block;
 }
 
+/* Cross-section profile, injected under the contour map by topoMap.js */
+.topo-card__profile {
+  height: 92px;
+  position: relative;
+  border-top: 1px solid rgba(143, 168, 152, 0.08);
+}
+
+.topo-card__profile svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Where you would be standing, on the centre line of the section */
+.topo-profile__marker {
+  position: absolute;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 0 3px rgba(232, 145, 58, 0.18);
+}
+
+.topo-profile__label {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.5rem;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
 /* Terrain chips row */
 .terrain-chips {
   display: flex;
