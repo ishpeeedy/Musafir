@@ -60,10 +60,10 @@
 
   const svg = document.createElementNS(SVG_NS, "svg");
   svg.setAttribute("viewBox", `0 0 ${OUT_SIZE} ${OUT_SIZE}`);
-  // The sampled box is square on the ground. The card is a wide banner, so
-  // crop to a band centred on the campground rather than stretching the
-  // terrain to fit. Swap "slice" for "none" to fill the card instead.
-  svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+  // The sampled box is square on the ground and the card is square to match,
+  // so the whole 10km box shows at true proportions. "meet" rather than
+  // "slice": if the card is ever not square, letterbox rather than crop.
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
   const delays = staggerFromElevation(thresholds, centreElevation(grid));
   const reduceMotion = window.matchMedia(
@@ -102,7 +102,16 @@
 
   // Same terrain from the side. The map above answers "what shape is this
   // country", the profile answers "what am I standing on".
-  const profile = buildProfile(upsampled, OUT_SIZE, reduceMotion);
+  const profile = buildProfile(upsampled, OUT_SIZE, reduceMotion, {
+    boxKm: parseFloat(container.dataset.boxKm) || 10,
+    // The direction the land falls away, from the server-side Horn's method
+    // gradient. Absent on ground too flat to have a meaningful fall line.
+    bearing:
+      container.dataset.aspectBearing != null
+        ? parseFloat(container.dataset.aspectBearing)
+        : null,
+    aspectName: container.dataset.aspectName || null,
+  });
   container.appendChild(profile.el);
 
   const revealed = paths.concat(profile.line);
@@ -195,20 +204,15 @@
    *
    * @returns {{el: Element, line: Element, marker: Element}}
    */
-  function buildProfile(up, size, reduced) {
+  function buildProfile(up, size, reduced, opts) {
     const VIEW_H = 100; // arbitrary units; the div stretches the svg to fit
     const PAD = 12; // headroom so the peak does not touch the edge
     const span = size - 1;
 
-    // The campground sits at the exact centre, which on an even grid falls
-    // between two rows. Averaging them is the same bilinear value the contour
-    // map is built from.
-    const lo = Math.floor(span / 2);
-    const hi = Math.ceil(span / 2);
-    const values = [];
-    for (let col = 0; col < size; col++) {
-      values.push((up[lo * size + col] + up[hi * size + col]) / 2);
-    }
+    const cut = sampleTransect(up, size, opts.bearing);
+    const values = cut.values;
+    const kmPerStep = opts.boxKm / span;
+    const spanKm = (cut.halfLength * 2 * kmPerStep).toFixed(1);
 
     const lowest = Math.min.apply(null, values);
     const highest = Math.max.apply(null, values);
@@ -249,9 +253,9 @@
     svg.appendChild(area);
     svg.appendChild(ridge);
 
-    // The marker and label are HTML, not SVG: preserveAspectRatio="none" would
+    // The marker and labels are HTML, not SVG: preserveAspectRatio="none" would
     // stretch a circle into an ellipse and the text with it.
-    const standing = (values[lo] + values[hi]) / 2;
+    const standing = cut.centre;
     const marker = document.createElement("span");
     marker.className = "topo-profile__marker";
     marker.style.top = `${y(standing)}%`;
@@ -260,17 +264,88 @@
       marker.style.transition = `opacity 400ms ease-out ${LAYERS * STAGGER_MS + DRAW_MS}ms`;
     }
 
+    // Without a vertical scale the section shows shape but not magnitude, and
+    // the same drawing could be a dune or a headwall.
+    const top = axisLabel(highest, "top");
+    const bottom = axisLabel(lowest, "bottom");
+
     const label = document.createElement("span");
     label.className = "topo-profile__label";
-    label.textContent = `${Math.round(standing)}m · W→E section`;
+    label.textContent = opts.aspectName
+      ? `${Math.round(standing)}m at the pin · section down the ${opts.aspectName.toLowerCase()} fall line · ${spanKm}km`
+      : `${Math.round(standing)}m at the pin · west to east section · ${spanKm}km`;
 
     const el = document.createElement("div");
     el.className = "topo-card__profile";
     el.appendChild(svg);
     el.appendChild(marker);
+    el.appendChild(top);
+    el.appendChild(bottom);
     el.appendChild(label);
 
     return { el: el, line: ridge, marker: marker };
+  }
+
+  function axisLabel(metres, where) {
+    const el = document.createElement("span");
+    el.className = `topo-profile__axis topo-profile__axis--${where}`;
+    el.textContent = `${Math.round(metres).toLocaleString()}m`;
+    return el;
+  }
+
+  /**
+   * Elevations along a straight line through the campground.
+   *
+   * The line follows the fall line, the direction the ground actually drops.
+   * A fixed west-to-east cut is arbitrary: on a north-facing slope it traverses
+   * the hill and draws a nearly flat line, which says nothing about the ground
+   * you would pitch on. Down the fall line it shows the real slope.
+   *
+   * Uphill ends up on the left, downhill on the right, because the bearing
+   * points the way the land falls.
+   */
+  function sampleTransect(up, size, bearingDeg) {
+    const half = (size - 1) / 2;
+    const bearing = bearingDeg == null ? 90 : bearingDeg; // 90 = due east
+    const rad = (bearing * Math.PI) / 180;
+
+    // Compass bearing is clockwise from north. Row grows north, column east.
+    const dRow = Math.cos(rad);
+    const dCol = Math.sin(rad);
+
+    // Longest line through the centre that stays inside the square
+    const reach = (d) => (Math.abs(d) < 1e-9 ? Infinity : half / Math.abs(d));
+    const halfLength = Math.min(reach(dRow), reach(dCol));
+
+    const values = [];
+    for (let i = 0; i < size; i++) {
+      const t = -halfLength + (2 * halfLength * i) / (size - 1);
+      values.push(bilinearAt(up, size, half + t * dRow, half + t * dCol));
+    }
+
+    return {
+      values: values,
+      halfLength: halfLength,
+      centre: bilinearAt(up, size, half, half),
+    };
+  }
+
+  /** Elevation at a fractional grid position. */
+  function bilinearAt(grid, size, row, col) {
+    const clamp = (v) => Math.max(0, Math.min(size - 1.0001, v));
+    const r = clamp(row);
+    const c = clamp(col);
+    const r0 = Math.floor(r);
+    const c0 = Math.floor(c);
+    const fr = r - r0;
+    const fc = c - c0;
+
+    return (
+      grid[r0 * size + c0] * (1 - fc) * (1 - fr) +
+      grid[r0 * size + c0 + 1] * fc * (1 - fr) +
+      grid[(r0 + 1) * size + c0] * (1 - fc) * fr +
+      grid[(r0 + 1) * size + c0 + 1] * fc * fr
+    );
   }
 
   /**
