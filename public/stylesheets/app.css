@@ -1369,13 +1369,19 @@ a:hover {
 /* ------------------------------------------------------------
    Hero two-column
    ------------------------------------------------------------ */
+.detail-hero {
+  display: grid;
+  grid-template-columns: 58% 42%;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+  align-items: start;
+}
+
+/* LEFT column */
 .detail-identity {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  /* Prose stays readable instead of running the full 1200px */
-  max-width: 62ch;
-  margin-bottom: 3rem;
 }
 
 .camp-title {
@@ -1430,43 +1436,13 @@ a:hover {
   margin-top: 0.5rem;
 }
 
-/* ------------------------------------------------------------
-   The sky / the practicalities
-   ------------------------------------------------------------ */
-.sky-section,
-.practical-section {
-  margin-bottom: 3rem;
-}
-
-.sky-grid {
-  display: grid;
-  grid-template-columns: minmax(240px, 1fr) minmax(320px, 420px);
-  gap: 1.5rem;
-  align-items: start;
-  margin-top: 1rem;
-}
-
-.sky-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 0.75rem;
-  align-content: start;
-}
-
-.conditions-empty {
-  color: var(--muted);
-  font-size: 0.85rem;
-  padding: 1rem 0;
-}
-
-.practical-section .chip-row {
-  margin-top: 1rem;
-}
-
-.practical-empty {
-  color: var(--muted);
-  font-size: 0.85rem;
-  margin-top: 1rem;
+/* RIGHT column */
+.detail-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: sticky;
+  top: 1.5rem;
 }
 
 /* Price badge */
@@ -1775,7 +1751,7 @@ a:hover {
   overflow: hidden;
   margin-bottom: 0.75rem;
   border: 1px solid rgba(106, 158, 114, 0.12);
-  /* Capped so the square body cannot become a full-width monolith */
+  /* Capped so the square map body cannot become a full-width monolith */
   max-width: 520px;
 }
 
@@ -1798,9 +1774,13 @@ a:hover {
 /* Square, because the sampled ground is a 10km square. A wide banner could
    only show it by cropping most of it away or stretching the terrain. */
 .topo-card__body {
+  width: 100%;
   aspect-ratio: 1 / 1;
   position: relative;
   overflow: hidden;
+  /* Confines repaints to this box, so the readout moving over a large SVG
+     cannot smear the contours behind it. */
+  contain: paint;
 }
 
 .topo-card__body svg {
@@ -1812,7 +1792,14 @@ a:hover {
 /* Elevation readout that follows the pointer across the contour map */
 .topo-readout {
   position: absolute;
-  transform: translate(12px, -50%);
+  /* Positioned by transform, never by left/top. Mutating left/top on every
+     mousemove forces layout and invalidates a paint rect over the contour SVG
+     underneath, which Chromium leaves as visible smears. will-change puts this
+     on its own compositing layer so moving it never repaints the map at all. */
+  top: 0;
+  left: 0;
+  transform: translate(-999px, -999px);
+  will-change: transform;
   padding: 0.2rem 0.55rem;
   border-radius: var(--radius-chip);
   background: rgba(13, 21, 16, 0.92);
@@ -2141,8 +2128,12 @@ a:hover {
    Responsive
    ------------------------------------------------------------ */
 @media (max-width: 900px) {
-  .sky-grid {
+  .detail-hero {
     grid-template-columns: 1fr;
+  }
+
+  .detail-sidebar {
+    position: static;
   }
 
   .reviews-grid {

@@ -182,10 +182,13 @@
 
     svgEl.appendChild(hits);
 
+    // Transform only. Setting left/top here forces a layout and a repaint of
+    // the contour SVG behind the readout on every pointer move, which smears.
     svgEl.addEventListener("mousemove", (event) => {
       const rect = host.getBoundingClientRect();
-      readout.style.left = `${event.clientX - rect.left}px`;
-      readout.style.top = `${event.clientY - rect.top}px`;
+      const x = event.clientX - rect.left + 12;
+      const y = event.clientY - rect.top;
+      readout.style.transform = `translate(${x}px, ${y}px) translateY(-50%)`;
     });
 
     svgEl.addEventListener("mouseleave", () => {

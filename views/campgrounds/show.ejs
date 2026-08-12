@@ -49,41 +49,159 @@ function getWeatherIcon(condition) {
        LEFT: title / location / price / stats / description / chips / discoverer
        RIGHT: conditions / weather only
        ============================================================ -->
-  <!-- ============================================================
-       SECTION 1 — IDENTITY
-       What this place is. No measurements, they have their own sections.
-       ============================================================ -->
-  <div class="detail-identity">
+  <div class="detail-hero">
 
-    <h1 class="camp-title"><%= campground.title %></h1>
-    <p class="camp-location">
-      <span class="loc-icon">⊙</span> <%= campground.location %>
-    </p>
+    <!-- LEFT: identity + facts -->
+    <div class="detail-identity">
 
-    <div class="price-badge">
-      <span class="price-label">PER NIGHT</span>
-      <span class="price-value">₹<%= campground.price %></span>
-    </div>
+      <h1 class="camp-title"><%= campground.title %></h1>
+      <p class="camp-location">
+        <span class="loc-icon">⊙</span> <%= campground.location %>
+      </p>
 
-    <p class="camp-description"><%= campground.description %></p>
-
-    <% if (currentUser && campground.author.equals(currentUser._id)) { %>
-      <div class="owner-controls">
-        <a class="btn-musafir btn-musafir--outline" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-        <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST" style="display:inline">
-          <button class="btn-musafir btn-musafir--danger">Delete</button>
-        </form>
+      <!-- Price -->
+      <div class="price-badge">
+        <span class="price-label">PER NIGHT</span>
+        <span class="price-value">₹<%= campground.price %></span>
       </div>
-    <% } %>
 
-  </div><!-- /detail-identity -->
+      <!-- 4 stat cards -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-icon sage">▲</span>
+          <span class="stat-label">ELEVATION</span>
+          <span class="stat-value"><%= campground.elevation ? campground.elevation.toFixed(0) + 'm' : '—' %></span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon amber">☀</span>
+          <span class="stat-label">DAYLIGHT</span>
+          <span class="stat-value"><%= sunData ? sunData.daylight : '—' %></span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon amber">↑</span>
+          <span class="stat-label">SUNRISE</span>
+          <span class="stat-value"><%= sunData ? sunData.sunrise : '—' %></span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon amber">↓</span>
+          <span class="stat-label">SUNSET</span>
+          <span class="stat-value"><%= sunData ? sunData.sunset : '—' %></span>
+        </div>
+      </div>
+
+      <p class="camp-description"><%= campground.description %></p>
+
+      <% if (campground.amenities && campground.amenities.length > 0) { %>
+        <div class="chip-row">
+          <% campground.amenities.forEach(a => { %>
+            <span class="chip chip--amenity"><%= a %></span>
+          <% }) %>
+        </div>
+      <% } %>
+      <% if (campground.tags && campground.tags.length > 0) { %>
+        <div class="chip-row">
+          <% campground.tags.forEach(t => { %>
+            <span class="chip chip--tag"><%= t %></span>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <p class="camp-discoverer">⛺ Discovered by <a href="#">@<%= campground.author.username %></a></p>
+
+      <% if (currentUser && campground.author.equals(currentUser._id)) { %>
+        <div class="owner-controls">
+          <a class="btn-musafir btn-musafir--outline" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+          <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST" style="display:inline">
+            <button class="btn-musafir btn-musafir--danger">Delete</button>
+          </form>
+        </div>
+      <% } %>
+
+    </div><!-- /detail-identity -->
+
+    <!-- RIGHT: weather / conditions only -->
+    <div class="detail-sidebar">
+
+      <% if (weather) { %>
+      <div class="conditions-card">
+        <div class="conditions-header">
+          <span class="section-label">CONDITIONS</span>
+          <span class="conditions-updated">Live</span>
+        </div>
+
+        <!-- Current -->
+        <div class="conditions-current">
+          <div class="current-temp-block">
+            <span class="current-temp"><%= weather.current.temp_c %>°C</span>
+            <span class="current-feels">Feels like <%= Math.round(weather.current.feelslike_c) %>°C</span>
+          </div>
+          <div class="current-chips">
+            <span class="cond-chip">💧 <%= weather.current.humidity %>%</span>
+            <span class="cond-chip">💨 <%= weather.current.wind_kph %> km/h</span>
+            <span class="cond-chip">🌧️ <%= weather.current.precip_mm %> mm</span>
+          </div>
+        </div>
+
+        <!-- 3-day forecast -->
+        <p class="sub-label">3-DAY FORECAST</p>
+        <div class="forecast-grid">
+          <% weather.forecast.forEach((day, i) => { %>
+          <div class="forecast-col <%= i === 0 ? 'forecast-col--today' : '' %>">
+            <span class="forecast-day">
+              <%= i === 0 ? 'TODAY' : new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase() %>
+            </span>
+            <img class="forecast-icon" src="<%= getWeatherIcon(day.condition) %>" alt="<%= day.condition %>" />
+            <span class="forecast-temps">
+              <strong><%= Math.round(day.maxtemp_c) %>°</strong>/<%= Math.round(day.mintemp_c) %>°
+            </span>
+            <span class="forecast-stats">
+              💧<%= day.avghumidity %>% · 💨<%= Math.round(day.maxwind_kph) %> · 🌧️<%= day.daily_chance_of_rain %>%
+            </span>
+          </div>
+          <% }) %>
+        </div>
+
+        <!-- 7-day history -->
+        <p class="sub-label">LAST 7 DAYS</p>
+        <div class="history-table">
+          <% weather.history.forEach(day => { %>
+          <div class="history-row <%= parseFloat(day.totalprecip_mm) > 0 ? 'history-row--rain' : '' %>">
+            <% if (parseFloat(day.totalprecip_mm) > 0) { %><span class="rain-dot"></span><% } %>
+            <span class="history-date">
+              <%= new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) %>
+            </span>
+            <img class="history-icon" src="<%= getWeatherIcon(day.condition) %>" alt="<%= day.condition %>" />
+            <span class="history-temps">
+              <strong><%= Math.round(day.maxtemp_c) %>°</strong>/<%= Math.round(day.mintemp_c) %>°
+            </span>
+            <span class="history-meta">
+              💧<%= day.avghumidity %>% <span class="history-precip"><%= day.totalprecip_mm %>mm</span>
+            </span>
+          </div>
+          <% }) %>
+        </div>
+
+      </div>
+      <% } else { %>
+        <div class="conditions-card">
+          <div class="conditions-header">
+            <span class="section-label">CONDITIONS</span>
+          </div>
+          <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">Weather data unavailable for this location.</p>
+        </div>
+      <% } %>
+
+    </div><!-- /detail-sidebar -->
+  </div><!-- /detail-hero -->
+
+
   <!-- ============================================================
-       SECTION 2 — THE LAND
-       Leads on purpose. It is the part no other campground site has.
+       SECTION 2 — TERRAIN
+       Full-width map + topo card
        ============================================================ -->
 
   <div class="terrain-section">
-    <p class="section-label terrain-section__label">THE LAND</p>
+    <p class="section-label terrain-section__label">LOCATION & TERRAIN</p>
 
     <% if (campground.terrain && campground.terrain.summary) { %>
       <p class="terrain-readout"><%= campground.terrain.summary %>.</p>
@@ -113,11 +231,6 @@ function getWeatherIcon(condition) {
     <% if (campground.terrain && campground.terrain.summary) { %>
       <% const t = campground.terrain; %>
       <div class="terrain-metrics">
-        <div class="stat-card">
-          <span class="stat-label">ELEVATION</span>
-          <span class="stat-value"><%= Math.round(t.elevation).toLocaleString() %>m</span>
-          <span class="terrain-metric__note">at the pin, SRTM 30m</span>
-        </div>
         <div class="stat-card">
           <span class="stat-label">RELIEF</span>
           <span class="stat-value"><%= t.relief %>m</span>
@@ -165,139 +278,11 @@ function getWeatherIcon(condition) {
         <span class="chip chip--terrain">📍 <%= campground.location %></span>
       <% } %>
     </div>
-  </div><!-- /the land -->
+  </div>
 
 
   <!-- ============================================================
-       SECTION 3 — THE SKY
-       Everything that changes with the day and the season.
-       ============================================================ -->
-
-  <div class="sky-section">
-    <p class="section-label">THE SKY</p>
-
-    <div class="sky-grid">
-
-      <div class="sky-stats">
-        <div class="stat-card">
-          <span class="stat-icon amber">☀</span>
-          <span class="stat-label">DAYLIGHT</span>
-          <span class="stat-value"><%= sunData ? sunData.daylight : '—' %></span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-icon amber">↑</span>
-          <span class="stat-label">SUNRISE</span>
-          <span class="stat-value"><%= sunData ? sunData.sunrise : '—' %></span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-icon amber">↓</span>
-          <span class="stat-label">SUNSET</span>
-          <span class="stat-value"><%= sunData ? sunData.sunset : '—' %></span>
-        </div>
-      </div>
-
-      <% if (weather) { %>
-      <div class="conditions-card">
-        <div class="conditions-header">
-          <span class="section-label">CONDITIONS</span>
-          <span class="conditions-updated">Live</span>
-        </div>
-
-        <div class="conditions-current">
-          <div class="current-temp-block">
-            <span class="current-temp"><%= weather.current.temp_c %>°C</span>
-            <span class="current-feels">Feels like <%= Math.round(weather.current.feelslike_c) %>°C</span>
-          </div>
-          <div class="current-chips">
-            <span class="cond-chip">💧 <%= weather.current.humidity %>%</span>
-            <span class="cond-chip">💨 <%= weather.current.wind_kph %> km/h</span>
-            <span class="cond-chip">🌧️ <%= weather.current.precip_mm %> mm</span>
-          </div>
-        </div>
-
-        <p class="sub-label">3-DAY FORECAST</p>
-        <div class="forecast-grid">
-          <% weather.forecast.forEach((day, i) => { %>
-          <div class="forecast-col <%= i === 0 ? 'forecast-col--today' : '' %>">
-            <span class="forecast-day">
-              <%= i === 0 ? 'TODAY' : new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase() %>
-            </span>
-            <img class="forecast-icon" src="<%= getWeatherIcon(day.condition) %>" alt="<%= day.condition %>" />
-            <span class="forecast-temps">
-              <strong><%= Math.round(day.maxtemp_c) %>°</strong>/<%= Math.round(day.mintemp_c) %>°
-            </span>
-            <span class="forecast-stats">
-              💧<%= day.avghumidity %>% · 💨<%= Math.round(day.maxwind_kph) %> · 🌧️<%= day.daily_chance_of_rain %>%
-            </span>
-          </div>
-          <% }) %>
-        </div>
-
-        <p class="sub-label">LAST 7 DAYS</p>
-        <div class="history-table">
-          <% weather.history.forEach(day => { %>
-          <div class="history-row <%= parseFloat(day.totalprecip_mm) > 0 ? 'history-row--rain' : '' %>">
-            <% if (parseFloat(day.totalprecip_mm) > 0) { %><span class="rain-dot"></span><% } %>
-            <span class="history-date">
-              <%= new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) %>
-            </span>
-            <img class="history-icon" src="<%= getWeatherIcon(day.condition) %>" alt="<%= day.condition %>" />
-            <span class="history-temps">
-              <strong><%= Math.round(day.maxtemp_c) %>°</strong>/<%= Math.round(day.mintemp_c) %>°
-            </span>
-            <span class="history-meta">
-              💧<%= day.avghumidity %>% <span class="history-precip"><%= day.totalprecip_mm %>mm</span>
-            </span>
-          </div>
-          <% }) %>
-        </div>
-
-      </div>
-      <% } else { %>
-        <div class="conditions-card">
-          <div class="conditions-header">
-            <span class="section-label">CONDITIONS</span>
-          </div>
-          <p class="conditions-empty">Weather data unavailable for this location.</p>
-        </div>
-      <% } %>
-
-    </div><!-- /sky-grid -->
-  </div><!-- /the sky -->
-
-
-  <!-- ============================================================
-       SECTION 4 — THE PRACTICALITIES
-       What is actually there, and who put it on the map.
-       ============================================================ -->
-
-  <div class="practical-section">
-    <p class="section-label">THE PRACTICALITIES</p>
-
-    <% if (campground.amenities && campground.amenities.length > 0) { %>
-      <div class="chip-row">
-        <% campground.amenities.forEach(a => { %>
-          <span class="chip chip--amenity"><%= a %></span>
-        <% }) %>
-      </div>
-    <% } else { %>
-      <p class="practical-empty">No amenities recorded for this site.</p>
-    <% } %>
-
-    <% if (campground.tags && campground.tags.length > 0) { %>
-      <div class="chip-row">
-        <% campground.tags.forEach(t => { %>
-          <span class="chip chip--tag"><%= t %></span>
-        <% }) %>
-      </div>
-    <% } %>
-
-    <p class="camp-discoverer">⛺ Added by <a href="#">@<%= campground.author.username %></a></p>
-  </div><!-- /the practicalities -->
-
-
-  <!-- ============================================================
-       SECTION 5 — COMMUNITY
+       SECTION 3 — COMMUNITY
        Reviews + Leave a review form
        ============================================================ -->
 
