@@ -1721,18 +1721,24 @@ a:hover {
 }
 
 /* ------------------------------------------------------------
-   Terrain Section — full width breakout
+   Terrain Section — breaks out wider than the page, but not full bleed
+
+   It used to be 100vw with a -50vw pull. vw units include the vertical
+   scrollbar, so the section was always wider than the visible viewport by the
+   scrollbar's width, which is what produced the horizontal scrollbar. 80vw
+   never reaches the edge, so there is nothing to overflow.
    ------------------------------------------------------------ */
 .terrain-section {
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  padding: 0 2rem;
+  --terrain-width: clamp(320px, 80vw, 1600px);
+  width: var(--terrain-width);
+  /* Centre a block that is wider than its container, without a transform:
+     a transform would become the containing block for the map's overlays. */
+  margin-left: calc(50% - var(--terrain-width) / 2);
   margin-bottom: 3rem;
 }
 
 .terrain-section__label {
   margin-bottom: 1rem;
-  padding: 0 calc(50vw - 50% - 2rem + 2rem);
 }
 
 #map {
@@ -1751,8 +1757,11 @@ a:hover {
   overflow: hidden;
   margin-bottom: 0.75rem;
   border: 1px solid rgba(106, 158, 114, 0.12);
-  /* Capped so the square map body cannot become a full-width monolith */
-  max-width: 520px;
+  /* The body is square, so width is what sets its height. Bounded by viewport
+     height rather than width, otherwise an 80% wide square is 1500px tall and
+     no longer fits on a screen. */
+  width: min(100%, 82vh);
+  margin-inline: auto;
 }
 
 .topo-card__header {
@@ -2134,6 +2143,12 @@ a:hover {
 
   .detail-sidebar {
     position: static;
+  }
+
+  /* Below this width the breakout is pointless, so sit in the page flow */
+  .terrain-section {
+    --terrain-width: 100%;
+    margin-left: 0;
   }
 
   .reviews-grid {
