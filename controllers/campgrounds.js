@@ -347,12 +347,16 @@ module.exports.updateCampground = async (req, res) => {
   Object.assign(campground, req.body.campground);
   if (newGeometry) campground.geometry = newGeometry;
 
-  // The cached grid describes the old spot, so it is now wrong. Clearing it makes
-  // the next show-page view refetch and re-derive for the new coordinates.
+  // Everything cached describes the old spot, so it is all wrong now. Clearing
+  // it makes the next show-page view refetch and re-derive for the new
+  // coordinates. Climate included: it is tied to the location just as tightly
+  // as the elevation grid, and a campground moved from Ladakh to the coast
+  // would otherwise keep reporting a Himalayan winter forever.
   if (coordsChanged) {
     campground.elevationGrid = undefined;
     campground.elevation = undefined;
     campground.terrain = undefined;
+    campground.climate = undefined;
     campground.region = undefined;
   }
 
