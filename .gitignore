@@ -3,3 +3,5 @@ node_modules/
 dist/
 build/
 .vscode
+# local build cache of the upstream Overpass response
+seeds/.osm-cache.json

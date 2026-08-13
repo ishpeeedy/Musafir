@@ -282,6 +282,52 @@ function getWeatherIcon(condition) {
 
 
   <!-- ============================================================
+       WHEN TO GO
+       Twelve monthly normals from ERA5, classified. The other half of the
+       question: not just whether to come, but when.
+       ============================================================ -->
+
+  <% if (seasonality) { %>
+  <div class="season-section">
+    <div class="season-head">
+      <p class="section-label">WHEN TO GO</p>
+      <span class="season-source">
+        ERA5 · <%= seasonality.years %>-year normals<%
+          if (seasonality.elevationCorrectionC) { %> · adjusted <%=
+          seasonality.elevationCorrectionC > 0 ? '-' : '+' %><%=
+          Math.abs(seasonality.elevationCorrectionC) %>°C from the <%=
+          seasonality.modelElevation %>m model cell<% } %>
+      </span>
+    </div>
+
+    <p class="season-verdict"><%= seasonality.summary %></p>
+
+    <div class="season-grid">
+      <% seasonality.months.forEach(m => { %>
+        <div class="season-month season-month--<%= m.state %>" title="<%= m.name %>: <%= m.label %>">
+          <span class="season-month__name"><%= m.name.slice(0, 3).toUpperCase() %></span>
+          <span class="season-month__bar"></span>
+          <span class="season-month__state"><%= m.label %></span>
+          <span class="season-month__temp"><%= Math.round(m.tMax) %>° / <%= Math.round(m.tMin) %>°</span>
+          <span class="season-month__precip">
+            <%= m.snow >= 1 ? m.snow + 'cm snow' : m.precip + 'mm' %>
+          </span>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="season-key">
+      <span class="season-key__item"><i class="season-swatch season-swatch--prime"></i>Prime</span>
+      <span class="season-key__item"><i class="season-swatch season-swatch--wet"></i>Monsoon</span>
+      <span class="season-key__item"><i class="season-swatch season-swatch--snowbound"></i>Snowbound</span>
+      <span class="season-key__item"><i class="season-swatch season-swatch--hot"></i>Too hot</span>
+      <span class="season-key__item"><i class="season-swatch season-swatch--cold"></i>Cold</span>
+    </div>
+  </div>
+  <% } %>
+
+
+  <!-- ============================================================
        SECTION 3 — COMMUNITY
        Reviews + Leave a review form
        ============================================================ -->

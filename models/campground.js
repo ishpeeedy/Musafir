@@ -46,6 +46,27 @@ const CampgroundSchema = new Schema(
       cachedAt: Date,
     },
 
+    // Twelve monthly climate normals from ERA5, fetched once and cached like the
+    // elevation grid. Seasonality is derived from these on render rather than
+    // stored, so the thresholds in utils/seasonality.js can be argued with and
+    // changed without a refetch or a migration.
+    climate: {
+      monthly: [
+        {
+          _id: false,
+          tMax: Number, // mean daily maximum, C, at the model cell's elevation
+          tMin: Number,
+          precip: Number, // total mm in an average month
+          snow: Number, // total cm in an average month
+        },
+      ],
+      modelElevation: Number, // ERA5 cell elevation, for the lapse-rate correction
+      years: Number,
+      from: String,
+      to: String,
+      cachedAt: Date,
+    },
+
     // Terrain character derived from elevationGrid. Stored so we compute it once.
     terrain: {
       relief: Number, // max - min across the grid, metres

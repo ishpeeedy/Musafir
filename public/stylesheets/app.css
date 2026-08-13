@@ -1953,6 +1953,192 @@ a:hover {
   line-height: 1.35;
 }
 
+/* ------------------------------------------------------------
+   When to go — twelve monthly normals, classified
+
+   Shares the terrain section's breakout width. States are separated by
+   lightness and by an explicit label under each month, never by colour alone,
+   so the strip still reads if you cannot tell sage from amber.
+   ------------------------------------------------------------ */
+.season-section {
+  --terrain-width: clamp(320px, 80vw, 1600px);
+  width: var(--terrain-width);
+  margin-left: calc(50% - var(--terrain-width) / 2);
+  margin-bottom: 3rem;
+}
+
+.season-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.season-source {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  opacity: 0.7;
+  text-align: right;
+}
+
+.season-verdict {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
+  max-width: 60ch;
+}
+
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0.4rem;
+}
+
+.season-month {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.7rem 0.5rem;
+  border-radius: var(--radius-input);
+  background: var(--surface);
+  border: 1px solid rgba(143, 168, 152, 0.1);
+  text-align: center;
+}
+
+.season-month__name {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.season-month__bar {
+  height: 5px;
+  border-radius: 3px;
+  background: var(--muted-dim);
+}
+
+.season-month__state {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.season-month__temp {
+  font-size: 0.68rem;
+  color: var(--white);
+  opacity: 0.75;
+}
+
+.season-month__precip {
+  font-size: 0.62rem;
+  color: var(--muted);
+}
+
+/* Prime is the only state that gets the accent. Everything else recedes. */
+.season-month--prime {
+  border-color: var(--amber-border);
+  background: var(--amber-dim);
+}
+
+.season-month--prime .season-month__bar {
+  background: var(--amber);
+}
+
+.season-month--prime .season-month__state {
+  color: var(--amber);
+}
+
+.season-month--wet .season-month__bar {
+  background: var(--blue-dot);
+}
+
+.season-month--snowbound .season-month__bar {
+  background: var(--white);
+  opacity: 0.55;
+}
+
+/* Hatched rather than a new colour: the palette has no "hot", and a solid
+   amber bar would read as prime. The label under it carries the meaning. */
+.season-month--hot .season-month__bar {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--amber) 0 3px,
+    transparent 3px 6px
+  );
+}
+
+.season-month--cold .season-month__bar {
+  background: var(--sage);
+}
+
+.season-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.9rem;
+}
+
+.season-key__item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+
+.season-swatch {
+  width: 14px;
+  height: 5px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.season-swatch--prime {
+  background: var(--amber);
+}
+.season-swatch--wet {
+  background: var(--blue-dot);
+}
+.season-swatch--snowbound {
+  background: rgba(255, 255, 255, 0.55);
+}
+.season-swatch--hot {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--amber) 0 3px,
+    transparent 3px 6px
+  );
+}
+.season-swatch--cold {
+  background: var(--sage);
+}
+
+/* Twelve columns stop being readable well before the phone breakpoint */
+@media (max-width: 1100px) {
+  .season-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .season-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .season-section {
+    --terrain-width: 100%;
+    margin-left: 0;
+  }
+}
+
 /* Terrain chips row */
 .terrain-chips {
   display: flex;

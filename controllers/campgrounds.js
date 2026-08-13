@@ -7,6 +7,8 @@ const { getWeatherData } = require("../utils/weatherService");
 const { buildSunData } = require("../utils/sunService");
 const getElevationGrid = require("../utils/elevationService");
 const analyseTerrain = require("../utils/terrainAnalysis");
+const getClimateNormals = require("../utils/climateService");
+const analyseSeasonality = require("../utils/seasonality");
 // Single source of truth for the checkbox grids, shared with Joi validation
 const { AMENITIES, TAGS } = require("../schemas");
 
@@ -253,10 +255,32 @@ module.exports.showCampground = async (req, res) => {
     }
   }
 
+  // Climate normals: same contract as the elevation grid. One fetch, cached on
+  // the document forever, because ten-year normals do not move. Seeded
+  // campgrounds already carry theirs, so this only runs for ones users add.
+  if (hasCoords && !campground.climate?.monthly?.length) {
+    const [lon, lat] = campground.geometry.coordinates;
+    try {
+      const climate = await getClimateNormals(lat, lon);
+      campground.climate = { ...climate, cachedAt: new Date() };
+      await campground.save();
+    } catch (error) {
+      console.error("Climate fetch failed:", error.message);
+      // Fail silently, like terrain. The page renders without a season strip.
+    }
+  }
+
+  // Derived per request rather than stored: it is arithmetic over 48 numbers,
+  // and keeping it out of the database means the thresholds stay changeable.
+  const seasonality = campground.climate?.monthly?.length
+    ? analyseSeasonality(campground.climate, { elevation: campground.elevation })
+    : null;
+
   res.render("campgrounds/show", {
     campground,
     weather: weatherData,
     sunData,
+    seasonality,
   });
 };
 

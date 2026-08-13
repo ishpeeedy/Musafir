@@ -28,11 +28,16 @@ const fs = require("fs");
 const path = require("path");
 const getElevationGrid = require("../utils/elevationService");
 const analyseTerrain = require("../utils/terrainAnalysis");
+const getClimateNormals = require("../utils/climateService");
 
 const OVERPASS = "https://overpass-api.de/api/interpreter";
 const OUT = path.join(__dirname, "campsites.json");
 const TARGET = 45;
 const RATE_LIMIT_MS = 1100; // OpenTopoData allows 1 request/sec
+// Open-Meteo's archive endpoint returns 429 well before its documented daily
+// budget, since each call pulls ten years of dailies. Observed failures at
+// 400ms spacing, comfortable at this.
+const CLIMATE_RATE_LIMIT_MS = 2500;
 
 // Junk in the OSM data: soil testing stations mistagged as camp sites, and
 // numbered waypoints along trekking routes that are not places anyone books.
@@ -98,6 +103,8 @@ const fetchOverpass = async () => {
   if (!res.ok) throw new Error(`Overpass ${res.status}`);
 
   const { elements } = await res.json();
+  // Returned unfiltered, so the cache below survives a change to the name
+  // filters instead of baking today's rules into it permanently.
   return elements
     .map((e) => ({
       osmId: `${e.type}/${e.id}`,
@@ -106,16 +113,14 @@ const fetchOverpass = async () => {
       lng: e.lon != null ? e.lon : e.center && e.center.lon,
       tags: e.tags,
     }))
-    .filter(
-      (r) =>
-        r.lat &&
-        r.lng &&
-        !JUNK.test(r.name) &&
-        !NOT_A_CAMPGROUND.test(r.name) &&
-        r.name.length > 3 &&
-        r.name.length < 60,
-    );
+    .filter((r) => r.lat && r.lng && r.name);
 };
+
+const isCampground = (r) =>
+  !JUNK.test(r.name) &&
+  !NOT_A_CAMPGROUND.test(r.name) &&
+  r.name.length > 3 &&
+  r.name.length < 60;
 
 /** Roughly 3km apart, so two tents on the same meadow do not both get in. */
 const tooClose = (a, b) =>
@@ -229,10 +234,32 @@ const price = (amenities, terrain) => {
   return Math.round(base / 50) * 50;
 };
 
+/**
+ * Overpass is a free public instance and goes down. The site selection is
+ * deterministic given the same input, so a local copy of the raw response keeps
+ * builds reproducible and lets us re-derive downstream fields during an outage.
+ * Not committed: it is a megabyte of upstream data we do not own.
+ */
+const loadSites = async () => {
+  const cache = path.join(__dirname, ".osm-cache.json");
+
+  try {
+    const rows = await fetchOverpass();
+    fs.writeFileSync(cache, JSON.stringify(rows));
+    return { rows, source: "OpenStreetMap" };
+  } catch (e) {
+    if (!fs.existsSync(cache)) throw e;
+    const rows = JSON.parse(fs.readFileSync(cache, "utf8"));
+    console.log(`  Overpass unavailable (${e.message}), using the cached response`);
+    return { rows, source: "cached OpenStreetMap response" };
+  }
+};
+
 const main = async () => {
   console.log("Fetching camp sites from OpenStreetMap...");
-  const all = await fetchOverpass();
-  console.log(`  ${all.length} named sites after filtering junk`);
+  const { rows, source } = await loadSites();
+  const all = rows.filter(isCampground);
+  console.log(`  ${all.length} campgrounds from ${source}, ${rows.length - all.length} junk names dropped`);
 
   const selected = select(all);
   console.log(`  ${selected.length} selected across ${REGIONS.length} regions\n`);
@@ -240,11 +267,15 @@ const main = async () => {
   // Reuse grids from a previous build. Elevation does not move, and the daily
   // budget is the reason this project caches everything in the first place.
   const cached = new Map();
+  const cachedClimate = new Map();
   if (fs.existsSync(OUT)) {
     for (const c of JSON.parse(fs.readFileSync(OUT, "utf8"))) {
       if (c.osmId && c.elevationGrid) cached.set(c.osmId, c.elevationGrid);
+      if (c.osmId && c.climate?.monthly?.length) cachedClimate.set(c.osmId, c.climate);
     }
-    console.log(`  ${cached.size} grids reusable from the previous build\n`);
+    console.log(
+      `  reusable from the previous build: ${cached.size} grids, ${cachedClimate.size} climate records\n`,
+    );
   }
 
   const out = [];
@@ -265,6 +296,20 @@ const main = async () => {
       console.log(`${label} — elevation failed (${e.message}), keeping without terrain`);
     }
 
+    // Ten-year monthly normals, so a seeded page can answer "when" with no
+    // cold fetch. Retried once, because the archive endpoint rate limits hard.
+    let climate = cachedClimate.get(site.osmId) || null;
+    if (!climate) {
+      for (let attempt = 0; attempt < 2 && !climate; attempt++) {
+        try {
+          await sleep(CLIMATE_RATE_LIMIT_MS * (attempt + 1));
+          climate = await getClimateNormals(site.lat, site.lng);
+        } catch (e) {
+          if (attempt) console.log(`${label} — climate failed (${e.message})`);
+        }
+      }
+    }
+
     const amenities = AMENITY_FROM_TAG.filter(([, test]) => test(site.tags)).map(([a]) => a);
 
     out.push({
@@ -280,6 +325,9 @@ const main = async () => {
         ? { data: grid, gridSize: 10, radiusKm: 5, cachedAt: new Date().toISOString() }
         : undefined,
       terrain: terrain || undefined,
+      climate: climate
+        ? { ...climate, cachedAt: new Date().toISOString() }
+        : undefined,
       amenities,
       tags: deriveTags(site, terrain),
       description: describe(site, terrain),
@@ -292,6 +340,7 @@ const main = async () => {
   fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
   console.log(`\nWrote ${out.length} campgrounds to ${path.relative(process.cwd(), OUT)}`);
   console.log(`  ${out.filter((c) => c.terrain).length} with terrain`);
+  console.log(`  ${out.filter((c) => c.climate).length} with climate normals`);
   console.log(`  ${out.filter((c) => c.amenities.length).length} with real amenity tags`);
 };
 

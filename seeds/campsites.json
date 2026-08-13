@@ -117,7 +117,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.680Z"
+      "cachedAt": "2026-08-12T19:18:03.740Z"
     },
     "terrain": {
       "elevation": 1391.8,
@@ -134,6 +134,87 @@
       "ruggedness": 162.7,
       "ruggednessLabel": "Highly broken",
       "summary": "Southwest-facing mid slope, 2025m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1389,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 12.1,
+          "tMin": 3.9,
+          "precip": 97,
+          "snow": 7
+        },
+        {
+          "tMax": 14.3,
+          "tMin": 5.1,
+          "precip": 108,
+          "snow": 7
+        },
+        {
+          "tMax": 18.7,
+          "tMin": 8.8,
+          "precip": 102,
+          "snow": 6
+        },
+        {
+          "tMax": 23.8,
+          "tMin": 13,
+          "precip": 82,
+          "snow": 1
+        },
+        {
+          "tMax": 26.7,
+          "tMin": 16.5,
+          "precip": 59,
+          "snow": 0
+        },
+        {
+          "tMax": 27.5,
+          "tMin": 19.3,
+          "precip": 122,
+          "snow": 0
+        },
+        {
+          "tMax": 25,
+          "tMin": 20.2,
+          "precip": 487,
+          "snow": 0
+        },
+        {
+          "tMax": 24.4,
+          "tMin": 19.8,
+          "precip": 557,
+          "snow": 0
+        },
+        {
+          "tMax": 23.9,
+          "tMin": 17.8,
+          "precip": 229,
+          "snow": 0
+        },
+        {
+          "tMax": 21.7,
+          "tMin": 13.3,
+          "precip": 48,
+          "snow": 0
+        },
+        {
+          "tMax": 17.6,
+          "tMin": 9.3,
+          "precip": 28,
+          "snow": 0
+        },
+        {
+          "tMax": 14.3,
+          "tMin": 5.9,
+          "precip": 36,
+          "snow": 2
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.742Z"
     },
     "amenities": [
       "Running Water",
@@ -269,7 +350,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.711Z"
+      "cachedAt": "2026-08-12T19:18:03.765Z"
     },
     "terrain": {
       "elevation": 2232.8,
@@ -286,6 +367,87 @@
       "ruggedness": 217.4,
       "ruggednessLabel": "Highly broken",
       "summary": "Southwest-facing ridge, 1225m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 2268,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 8.5,
+          "tMin": -1.2,
+          "precip": 63,
+          "snow": 10
+        },
+        {
+          "tMax": 10.3,
+          "tMin": 0,
+          "precip": 77,
+          "snow": 7
+        },
+        {
+          "tMax": 14.3,
+          "tMin": 3.5,
+          "precip": 80,
+          "snow": 1
+        },
+        {
+          "tMax": 18.9,
+          "tMin": 8,
+          "precip": 69,
+          "snow": 0
+        },
+        {
+          "tMax": 20.6,
+          "tMin": 10.8,
+          "precip": 100,
+          "snow": 0
+        },
+        {
+          "tMax": 21.7,
+          "tMin": 13.5,
+          "precip": 158,
+          "snow": 0
+        },
+        {
+          "tMax": 20,
+          "tMin": 14.6,
+          "precip": 458,
+          "snow": 0
+        },
+        {
+          "tMax": 19.7,
+          "tMin": 14.4,
+          "precip": 431,
+          "snow": 0
+        },
+        {
+          "tMax": 19.1,
+          "tMin": 12.6,
+          "precip": 239,
+          "snow": 0
+        },
+        {
+          "tMax": 17,
+          "tMin": 8.1,
+          "precip": 40,
+          "snow": 0
+        },
+        {
+          "tMax": 13.6,
+          "tMin": 3.7,
+          "precip": 13,
+          "snow": 0
+        },
+        {
+          "tMax": 10.8,
+          "tMin": 0.6,
+          "precip": 16,
+          "snow": 1
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.765Z"
     },
     "amenities": [
       "Running Water",
@@ -416,7 +578,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.712Z"
+      "cachedAt": "2026-08-12T19:18:03.765Z"
     },
     "terrain": {
       "elevation": 1020.8,
@@ -433,6 +595,87 @@
       "ruggedness": 215.5,
       "ruggednessLabel": "Highly broken",
       "summary": "South-facing upper slope, 1179m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1091,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 15.1,
+          "tMin": 5.2,
+          "precip": 47,
+          "snow": 0
+        },
+        {
+          "tMax": 17.9,
+          "tMin": 7.1,
+          "precip": 52,
+          "snow": 0
+        },
+        {
+          "tMax": 22.9,
+          "tMin": 10.9,
+          "precip": 36,
+          "snow": 0
+        },
+        {
+          "tMax": 28,
+          "tMin": 15.6,
+          "precip": 23,
+          "snow": 0
+        },
+        {
+          "tMax": 29.5,
+          "tMin": 18.1,
+          "precip": 62,
+          "snow": 0
+        },
+        {
+          "tMax": 29.8,
+          "tMin": 20.5,
+          "precip": 147,
+          "snow": 0
+        },
+        {
+          "tMax": 26.6,
+          "tMin": 21.2,
+          "precip": 415,
+          "snow": 0
+        },
+        {
+          "tMax": 26.2,
+          "tMin": 20.8,
+          "precip": 436,
+          "snow": 0
+        },
+        {
+          "tMax": 25.8,
+          "tMin": 19.2,
+          "precip": 249,
+          "snow": 0
+        },
+        {
+          "tMax": 24.3,
+          "tMin": 14.8,
+          "precip": 36,
+          "snow": 0
+        },
+        {
+          "tMax": 20.3,
+          "tMin": 10.4,
+          "precip": 7,
+          "snow": 0
+        },
+        {
+          "tMax": 16.8,
+          "tMin": 6.7,
+          "precip": 13,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.765Z"
     },
     "amenities": [
       "Running Water",
@@ -564,7 +807,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.712Z"
+      "cachedAt": "2026-08-12T19:18:03.765Z"
     },
     "terrain": {
       "elevation": 2391,
@@ -581,6 +824,87 @@
       "ruggedness": 327.6,
       "ruggednessLabel": "Highly broken",
       "summary": "West-facing mid slope, 2685m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 2391,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 5.2,
+          "tMin": -1.7,
+          "precip": 333,
+          "snow": 222
+        },
+        {
+          "tMax": 6.6,
+          "tMin": -0.7,
+          "precip": 312,
+          "snow": 195
+        },
+        {
+          "tMax": 9.5,
+          "tMin": 2.2,
+          "precip": 267,
+          "snow": 146
+        },
+        {
+          "tMax": 13.8,
+          "tMin": 5.6,
+          "precip": 183,
+          "snow": 44
+        },
+        {
+          "tMax": 17.8,
+          "tMin": 8.6,
+          "precip": 136,
+          "snow": 9
+        },
+        {
+          "tMax": 20.7,
+          "tMin": 13.1,
+          "precip": 143,
+          "snow": 0
+        },
+        {
+          "tMax": 20.8,
+          "tMin": 15.8,
+          "precip": 298,
+          "snow": 0
+        },
+        {
+          "tMax": 20.6,
+          "tMin": 15.5,
+          "precip": 255,
+          "snow": 0
+        },
+        {
+          "tMax": 19.5,
+          "tMin": 13.4,
+          "precip": 162,
+          "snow": 0
+        },
+        {
+          "tMax": 16,
+          "tMin": 7.5,
+          "precip": 110,
+          "snow": 15
+        },
+        {
+          "tMax": 11.5,
+          "tMin": 3.1,
+          "precip": 176,
+          "snow": 81
+        },
+        {
+          "tMax": 8.1,
+          "tMin": -0.3,
+          "precip": 169,
+          "snow": 109
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.765Z"
     },
     "amenities": [
       "Wi-Fi"
@@ -710,7 +1034,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.712Z"
+      "cachedAt": "2026-08-12T19:18:03.766Z"
     },
     "terrain": {
       "elevation": 1793.3,
@@ -727,6 +1051,87 @@
       "ruggedness": 416.4,
       "ruggednessLabel": "Highly broken",
       "summary": "North-facing valley floor, 2311m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1539,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 10.8,
+          "tMin": -1.2,
+          "precip": 181,
+          "snow": 88
+        },
+        {
+          "tMax": 12.4,
+          "tMin": 0,
+          "precip": 180,
+          "snow": 67
+        },
+        {
+          "tMax": 16.9,
+          "tMin": 2.9,
+          "precip": 137,
+          "snow": 24
+        },
+        {
+          "tMax": 22.3,
+          "tMin": 7.1,
+          "precip": 120,
+          "snow": 3
+        },
+        {
+          "tMax": 25.2,
+          "tMin": 11.2,
+          "precip": 66,
+          "snow": 0
+        },
+        {
+          "tMax": 27.3,
+          "tMin": 16,
+          "precip": 97,
+          "snow": 0
+        },
+        {
+          "tMax": 26.4,
+          "tMin": 19.6,
+          "precip": 371,
+          "snow": 0
+        },
+        {
+          "tMax": 25.9,
+          "tMin": 19.3,
+          "precip": 338,
+          "snow": 0
+        },
+        {
+          "tMax": 25.1,
+          "tMin": 16.6,
+          "precip": 193,
+          "snow": 0
+        },
+        {
+          "tMax": 22.1,
+          "tMin": 9.6,
+          "precip": 54,
+          "snow": 0
+        },
+        {
+          "tMax": 18.6,
+          "tMin": 4.3,
+          "precip": 71,
+          "snow": 5
+        },
+        {
+          "tMax": 14.6,
+          "tMin": -0.2,
+          "precip": 83,
+          "snow": 34
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.766Z"
     },
     "amenities": [
       "Wi-Fi"
@@ -855,7 +1260,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.712Z"
+      "cachedAt": "2026-08-12T19:18:03.766Z"
     },
     "terrain": {
       "elevation": 3963.5,
@@ -872,6 +1277,87 @@
       "ruggedness": 302.9,
       "ruggednessLabel": "Highly broken",
       "summary": "West-facing upper slope, 2755m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 3798,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": -6.6,
+          "tMin": -14.5,
+          "precip": 316,
+          "snow": 221
+        },
+        {
+          "tMax": -5.3,
+          "tMin": -12.8,
+          "precip": 278,
+          "snow": 195
+        },
+        {
+          "tMax": -2,
+          "tMin": -10.1,
+          "precip": 221,
+          "snow": 154
+        },
+        {
+          "tMax": 2.2,
+          "tMin": -6.8,
+          "precip": 142,
+          "snow": 98
+        },
+        {
+          "tMax": 5.9,
+          "tMin": -3.5,
+          "precip": 81,
+          "snow": 45
+        },
+        {
+          "tMax": 11.1,
+          "tMin": 0.6,
+          "precip": 99,
+          "snow": 13
+        },
+        {
+          "tMax": 13.7,
+          "tMin": 6.9,
+          "precip": 208,
+          "snow": 0
+        },
+        {
+          "tMax": 13.5,
+          "tMin": 6.6,
+          "precip": 153,
+          "snow": 0
+        },
+        {
+          "tMax": 11.5,
+          "tMin": 3,
+          "precip": 132,
+          "snow": 9
+        },
+        {
+          "tMax": 5.7,
+          "tMin": -5.6,
+          "precip": 68,
+          "snow": 40
+        },
+        {
+          "tMax": 0.3,
+          "tMin": -9.8,
+          "precip": 150,
+          "snow": 105
+        },
+        {
+          "tMax": -4.2,
+          "tMin": -12.7,
+          "precip": 129,
+          "snow": 90
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.766Z"
     },
     "amenities": [
       "Running Water",
@@ -1004,7 +1490,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.713Z"
+      "cachedAt": "2026-08-12T19:18:03.766Z"
     },
     "terrain": {
       "elevation": 1732.5,
@@ -1021,6 +1507,87 @@
       "ruggedness": 202.5,
       "ruggednessLabel": "Highly broken",
       "summary": "Southeast-facing mid slope, 1990m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1741,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 4.3,
+          "tMin": -1.2,
+          "precip": 142,
+          "snow": 88
+        },
+        {
+          "tMax": 6.1,
+          "tMin": 0.3,
+          "precip": 121,
+          "snow": 57
+        },
+        {
+          "tMax": 11.1,
+          "tMin": 3.8,
+          "precip": 194,
+          "snow": 45
+        },
+        {
+          "tMax": 17.5,
+          "tMin": 8,
+          "precip": 227,
+          "snow": 4
+        },
+        {
+          "tMax": 21.4,
+          "tMin": 11.7,
+          "precip": 133,
+          "snow": 0
+        },
+        {
+          "tMax": 25.1,
+          "tMin": 15.4,
+          "precip": 90,
+          "snow": 0
+        },
+        {
+          "tMax": 26.9,
+          "tMin": 18.2,
+          "precip": 159,
+          "snow": 0
+        },
+        {
+          "tMax": 26.4,
+          "tMin": 17.9,
+          "precip": 133,
+          "snow": 0
+        },
+        {
+          "tMax": 25.2,
+          "tMin": 15.7,
+          "precip": 68,
+          "snow": 0
+        },
+        {
+          "tMax": 19.8,
+          "tMin": 10.3,
+          "precip": 80,
+          "snow": 2
+        },
+        {
+          "tMax": 13,
+          "tMin": 5.5,
+          "precip": 94,
+          "snow": 16
+        },
+        {
+          "tMax": 7.8,
+          "tMin": 1.1,
+          "precip": 69,
+          "snow": 31
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.766Z"
     },
     "amenities": [
       "Wi-Fi"
@@ -1149,7 +1716,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.713Z"
+      "cachedAt": "2026-08-12T19:18:03.767Z"
     },
     "terrain": {
       "elevation": 598.8,
@@ -1166,6 +1733,87 @@
       "ruggedness": 237.4,
       "ruggednessLabel": "Highly broken",
       "summary": "Northeast-facing lower slope, 1013m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 383,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 19.1,
+          "tMin": 7,
+          "precip": 43,
+          "snow": 0
+        },
+        {
+          "tMax": 22.4,
+          "tMin": 9.6,
+          "precip": 35,
+          "snow": 0
+        },
+        {
+          "tMax": 27.4,
+          "tMin": 13.6,
+          "precip": 38,
+          "snow": 0
+        },
+        {
+          "tMax": 32.6,
+          "tMin": 18.3,
+          "precip": 20,
+          "snow": 0
+        },
+        {
+          "tMax": 34.2,
+          "tMin": 21.4,
+          "precip": 58,
+          "snow": 0
+        },
+        {
+          "tMax": 34.5,
+          "tMin": 24.1,
+          "precip": 116,
+          "snow": 0
+        },
+        {
+          "tMax": 31.2,
+          "tMin": 25.1,
+          "precip": 431,
+          "snow": 0
+        },
+        {
+          "tMax": 30.7,
+          "tMin": 24.7,
+          "precip": 410,
+          "snow": 0
+        },
+        {
+          "tMax": 30.3,
+          "tMin": 23,
+          "precip": 230,
+          "snow": 0
+        },
+        {
+          "tMax": 28.9,
+          "tMin": 17.7,
+          "precip": 35,
+          "snow": 0
+        },
+        {
+          "tMax": 24.7,
+          "tMin": 12.5,
+          "precip": 4,
+          "snow": 0
+        },
+        {
+          "tMax": 20.7,
+          "tMin": 8,
+          "precip": 12,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.767Z"
     },
     "amenities": [],
     "tags": [
@@ -1293,7 +1941,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.713Z"
+      "cachedAt": "2026-08-12T19:18:03.767Z"
     },
     "terrain": {
       "elevation": 2614,
@@ -1310,6 +1958,87 @@
       "ruggedness": 270.4,
       "ruggednessLabel": "Highly broken",
       "summary": "East-facing mid slope, 2581m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 2529,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 4.4,
+          "tMin": -4.1,
+          "precip": 128,
+          "snow": 61
+        },
+        {
+          "tMax": 5.9,
+          "tMin": -3.1,
+          "precip": 134,
+          "snow": 44
+        },
+        {
+          "tMax": 9.8,
+          "tMin": 0.3,
+          "precip": 132,
+          "snow": 24
+        },
+        {
+          "tMax": 14.8,
+          "tMin": 4.4,
+          "precip": 124,
+          "snow": 1
+        },
+        {
+          "tMax": 17.7,
+          "tMin": 7.7,
+          "precip": 109,
+          "snow": 0
+        },
+        {
+          "tMax": 19.2,
+          "tMin": 11.2,
+          "precip": 158,
+          "snow": 0
+        },
+        {
+          "tMax": 18.2,
+          "tMin": 13.5,
+          "precip": 470,
+          "snow": 0
+        },
+        {
+          "tMax": 17.7,
+          "tMin": 13.2,
+          "precip": 522,
+          "snow": 0
+        },
+        {
+          "tMax": 17,
+          "tMin": 10.9,
+          "precip": 215,
+          "snow": 0
+        },
+        {
+          "tMax": 14,
+          "tMin": 5.5,
+          "precip": 83,
+          "snow": 2
+        },
+        {
+          "tMax": 10.4,
+          "tMin": 1.8,
+          "precip": 45,
+          "snow": 2
+        },
+        {
+          "tMax": 7.5,
+          "tMin": -1.7,
+          "precip": 49,
+          "snow": 22
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.767Z"
     },
     "amenities": [],
     "tags": [
@@ -1436,7 +2165,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.713Z"
+      "cachedAt": "2026-08-12T19:18:03.767Z"
     },
     "terrain": {
       "elevation": 717.5,
@@ -1453,6 +2182,87 @@
       "ruggedness": 208.5,
       "ruggednessLabel": "Highly broken",
       "summary": "West-facing mid slope, 945m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 442,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 18.8,
+          "tMin": 6.6,
+          "precip": 43,
+          "snow": 0
+        },
+        {
+          "tMax": 22,
+          "tMin": 9.2,
+          "precip": 35,
+          "snow": 0
+        },
+        {
+          "tMax": 27.1,
+          "tMin": 13.2,
+          "precip": 38,
+          "snow": 0
+        },
+        {
+          "tMax": 32.2,
+          "tMin": 18,
+          "precip": 20,
+          "snow": 0
+        },
+        {
+          "tMax": 33.8,
+          "tMin": 21.1,
+          "precip": 58,
+          "snow": 0
+        },
+        {
+          "tMax": 34.1,
+          "tMin": 23.8,
+          "precip": 116,
+          "snow": 0
+        },
+        {
+          "tMax": 30.9,
+          "tMin": 24.8,
+          "precip": 431,
+          "snow": 0
+        },
+        {
+          "tMax": 30.3,
+          "tMin": 24.3,
+          "precip": 410,
+          "snow": 0
+        },
+        {
+          "tMax": 30,
+          "tMin": 22.6,
+          "precip": 230,
+          "snow": 0
+        },
+        {
+          "tMax": 28.5,
+          "tMin": 17.3,
+          "precip": 35,
+          "snow": 0
+        },
+        {
+          "tMax": 24.3,
+          "tMin": 12.1,
+          "precip": 4,
+          "snow": 0
+        },
+        {
+          "tMax": 20.3,
+          "tMin": 7.6,
+          "precip": 12,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.767Z"
     },
     "amenities": [],
     "tags": [
@@ -1579,7 +2389,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.714Z"
+      "cachedAt": "2026-08-12T19:18:03.767Z"
     },
     "terrain": {
       "elevation": 3414.8,
@@ -1596,6 +2406,87 @@
       "ruggedness": 401.7,
       "ruggednessLabel": "Highly broken",
       "summary": "Northwest-facing lower slope, 2718m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 3022,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 1.5,
+          "tMin": -9.3,
+          "precip": 94,
+          "snow": 66
+        },
+        {
+          "tMax": 2.4,
+          "tMin": -8.1,
+          "precip": 96,
+          "snow": 68
+        },
+        {
+          "tMax": 5.5,
+          "tMin": -4.7,
+          "precip": 70,
+          "snow": 49
+        },
+        {
+          "tMax": 9.7,
+          "tMin": -0.6,
+          "precip": 55,
+          "snow": 34
+        },
+        {
+          "tMax": 13.6,
+          "tMin": 2.9,
+          "precip": 95,
+          "snow": 20
+        },
+        {
+          "tMax": 17.2,
+          "tMin": 7.8,
+          "precip": 126,
+          "snow": 2
+        },
+        {
+          "tMax": 18.4,
+          "tMin": 12.1,
+          "precip": 212,
+          "snow": 1
+        },
+        {
+          "tMax": 18.1,
+          "tMin": 11.6,
+          "precip": 177,
+          "snow": 1
+        },
+        {
+          "tMax": 16.8,
+          "tMin": 8.8,
+          "precip": 89,
+          "snow": 0
+        },
+        {
+          "tMax": 12.8,
+          "tMin": 3.6,
+          "precip": 60,
+          "snow": 18
+        },
+        {
+          "tMax": 9,
+          "tMin": -1.4,
+          "precip": 28,
+          "snow": 19
+        },
+        {
+          "tMax": 5.7,
+          "tMin": -6.1,
+          "precip": 33,
+          "snow": 23
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.767Z"
     },
     "amenities": [],
     "tags": [
@@ -1722,7 +2613,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.714Z"
+      "cachedAt": "2026-08-12T19:18:03.768Z"
     },
     "terrain": {
       "elevation": 1557.5,
@@ -1739,6 +2630,87 @@
       "ruggedness": 177.9,
       "ruggednessLabel": "Highly broken",
       "summary": "Southeast-facing mid slope, 996m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1352,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 14.1,
+          "tMin": 3.2,
+          "precip": 75,
+          "snow": 3
+        },
+        {
+          "tMax": 16.4,
+          "tMin": 4.9,
+          "precip": 62,
+          "snow": 4
+        },
+        {
+          "tMax": 20.5,
+          "tMin": 8.6,
+          "precip": 68,
+          "snow": 0
+        },
+        {
+          "tMax": 25.5,
+          "tMin": 12.8,
+          "precip": 45,
+          "snow": 0
+        },
+        {
+          "tMax": 28,
+          "tMin": 16,
+          "precip": 52,
+          "snow": 0
+        },
+        {
+          "tMax": 28.8,
+          "tMin": 19.1,
+          "precip": 104,
+          "snow": 0
+        },
+        {
+          "tMax": 26.3,
+          "tMin": 20.1,
+          "precip": 265,
+          "snow": 0
+        },
+        {
+          "tMax": 25.7,
+          "tMin": 19.6,
+          "precip": 261,
+          "snow": 0
+        },
+        {
+          "tMax": 25.1,
+          "tMin": 17.6,
+          "precip": 138,
+          "snow": 0
+        },
+        {
+          "tMax": 23.2,
+          "tMin": 12.4,
+          "precip": 26,
+          "snow": 0
+        },
+        {
+          "tMax": 19.3,
+          "tMin": 8.3,
+          "precip": 16,
+          "snow": 0
+        },
+        {
+          "tMax": 16.3,
+          "tMin": 5,
+          "precip": 18,
+          "snow": 1
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.768Z"
     },
     "amenities": [],
     "tags": [
@@ -1865,7 +2837,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.714Z"
+      "cachedAt": "2026-08-12T19:18:03.768Z"
     },
     "terrain": {
       "elevation": 3075.3,
@@ -1882,6 +2854,87 @@
       "ruggedness": 378.1,
       "ruggednessLabel": "Highly broken",
       "summary": "Northwest-facing lower slope, 2905m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 3201,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": -1,
+          "tMin": -12.2,
+          "precip": 120,
+          "snow": 84
+        },
+        {
+          "tMax": 0.5,
+          "tMin": -11.7,
+          "precip": 109,
+          "snow": 75
+        },
+        {
+          "tMax": 3.6,
+          "tMin": -8.2,
+          "precip": 104,
+          "snow": 69
+        },
+        {
+          "tMax": 7.7,
+          "tMin": -3.7,
+          "precip": 92,
+          "snow": 57
+        },
+        {
+          "tMax": 11.2,
+          "tMin": -0.5,
+          "precip": 90,
+          "snow": 25
+        },
+        {
+          "tMax": 15,
+          "tMin": 4.6,
+          "precip": 153,
+          "snow": 4
+        },
+        {
+          "tMax": 16.6,
+          "tMin": 10.1,
+          "precip": 371,
+          "snow": 0
+        },
+        {
+          "tMax": 16.4,
+          "tMin": 10.1,
+          "precip": 338,
+          "snow": 1
+        },
+        {
+          "tMax": 14.8,
+          "tMin": 6.4,
+          "precip": 179,
+          "snow": 2
+        },
+        {
+          "tMax": 10.3,
+          "tMin": -1.1,
+          "precip": 62,
+          "snow": 27
+        },
+        {
+          "tMax": 5.8,
+          "tMin": -6,
+          "precip": 52,
+          "snow": 36
+        },
+        {
+          "tMax": 2,
+          "tMin": -11.1,
+          "precip": 47,
+          "snow": 32
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.768Z"
     },
     "amenities": [
       "Running Water"
@@ -2012,7 +3065,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.715Z"
+      "cachedAt": "2026-08-12T19:18:03.768Z"
     },
     "terrain": {
       "elevation": 2024.8,
@@ -2029,6 +3082,87 @@
       "ruggedness": 267.1,
       "ruggednessLabel": "Highly broken",
       "summary": "North-facing mid slope, 1903m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 2186,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 8.6,
+          "tMin": -1.2,
+          "precip": 91,
+          "snow": 31
+        },
+        {
+          "tMax": 10.7,
+          "tMin": -0.3,
+          "precip": 83,
+          "snow": 13
+        },
+        {
+          "tMax": 14.6,
+          "tMin": 3.2,
+          "precip": 92,
+          "snow": 2
+        },
+        {
+          "tMax": 19.1,
+          "tMin": 7.5,
+          "precip": 79,
+          "snow": 0
+        },
+        {
+          "tMax": 21.2,
+          "tMin": 11,
+          "precip": 80,
+          "snow": 0
+        },
+        {
+          "tMax": 22.8,
+          "tMin": 14.1,
+          "precip": 147,
+          "snow": 0
+        },
+        {
+          "tMax": 21.2,
+          "tMin": 15.3,
+          "precip": 382,
+          "snow": 0
+        },
+        {
+          "tMax": 20.9,
+          "tMin": 15,
+          "precip": 327,
+          "snow": 0
+        },
+        {
+          "tMax": 20.2,
+          "tMin": 12.9,
+          "precip": 187,
+          "snow": 0
+        },
+        {
+          "tMax": 17.8,
+          "tMin": 8.2,
+          "precip": 37,
+          "snow": 0
+        },
+        {
+          "tMax": 14.4,
+          "tMin": 3.9,
+          "precip": 20,
+          "snow": 0
+        },
+        {
+          "tMax": 11.5,
+          "tMin": 1,
+          "precip": 31,
+          "snow": 7
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.768Z"
     },
     "amenities": [],
     "tags": [
@@ -2155,7 +3289,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.715Z"
+      "cachedAt": "2026-08-12T19:18:03.768Z"
     },
     "terrain": {
       "elevation": 4426.5,
@@ -2172,6 +3306,87 @@
       "ruggedness": 205.3,
       "ruggednessLabel": "Highly broken",
       "summary": "West-facing lower slope, 1785m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 4233,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": -11.1,
+          "tMin": -22,
+          "precip": 31,
+          "snow": 22
+        },
+        {
+          "tMax": -9.7,
+          "tMin": -19.8,
+          "precip": 30,
+          "snow": 21
+        },
+        {
+          "tMax": -5.6,
+          "tMin": -16,
+          "precip": 28,
+          "snow": 20
+        },
+        {
+          "tMax": -1.2,
+          "tMin": -10.4,
+          "precip": 44,
+          "snow": 30
+        },
+        {
+          "tMax": 3.3,
+          "tMin": -6.5,
+          "precip": 81,
+          "snow": 55
+        },
+        {
+          "tMax": 8.2,
+          "tMin": -1.8,
+          "precip": 85,
+          "snow": 44
+        },
+        {
+          "tMax": 14.3,
+          "tMin": 5.4,
+          "precip": 131,
+          "snow": 4
+        },
+        {
+          "tMax": 14.6,
+          "tMin": 5.7,
+          "precip": 127,
+          "snow": 7
+        },
+        {
+          "tMax": 11.1,
+          "tMin": 0.1,
+          "precip": 74,
+          "snow": 24
+        },
+        {
+          "tMax": 2.4,
+          "tMin": -9,
+          "precip": 44,
+          "snow": 31
+        },
+        {
+          "tMax": -3.7,
+          "tMin": -15.2,
+          "precip": 25,
+          "snow": 18
+        },
+        {
+          "tMax": -8.2,
+          "tMin": -19.5,
+          "precip": 18,
+          "snow": 13
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.768Z"
     },
     "amenities": [
       "Toilets"
@@ -2301,7 +3516,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.715Z"
+      "cachedAt": "2026-08-12T19:18:03.769Z"
     },
     "terrain": {
       "elevation": 2045.5,
@@ -2318,6 +3533,87 @@
       "ruggedness": 253.1,
       "ruggednessLabel": "Highly broken",
       "summary": "East-facing lower slope, 2380m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1909,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 11.6,
+          "tMin": 2,
+          "precip": 27,
+          "snow": 2
+        },
+        {
+          "tMax": 13,
+          "tMin": 3.3,
+          "precip": 55,
+          "snow": 4
+        },
+        {
+          "tMax": 16.3,
+          "tMin": 6.3,
+          "precip": 96,
+          "snow": 0
+        },
+        {
+          "tMax": 19.2,
+          "tMin": 9.5,
+          "precip": 130,
+          "snow": 0
+        },
+        {
+          "tMax": 20.3,
+          "tMin": 12.1,
+          "precip": 277,
+          "snow": 0
+        },
+        {
+          "tMax": 21.6,
+          "tMin": 15.1,
+          "precip": 526,
+          "snow": 0
+        },
+        {
+          "tMax": 21.7,
+          "tMin": 16.2,
+          "precip": 794,
+          "snow": 0
+        },
+        {
+          "tMax": 21.9,
+          "tMin": 16,
+          "precip": 588,
+          "snow": 0
+        },
+        {
+          "tMax": 21.2,
+          "tMin": 15,
+          "precip": 485,
+          "snow": 0
+        },
+        {
+          "tMax": 19.1,
+          "tMin": 11.8,
+          "precip": 196,
+          "snow": 0
+        },
+        {
+          "tMax": 16.1,
+          "tMin": 7.8,
+          "precip": 28,
+          "snow": 0
+        },
+        {
+          "tMax": 13.3,
+          "tMin": 4.2,
+          "precip": 22,
+          "snow": 1
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.769Z"
     },
     "amenities": [],
     "tags": [
@@ -2445,7 +3741,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.715Z"
+      "cachedAt": "2026-08-12T19:18:03.770Z"
     },
     "terrain": {
       "elevation": 4806.5,
@@ -2462,6 +3758,87 @@
       "ruggedness": 339.5,
       "ruggednessLabel": "Highly broken",
       "summary": "South-facing lower slope, 2990m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 4766,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": -7.1,
+          "tMin": -15.4,
+          "precip": 22,
+          "snow": 16
+        },
+        {
+          "tMax": -6.7,
+          "tMin": -13.8,
+          "precip": 31,
+          "snow": 23
+        },
+        {
+          "tMax": -4.4,
+          "tMin": -10.8,
+          "precip": 42,
+          "snow": 29
+        },
+        {
+          "tMax": -0.9,
+          "tMin": -6.4,
+          "precip": 65,
+          "snow": 44
+        },
+        {
+          "tMax": 1.8,
+          "tMin": -2.9,
+          "precip": 141,
+          "snow": 72
+        },
+        {
+          "tMax": 5.6,
+          "tMin": 1.2,
+          "precip": 268,
+          "snow": 19
+        },
+        {
+          "tMax": 6.5,
+          "tMin": 2.8,
+          "precip": 519,
+          "snow": 23
+        },
+        {
+          "tMax": 6.5,
+          "tMin": 2.5,
+          "precip": 418,
+          "snow": 9
+        },
+        {
+          "tMax": 5,
+          "tMin": 0.9,
+          "precip": 293,
+          "snow": 47
+        },
+        {
+          "tMax": 1.2,
+          "tMin": -4,
+          "precip": 86,
+          "snow": 39
+        },
+        {
+          "tMax": -1.6,
+          "tMin": -8,
+          "precip": 8,
+          "snow": 5
+        },
+        {
+          "tMax": -3.4,
+          "tMin": -11,
+          "precip": 10,
+          "snow": 8
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.770Z"
     },
     "amenities": [],
     "tags": [
@@ -2590,7 +3967,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:03.770Z"
     },
     "terrain": {
       "elevation": 2921,
@@ -2607,6 +3984,87 @@
       "ruggedness": 332.6,
       "ruggednessLabel": "Highly broken",
       "summary": "Southeast-facing ridge, 2594m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 3147,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 2.4,
+          "tMin": -4.8,
+          "precip": 151,
+          "snow": 27
+        },
+        {
+          "tMax": 3.5,
+          "tMin": -3.5,
+          "precip": 250,
+          "snow": 21
+        },
+        {
+          "tMax": 6.9,
+          "tMin": -1.3,
+          "precip": 394,
+          "snow": 2
+        },
+        {
+          "tMax": 9.9,
+          "tMin": 1.6,
+          "precip": 387,
+          "snow": 1
+        },
+        {
+          "tMax": 11.5,
+          "tMin": 4.3,
+          "precip": 537,
+          "snow": 3
+        },
+        {
+          "tMax": 13.3,
+          "tMin": 7.8,
+          "precip": 596,
+          "snow": 1
+        },
+        {
+          "tMax": 13.5,
+          "tMin": 9.1,
+          "precip": 832,
+          "snow": 3
+        },
+        {
+          "tMax": 13.8,
+          "tMin": 8.9,
+          "precip": 668,
+          "snow": 0
+        },
+        {
+          "tMax": 13.1,
+          "tMin": 7.8,
+          "precip": 515,
+          "snow": 3
+        },
+        {
+          "tMax": 10.7,
+          "tMin": 4.1,
+          "precip": 280,
+          "snow": 1
+        },
+        {
+          "tMax": 7.3,
+          "tMin": 0.4,
+          "precip": 85,
+          "snow": 0
+        },
+        {
+          "tMax": 4.5,
+          "tMin": -2.5,
+          "precip": 51,
+          "snow": 4
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:03.770Z"
     },
     "amenities": [],
     "tags": [
@@ -2733,7 +4191,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.750Z"
     },
     "terrain": {
       "elevation": 3895,
@@ -2750,6 +4208,87 @@
       "ruggedness": 262.7,
       "ruggednessLabel": "Highly broken",
       "summary": "Southwest-facing mid slope, 2318m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 3974,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": -1.3,
+          "tMin": -9.3,
+          "precip": 33,
+          "snow": 15
+        },
+        {
+          "tMax": -0.7,
+          "tMin": -8,
+          "precip": 48,
+          "snow": 23
+        },
+        {
+          "tMax": 1.6,
+          "tMin": -5.4,
+          "precip": 92,
+          "snow": 40
+        },
+        {
+          "tMax": 5.1,
+          "tMin": -1.6,
+          "precip": 152,
+          "snow": 43
+        },
+        {
+          "tMax": 7.4,
+          "tMin": 1.5,
+          "precip": 275,
+          "snow": 23
+        },
+        {
+          "tMax": 10.4,
+          "tMin": 5.3,
+          "precip": 436,
+          "snow": 1
+        },
+        {
+          "tMax": 11,
+          "tMin": 6.7,
+          "precip": 659,
+          "snow": 3
+        },
+        {
+          "tMax": 11,
+          "tMin": 6.6,
+          "precip": 505,
+          "snow": 0
+        },
+        {
+          "tMax": 9.8,
+          "tMin": 5.2,
+          "precip": 419,
+          "snow": 3
+        },
+        {
+          "tMax": 6.6,
+          "tMin": 1,
+          "precip": 161,
+          "snow": 6
+        },
+        {
+          "tMax": 3.7,
+          "tMin": -2.6,
+          "precip": 24,
+          "snow": 6
+        },
+        {
+          "tMax": 1.7,
+          "tMin": -5.3,
+          "precip": 15,
+          "snow": 6
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.750Z"
     },
     "amenities": [],
     "tags": [
@@ -2877,7 +4416,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.750Z"
     },
     "terrain": {
       "elevation": 1260,
@@ -2894,6 +4433,87 @@
       "ruggedness": 106.7,
       "ruggednessLabel": "Broken",
       "summary": "South-facing mid slope, 888m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1241,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 16.3,
+          "tMin": 6.6,
+          "precip": 12,
+          "snow": 0
+        },
+        {
+          "tMax": 17.9,
+          "tMin": 8.4,
+          "precip": 34,
+          "snow": 0
+        },
+        {
+          "tMax": 21,
+          "tMin": 11.8,
+          "precip": 85,
+          "snow": 0
+        },
+        {
+          "tMax": 22.3,
+          "tMin": 15,
+          "precip": 339,
+          "snow": 0
+        },
+        {
+          "tMax": 22.9,
+          "tMin": 16.8,
+          "precip": 508,
+          "snow": 0
+        },
+        {
+          "tMax": 23.2,
+          "tMin": 18.7,
+          "precip": 918,
+          "snow": 0
+        },
+        {
+          "tMax": 23.6,
+          "tMin": 19.2,
+          "precip": 846,
+          "snow": 0
+        },
+        {
+          "tMax": 23.8,
+          "tMin": 19.2,
+          "precip": 612,
+          "snow": 0
+        },
+        {
+          "tMax": 23.9,
+          "tMin": 18.7,
+          "precip": 327,
+          "snow": 0
+        },
+        {
+          "tMax": 22.7,
+          "tMin": 15.9,
+          "precip": 230,
+          "snow": 0
+        },
+        {
+          "tMax": 20.7,
+          "tMin": 11.4,
+          "precip": 26,
+          "snow": 0
+        },
+        {
+          "tMax": 17.9,
+          "tMin": 8.1,
+          "precip": 22,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.750Z"
     },
     "amenities": [],
     "tags": [
@@ -3020,7 +4640,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.750Z"
     },
     "terrain": {
       "elevation": 774,
@@ -3037,6 +4657,87 @@
       "ruggedness": 43.1,
       "ruggednessLabel": "Undulating",
       "summary": "Northwest-facing lower slope, 463m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 733,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 20,
+          "tMin": 9.2,
+          "precip": 15,
+          "snow": 0
+        },
+        {
+          "tMax": 22.2,
+          "tMin": 10.9,
+          "precip": 14,
+          "snow": 0
+        },
+        {
+          "tMax": 26,
+          "tMin": 14.6,
+          "precip": 37,
+          "snow": 0
+        },
+        {
+          "tMax": 27.9,
+          "tMin": 17.9,
+          "precip": 97,
+          "snow": 0
+        },
+        {
+          "tMax": 27.4,
+          "tMin": 19.4,
+          "precip": 241,
+          "snow": 0
+        },
+        {
+          "tMax": 27.7,
+          "tMin": 21.7,
+          "precip": 442,
+          "snow": 0
+        },
+        {
+          "tMax": 27.9,
+          "tMin": 22.4,
+          "precip": 517,
+          "snow": 0
+        },
+        {
+          "tMax": 28.1,
+          "tMin": 22.2,
+          "precip": 399,
+          "snow": 0
+        },
+        {
+          "tMax": 27.8,
+          "tMin": 21.4,
+          "precip": 294,
+          "snow": 0
+        },
+        {
+          "tMax": 26.2,
+          "tMin": 18.5,
+          "precip": 192,
+          "snow": 0
+        },
+        {
+          "tMax": 24.4,
+          "tMin": 13.8,
+          "precip": 22,
+          "snow": 0
+        },
+        {
+          "tMax": 21.6,
+          "tMin": 10.7,
+          "precip": 19,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.750Z"
     },
     "amenities": [],
     "tags": [],
@@ -3161,7 +4862,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 652.8,
@@ -3178,6 +4879,87 @@
       "ruggedness": 107,
       "ruggednessLabel": "Broken",
       "summary": "West-facing mid slope, 1106m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 633,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 20.1,
+          "tMin": 8.6,
+          "precip": 21,
+          "snow": 0
+        },
+        {
+          "tMax": 21.2,
+          "tMin": 10.2,
+          "precip": 57,
+          "snow": 0
+        },
+        {
+          "tMax": 24.1,
+          "tMin": 13.1,
+          "precip": 96,
+          "snow": 0
+        },
+        {
+          "tMax": 26,
+          "tMin": 16.1,
+          "precip": 210,
+          "snow": 0
+        },
+        {
+          "tMax": 27.1,
+          "tMin": 18.7,
+          "precip": 308,
+          "snow": 0
+        },
+        {
+          "tMax": 28.3,
+          "tMin": 21.5,
+          "precip": 473,
+          "snow": 0
+        },
+        {
+          "tMax": 28.5,
+          "tMin": 22.4,
+          "precip": 555,
+          "snow": 0
+        },
+        {
+          "tMax": 28.8,
+          "tMin": 22.6,
+          "precip": 474,
+          "snow": 0
+        },
+        {
+          "tMax": 28.7,
+          "tMin": 21.6,
+          "precip": 229,
+          "snow": 0
+        },
+        {
+          "tMax": 26.8,
+          "tMin": 18.3,
+          "precip": 133,
+          "snow": 0
+        },
+        {
+          "tMax": 24.5,
+          "tMin": 13,
+          "precip": 25,
+          "snow": 0
+        },
+        {
+          "tMax": 22,
+          "tMin": 9.9,
+          "precip": 9,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [
       "Running Water"
@@ -3306,7 +5088,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 380.8,
@@ -3323,6 +5105,87 @@
       "ruggedness": 64.4,
       "ruggednessLabel": "Broken",
       "summary": "Northeast-facing upper slope, 386m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 326,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 21.6,
+          "tMin": 11.6,
+          "precip": 18,
+          "snow": 0
+        },
+        {
+          "tMax": 23.8,
+          "tMin": 13.3,
+          "precip": 25,
+          "snow": 0
+        },
+        {
+          "tMax": 27.9,
+          "tMin": 16.8,
+          "precip": 39,
+          "snow": 0
+        },
+        {
+          "tMax": 29.4,
+          "tMin": 19.7,
+          "precip": 114,
+          "snow": 0
+        },
+        {
+          "tMax": 29.2,
+          "tMin": 21.6,
+          "precip": 281,
+          "snow": 0
+        },
+        {
+          "tMax": 29.9,
+          "tMin": 23.7,
+          "precip": 436,
+          "snow": 0
+        },
+        {
+          "tMax": 30.1,
+          "tMin": 24.5,
+          "precip": 594,
+          "snow": 0
+        },
+        {
+          "tMax": 30.4,
+          "tMin": 24.5,
+          "precip": 461,
+          "snow": 0
+        },
+        {
+          "tMax": 29.9,
+          "tMin": 23.8,
+          "precip": 315,
+          "snow": 0
+        },
+        {
+          "tMax": 28.4,
+          "tMin": 21.1,
+          "precip": 193,
+          "snow": 0
+        },
+        {
+          "tMax": 26.2,
+          "tMin": 16.4,
+          "precip": 17,
+          "snow": 0
+        },
+        {
+          "tMax": 23.1,
+          "tMin": 13.1,
+          "precip": 14,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [
@@ -3449,7 +5312,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 1738.3,
@@ -3466,6 +5329,87 @@
       "ruggedness": 252,
       "ruggednessLabel": "Highly broken",
       "summary": "South-facing mid slope, 2105m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1961,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 9.7,
+          "tMin": 1.8,
+          "precip": 40,
+          "snow": 1
+        },
+        {
+          "tMax": 10.3,
+          "tMin": 3.4,
+          "precip": 108,
+          "snow": 1
+        },
+        {
+          "tMax": 13.4,
+          "tMin": 6.5,
+          "precip": 188,
+          "snow": 0
+        },
+        {
+          "tMax": 16,
+          "tMin": 9.7,
+          "precip": 281,
+          "snow": 0
+        },
+        {
+          "tMax": 17.8,
+          "tMin": 12,
+          "precip": 465,
+          "snow": 0
+        },
+        {
+          "tMax": 19.8,
+          "tMin": 15,
+          "precip": 645,
+          "snow": 0
+        },
+        {
+          "tMax": 20.4,
+          "tMin": 16,
+          "precip": 616,
+          "snow": 0
+        },
+        {
+          "tMax": 20.7,
+          "tMin": 16,
+          "precip": 433,
+          "snow": 0
+        },
+        {
+          "tMax": 20,
+          "tMin": 15.1,
+          "precip": 369,
+          "snow": 0
+        },
+        {
+          "tMax": 17.6,
+          "tMin": 11.4,
+          "precip": 210,
+          "snow": 0
+        },
+        {
+          "tMax": 14.5,
+          "tMin": 6.8,
+          "precip": 57,
+          "snow": 0
+        },
+        {
+          "tMax": 11.7,
+          "tMin": 3.7,
+          "precip": 33,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [
@@ -3592,7 +5536,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 2425.3,
@@ -3609,6 +5553,87 @@
       "ruggedness": 250.7,
       "ruggednessLabel": "Highly broken",
       "summary": "Northeast-facing mid slope, 1909m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 2343,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 8,
+          "tMin": -0.8,
+          "precip": 47,
+          "snow": 6
+        },
+        {
+          "tMax": 8.6,
+          "tMin": 1,
+          "precip": 127,
+          "snow": 8
+        },
+        {
+          "tMax": 11.9,
+          "tMin": 4.4,
+          "precip": 202,
+          "snow": 0
+        },
+        {
+          "tMax": 14.9,
+          "tMin": 7.8,
+          "precip": 259,
+          "snow": 0
+        },
+        {
+          "tMax": 16.9,
+          "tMin": 10.3,
+          "precip": 421,
+          "snow": 0
+        },
+        {
+          "tMax": 19,
+          "tMin": 13.6,
+          "precip": 618,
+          "snow": 0
+        },
+        {
+          "tMax": 19.6,
+          "tMin": 14.7,
+          "precip": 602,
+          "snow": 0
+        },
+        {
+          "tMax": 19.9,
+          "tMin": 14.6,
+          "precip": 410,
+          "snow": 0
+        },
+        {
+          "tMax": 19.1,
+          "tMin": 13.6,
+          "precip": 396,
+          "snow": 0
+        },
+        {
+          "tMax": 16.5,
+          "tMin": 9.6,
+          "precip": 217,
+          "snow": 0
+        },
+        {
+          "tMax": 13,
+          "tMin": 4.5,
+          "precip": 66,
+          "snow": 0
+        },
+        {
+          "tMax": 10.1,
+          "tMin": 1.2,
+          "precip": 51,
+          "snow": 2
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [
@@ -3735,7 +5760,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 2527.5,
@@ -3752,6 +5777,87 @@
       "ruggedness": 251.6,
       "ruggednessLabel": "Highly broken",
       "summary": "Southeast-facing mid slope, 2010m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 2561,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 6.6,
+          "tMin": -2.2,
+          "precip": 41,
+          "snow": 6
+        },
+        {
+          "tMax": 7.2,
+          "tMin": -0.4,
+          "precip": 103,
+          "snow": 8
+        },
+        {
+          "tMax": 10.5,
+          "tMin": 3,
+          "precip": 179,
+          "snow": 1
+        },
+        {
+          "tMax": 13.5,
+          "tMin": 6.4,
+          "precip": 224,
+          "snow": 0
+        },
+        {
+          "tMax": 15.5,
+          "tMin": 8.9,
+          "precip": 391,
+          "snow": 0
+        },
+        {
+          "tMax": 17.6,
+          "tMin": 12.2,
+          "precip": 568,
+          "snow": 0
+        },
+        {
+          "tMax": 18.2,
+          "tMin": 13.3,
+          "precip": 575,
+          "snow": 0
+        },
+        {
+          "tMax": 18.5,
+          "tMin": 13.2,
+          "precip": 402,
+          "snow": 0
+        },
+        {
+          "tMax": 17.7,
+          "tMin": 12.2,
+          "precip": 341,
+          "snow": 0
+        },
+        {
+          "tMax": 15.1,
+          "tMin": 8.2,
+          "precip": 192,
+          "snow": 0
+        },
+        {
+          "tMax": 11.6,
+          "tMin": 3.1,
+          "precip": 63,
+          "snow": 0
+        },
+        {
+          "tMax": 8.7,
+          "tMin": -0.2,
+          "precip": 45,
+          "snow": 2
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [
@@ -3878,7 +5984,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 763.8,
@@ -3895,6 +6001,87 @@
       "ruggedness": 30.4,
       "ruggednessLabel": "Undulating",
       "summary": "West-facing mid slope, 268m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 747,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 28.3,
+          "tMin": 16.7,
+          "precip": 9,
+          "snow": 0
+        },
+        {
+          "tMax": 30.8,
+          "tMin": 17.4,
+          "precip": 3,
+          "snow": 0
+        },
+        {
+          "tMax": 33.5,
+          "tMin": 19.8,
+          "precip": 13,
+          "snow": 0
+        },
+        {
+          "tMax": 34.8,
+          "tMin": 21.8,
+          "precip": 23,
+          "snow": 0
+        },
+        {
+          "tMax": 32.1,
+          "tMin": 21.9,
+          "precip": 128,
+          "snow": 0
+        },
+        {
+          "tMax": 29.2,
+          "tMin": 21.1,
+          "precip": 144,
+          "snow": 0
+        },
+        {
+          "tMax": 27.9,
+          "tMin": 20.7,
+          "precip": 190,
+          "snow": 0
+        },
+        {
+          "tMax": 28,
+          "tMin": 20.4,
+          "precip": 169,
+          "snow": 0
+        },
+        {
+          "tMax": 28.2,
+          "tMin": 20.1,
+          "precip": 177,
+          "snow": 0
+        },
+        {
+          "tMax": 28.2,
+          "tMin": 19.6,
+          "precip": 158,
+          "snow": 0
+        },
+        {
+          "tMax": 27.9,
+          "tMin": 18.9,
+          "precip": 73,
+          "snow": 0
+        },
+        {
+          "tMax": 27.4,
+          "tMin": 17.7,
+          "precip": 36,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [
       "Toilets",
@@ -4022,7 +6209,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 1161.3,
@@ -4039,6 +6226,87 @@
       "ruggedness": 147.5,
       "ruggednessLabel": "Highly broken",
       "summary": "Northeast-facing upper slope, 1170m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1118,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 25.9,
+          "tMin": 14.1,
+          "precip": 32,
+          "snow": 0
+        },
+        {
+          "tMax": 28.1,
+          "tMin": 15,
+          "precip": 12,
+          "snow": 0
+        },
+        {
+          "tMax": 28.6,
+          "tMin": 17,
+          "precip": 49,
+          "snow": 0
+        },
+        {
+          "tMax": 27.8,
+          "tMin": 18.6,
+          "precip": 109,
+          "snow": 0
+        },
+        {
+          "tMax": 25.4,
+          "tMin": 18.9,
+          "precip": 351,
+          "snow": 0
+        },
+        {
+          "tMax": 22.6,
+          "tMin": 18.3,
+          "precip": 527,
+          "snow": 0
+        },
+        {
+          "tMax": 21.9,
+          "tMin": 17.8,
+          "precip": 622,
+          "snow": 0
+        },
+        {
+          "tMax": 22.5,
+          "tMin": 17.6,
+          "precip": 589,
+          "snow": 0
+        },
+        {
+          "tMax": 23.2,
+          "tMin": 17.4,
+          "precip": 374,
+          "snow": 0
+        },
+        {
+          "tMax": 24.1,
+          "tMin": 17.2,
+          "precip": 338,
+          "snow": 0
+        },
+        {
+          "tMax": 24.7,
+          "tMin": 16.2,
+          "precip": 122,
+          "snow": 0
+        },
+        {
+          "tMax": 24.9,
+          "tMin": 14.9,
+          "precip": 60,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [
@@ -4165,7 +6433,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.716Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 1855.8,
@@ -4182,6 +6450,87 @@
       "ruggedness": 220.1,
       "ruggednessLabel": "Highly broken",
       "summary": "Northeast-facing mid slope, 1502m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1801,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 19.7,
+          "tMin": 10.8,
+          "precip": 105,
+          "snow": 0
+        },
+        {
+          "tMax": 21.1,
+          "tMin": 11.3,
+          "precip": 41,
+          "snow": 0
+        },
+        {
+          "tMax": 23,
+          "tMin": 12.4,
+          "precip": 73,
+          "snow": 0
+        },
+        {
+          "tMax": 23.8,
+          "tMin": 13.7,
+          "precip": 96,
+          "snow": 0
+        },
+        {
+          "tMax": 22.9,
+          "tMin": 15,
+          "precip": 237,
+          "snow": 0
+        },
+        {
+          "tMax": 21.6,
+          "tMin": 14.7,
+          "precip": 184,
+          "snow": 0
+        },
+        {
+          "tMax": 21,
+          "tMin": 14.7,
+          "precip": 211,
+          "snow": 0
+        },
+        {
+          "tMax": 21,
+          "tMin": 14.5,
+          "precip": 248,
+          "snow": 0
+        },
+        {
+          "tMax": 21.4,
+          "tMin": 14,
+          "precip": 209,
+          "snow": 0
+        },
+        {
+          "tMax": 20.6,
+          "tMin": 13.9,
+          "precip": 342,
+          "snow": 0
+        },
+        {
+          "tMax": 19.6,
+          "tMin": 13.5,
+          "precip": 315,
+          "snow": 0
+        },
+        {
+          "tMax": 19.5,
+          "tMin": 12.2,
+          "precip": 216,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [
       "Wi-Fi"
@@ -4310,7 +6659,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 880.8,
@@ -4327,6 +6676,87 @@
       "ruggedness": 57.4,
       "ruggednessLabel": "Broken",
       "summary": "Southwest-facing lower slope, 590m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 866,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 26.9,
+          "tMin": 17.2,
+          "precip": 27,
+          "snow": 0
+        },
+        {
+          "tMax": 28.7,
+          "tMin": 17.3,
+          "precip": 11,
+          "snow": 0
+        },
+        {
+          "tMax": 30.1,
+          "tMin": 18.6,
+          "precip": 49,
+          "snow": 0
+        },
+        {
+          "tMax": 29.9,
+          "tMin": 20,
+          "precip": 102,
+          "snow": 0
+        },
+        {
+          "tMax": 26.6,
+          "tMin": 20.6,
+          "precip": 316,
+          "snow": 0
+        },
+        {
+          "tMax": 24.4,
+          "tMin": 20.1,
+          "precip": 354,
+          "snow": 0
+        },
+        {
+          "tMax": 24.1,
+          "tMin": 19.6,
+          "precip": 400,
+          "snow": 0
+        },
+        {
+          "tMax": 24.3,
+          "tMin": 19.4,
+          "precip": 414,
+          "snow": 0
+        },
+        {
+          "tMax": 24.6,
+          "tMin": 19.3,
+          "precip": 284,
+          "snow": 0
+        },
+        {
+          "tMax": 25.4,
+          "tMin": 19.1,
+          "precip": 324,
+          "snow": 0
+        },
+        {
+          "tMax": 25.6,
+          "tMin": 18.8,
+          "precip": 171,
+          "snow": 0
+        },
+        {
+          "tMax": 25.8,
+          "tMin": 17.9,
+          "precip": 81,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [
       "Running Water",
@@ -4456,7 +6886,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 101.3,
@@ -4473,6 +6903,87 @@
       "ruggedness": 67.5,
       "ruggednessLabel": "Broken",
       "summary": "West-facing lower slope, 516m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 84,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 33.1,
+          "tMin": 19.3,
+          "precip": 6,
+          "snow": 0
+        },
+        {
+          "tMax": 35.3,
+          "tMin": 19.6,
+          "precip": 1,
+          "snow": 0
+        },
+        {
+          "tMax": 36,
+          "tMin": 21.5,
+          "precip": 11,
+          "snow": 0
+        },
+        {
+          "tMax": 35.9,
+          "tMin": 23.6,
+          "precip": 31,
+          "snow": 0
+        },
+        {
+          "tMax": 34.1,
+          "tMin": 24.8,
+          "precip": 189,
+          "snow": 0
+        },
+        {
+          "tMax": 28.2,
+          "tMin": 23.5,
+          "precip": 955,
+          "snow": 0
+        },
+        {
+          "tMax": 26.1,
+          "tMin": 22.8,
+          "precip": 1563,
+          "snow": 0
+        },
+        {
+          "tMax": 26.9,
+          "tMin": 22.8,
+          "precip": 1041,
+          "snow": 0
+        },
+        {
+          "tMax": 27.8,
+          "tMin": 22.7,
+          "precip": 619,
+          "snow": 0
+        },
+        {
+          "tMax": 30.6,
+          "tMin": 22.6,
+          "precip": 334,
+          "snow": 0
+        },
+        {
+          "tMax": 33.2,
+          "tMin": 21.9,
+          "precip": 48,
+          "snow": 0
+        },
+        {
+          "tMax": 33.1,
+          "tMin": 21,
+          "precip": 14,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [
@@ -4599,7 +7110,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 4,
@@ -4616,6 +7127,87 @@
       "ruggedness": 12.8,
       "ruggednessLabel": "Smooth",
       "summary": "Mid slope, 115m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 0,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 31.8,
+          "tMin": 21.3,
+          "precip": 4,
+          "snow": 0
+        },
+        {
+          "tMax": 32.3,
+          "tMin": 21.6,
+          "precip": 1,
+          "snow": 0
+        },
+        {
+          "tMax": 32.3,
+          "tMin": 23.5,
+          "precip": 9,
+          "snow": 0
+        },
+        {
+          "tMax": 32.7,
+          "tMin": 25.9,
+          "precip": 16,
+          "snow": 0
+        },
+        {
+          "tMax": 32.1,
+          "tMin": 26.8,
+          "precip": 177,
+          "snow": 0
+        },
+        {
+          "tMax": 28.1,
+          "tMin": 25,
+          "precip": 774,
+          "snow": 0
+        },
+        {
+          "tMax": 26.9,
+          "tMin": 24.5,
+          "precip": 982,
+          "snow": 0
+        },
+        {
+          "tMax": 27.2,
+          "tMin": 24.3,
+          "precip": 565,
+          "snow": 0
+        },
+        {
+          "tMax": 27.7,
+          "tMin": 24.2,
+          "precip": 345,
+          "snow": 0
+        },
+        {
+          "tMax": 29.8,
+          "tMin": 24.1,
+          "precip": 243,
+          "snow": 0
+        },
+        {
+          "tMax": 32.3,
+          "tMin": 23.6,
+          "precip": 43,
+          "snow": 0
+        },
+        {
+          "tMax": 32.5,
+          "tMin": 22.9,
+          "precip": 11,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [],
@@ -4740,7 +7332,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 1167,
@@ -4757,6 +7349,87 @@
       "ruggedness": 125,
       "ruggednessLabel": "Highly broken",
       "summary": "Southwest-facing ridge, 1133m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1172,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 26.2,
+          "tMin": 14.3,
+          "precip": 16,
+          "snow": 0
+        },
+        {
+          "tMax": 28.3,
+          "tMin": 15.2,
+          "precip": 8,
+          "snow": 0
+        },
+        {
+          "tMax": 29.2,
+          "tMin": 17.3,
+          "precip": 33,
+          "snow": 0
+        },
+        {
+          "tMax": 28.4,
+          "tMin": 18.7,
+          "precip": 97,
+          "snow": 0
+        },
+        {
+          "tMax": 25.6,
+          "tMin": 18.9,
+          "precip": 321,
+          "snow": 0
+        },
+        {
+          "tMax": 22.4,
+          "tMin": 18.4,
+          "precip": 509,
+          "snow": 0
+        },
+        {
+          "tMax": 21.1,
+          "tMin": 17.9,
+          "precip": 829,
+          "snow": 0
+        },
+        {
+          "tMax": 21.9,
+          "tMin": 17.6,
+          "precip": 624,
+          "snow": 0
+        },
+        {
+          "tMax": 22.6,
+          "tMin": 17.6,
+          "precip": 355,
+          "snow": 0
+        },
+        {
+          "tMax": 24.1,
+          "tMin": 17.1,
+          "precip": 280,
+          "snow": 0
+        },
+        {
+          "tMax": 25,
+          "tMin": 16.2,
+          "precip": 79,
+          "snow": 0
+        },
+        {
+          "tMax": 25.1,
+          "tMin": 15.1,
+          "precip": 40,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [
@@ -4883,7 +7556,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 1572.5,
@@ -4900,6 +7573,87 @@
       "ruggedness": 194.4,
       "ruggednessLabel": "Highly broken",
       "summary": "South-facing mid slope, 1907m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 1609,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 20.9,
+          "tMin": 11.5,
+          "precip": 68,
+          "snow": 0
+        },
+        {
+          "tMax": 22.4,
+          "tMin": 11.5,
+          "precip": 46,
+          "snow": 0
+        },
+        {
+          "tMax": 24,
+          "tMin": 13.1,
+          "precip": 86,
+          "snow": 0
+        },
+        {
+          "tMax": 24.9,
+          "tMin": 14.9,
+          "precip": 147,
+          "snow": 0
+        },
+        {
+          "tMax": 23.9,
+          "tMin": 16.4,
+          "precip": 273,
+          "snow": 0
+        },
+        {
+          "tMax": 22.4,
+          "tMin": 16.3,
+          "precip": 194,
+          "snow": 0
+        },
+        {
+          "tMax": 21.7,
+          "tMin": 16,
+          "precip": 216,
+          "snow": 0
+        },
+        {
+          "tMax": 21.9,
+          "tMin": 15.7,
+          "precip": 270,
+          "snow": 0
+        },
+        {
+          "tMax": 22.2,
+          "tMin": 15.2,
+          "precip": 211,
+          "snow": 0
+        },
+        {
+          "tMax": 21.6,
+          "tMin": 14.8,
+          "precip": 326,
+          "snow": 0
+        },
+        {
+          "tMax": 20.9,
+          "tMin": 14.2,
+          "precip": 271,
+          "snow": 0
+        },
+        {
+          "tMax": 20.6,
+          "tMin": 12.9,
+          "precip": 127,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [
@@ -5026,7 +7780,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "terrain": {
       "elevation": 52.5,
@@ -5043,6 +7797,87 @@
       "ruggedness": 44.2,
       "ruggednessLabel": "Undulating",
       "summary": "East-facing upper slope, 329m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 217,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 31,
+          "tMin": 16.8,
+          "precip": 3,
+          "snow": 0
+        },
+        {
+          "tMax": 33.6,
+          "tMin": 18.1,
+          "precip": 0,
+          "snow": 0
+        },
+        {
+          "tMax": 35.3,
+          "tMin": 20.6,
+          "precip": 2,
+          "snow": 0
+        },
+        {
+          "tMax": 36,
+          "tMin": 23,
+          "precip": 1,
+          "snow": 0
+        },
+        {
+          "tMax": 34.3,
+          "tMin": 25.2,
+          "precip": 39,
+          "snow": 0
+        },
+        {
+          "tMax": 29.7,
+          "tMin": 24.6,
+          "precip": 390,
+          "snow": 0
+        },
+        {
+          "tMax": 26.8,
+          "tMin": 23.6,
+          "precip": 708,
+          "snow": 0
+        },
+        {
+          "tMax": 26.9,
+          "tMin": 23.4,
+          "precip": 483,
+          "snow": 0
+        },
+        {
+          "tMax": 27.6,
+          "tMin": 23,
+          "precip": 437,
+          "snow": 0
+        },
+        {
+          "tMax": 30.9,
+          "tMin": 22.3,
+          "precip": 136,
+          "snow": 0
+        },
+        {
+          "tMax": 32.5,
+          "tMin": 20.1,
+          "precip": 10,
+          "snow": 0
+        },
+        {
+          "tMax": 31.4,
+          "tMin": 18.5,
+          "precip": 13,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.751Z"
     },
     "amenities": [],
     "tags": [],
@@ -5167,7 +8002,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "terrain": {
       "elevation": 664.5,
@@ -5184,6 +8019,87 @@
       "ruggedness": 77.9,
       "ruggednessLabel": "Broken",
       "summary": "South-facing mid slope, 460m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 615,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 27.6,
+          "tMin": 15.5,
+          "precip": 5,
+          "snow": 0
+        },
+        {
+          "tMax": 30.3,
+          "tMin": 17,
+          "precip": 1,
+          "snow": 0
+        },
+        {
+          "tMax": 32.7,
+          "tMin": 19.6,
+          "precip": 5,
+          "snow": 0
+        },
+        {
+          "tMax": 34.8,
+          "tMin": 21.5,
+          "precip": 5,
+          "snow": 0
+        },
+        {
+          "tMax": 32.8,
+          "tMin": 22.5,
+          "precip": 61,
+          "snow": 0
+        },
+        {
+          "tMax": 27.4,
+          "tMin": 22.6,
+          "precip": 386,
+          "snow": 0
+        },
+        {
+          "tMax": 24.2,
+          "tMin": 21.8,
+          "precip": 843,
+          "snow": 0
+        },
+        {
+          "tMax": 24.4,
+          "tMin": 21.5,
+          "precip": 694,
+          "snow": 0
+        },
+        {
+          "tMax": 25.6,
+          "tMin": 21.5,
+          "precip": 444,
+          "snow": 0
+        },
+        {
+          "tMax": 28.2,
+          "tMin": 20.7,
+          "precip": 121,
+          "snow": 0
+        },
+        {
+          "tMax": 28.3,
+          "tMin": 18,
+          "precip": 15,
+          "snow": 0
+        },
+        {
+          "tMax": 27.3,
+          "tMin": 16.5,
+          "precip": 11,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "amenities": [],
     "tags": [],
@@ -5308,7 +8224,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "terrain": {
       "elevation": 827,
@@ -5325,6 +8241,87 @@
       "ruggedness": 98.5,
       "ruggednessLabel": "Broken",
       "summary": "Northeast-facing lower slope, 965m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 770,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 29.6,
+          "tMin": 16,
+          "precip": 14,
+          "snow": 0
+        },
+        {
+          "tMax": 31.7,
+          "tMin": 17.2,
+          "precip": 5,
+          "snow": 0
+        },
+        {
+          "tMax": 33.5,
+          "tMin": 19.3,
+          "precip": 16,
+          "snow": 0
+        },
+        {
+          "tMax": 33.2,
+          "tMin": 21,
+          "precip": 56,
+          "snow": 0
+        },
+        {
+          "tMax": 30.2,
+          "tMin": 21.3,
+          "precip": 204,
+          "snow": 0
+        },
+        {
+          "tMax": 26.6,
+          "tMin": 20.8,
+          "precip": 352,
+          "snow": 0
+        },
+        {
+          "tMax": 24.6,
+          "tMin": 20.4,
+          "precip": 581,
+          "snow": 0
+        },
+        {
+          "tMax": 25.5,
+          "tMin": 20.1,
+          "precip": 464,
+          "snow": 0
+        },
+        {
+          "tMax": 26.5,
+          "tMin": 19.9,
+          "precip": 285,
+          "snow": 0
+        },
+        {
+          "tMax": 27.8,
+          "tMin": 19.1,
+          "precip": 268,
+          "snow": 0
+        },
+        {
+          "tMax": 28.6,
+          "tMin": 17.8,
+          "precip": 60,
+          "snow": 0
+        },
+        {
+          "tMax": 28.6,
+          "tMin": 16.8,
+          "precip": 32,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "amenities": [],
     "tags": [
@@ -5452,7 +8449,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "terrain": {
       "elevation": 13.8,
@@ -5469,6 +8466,87 @@
       "ruggedness": 8.4,
       "ruggednessLabel": "Smooth",
       "summary": "Mid slope, 36m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 22,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 32.8,
+          "tMin": 22.5,
+          "precip": 40,
+          "snow": 0
+        },
+        {
+          "tMax": 34.4,
+          "tMin": 23.5,
+          "precip": 22,
+          "snow": 0
+        },
+        {
+          "tMax": 33.8,
+          "tMin": 24.6,
+          "precip": 87,
+          "snow": 0
+        },
+        {
+          "tMax": 32.8,
+          "tMin": 25,
+          "precip": 200,
+          "snow": 0
+        },
+        {
+          "tMax": 30.8,
+          "tMin": 24.8,
+          "precip": 524,
+          "snow": 0
+        },
+        {
+          "tMax": 28.7,
+          "tMin": 24.1,
+          "precip": 598,
+          "snow": 0
+        },
+        {
+          "tMax": 28.3,
+          "tMin": 23.8,
+          "precip": 568,
+          "snow": 0
+        },
+        {
+          "tMax": 28.4,
+          "tMin": 23.8,
+          "precip": 488,
+          "snow": 0
+        },
+        {
+          "tMax": 28.8,
+          "tMin": 23.7,
+          "precip": 370,
+          "snow": 0
+        },
+        {
+          "tMax": 29.6,
+          "tMin": 23.4,
+          "precip": 398,
+          "snow": 0
+        },
+        {
+          "tMax": 30.5,
+          "tMin": 23.2,
+          "precip": 209,
+          "snow": 0
+        },
+        {
+          "tMax": 31.5,
+          "tMin": 22.7,
+          "precip": 82,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "amenities": [],
     "tags": [],
@@ -5593,7 +8671,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.717Z"
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "terrain": {
       "elevation": 217.8,
@@ -5610,6 +8688,87 @@
       "ruggedness": 6.9,
       "ruggednessLabel": "Smooth",
       "summary": "Ridge, 50m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 214,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 22.2,
+          "tMin": 9,
+          "precip": 6,
+          "snow": 0
+        },
+        {
+          "tMax": 27.6,
+          "tMin": 13.2,
+          "precip": 2,
+          "snow": 0
+        },
+        {
+          "tMax": 32.6,
+          "tMin": 18.6,
+          "precip": 4,
+          "snow": 0
+        },
+        {
+          "tMax": 38.5,
+          "tMin": 23.8,
+          "precip": 3,
+          "snow": 0
+        },
+        {
+          "tMax": 41.4,
+          "tMin": 26.9,
+          "precip": 7,
+          "snow": 0
+        },
+        {
+          "tMax": 40.3,
+          "tMin": 28.1,
+          "precip": 17,
+          "snow": 0
+        },
+        {
+          "tMax": 37.4,
+          "tMin": 27.7,
+          "precip": 86,
+          "snow": 0
+        },
+        {
+          "tMax": 35.7,
+          "tMin": 26.4,
+          "precip": 75,
+          "snow": 0
+        },
+        {
+          "tMax": 36.5,
+          "tMin": 26,
+          "precip": 25,
+          "snow": 0
+        },
+        {
+          "tMax": 35.4,
+          "tMin": 22.7,
+          "precip": 6,
+          "snow": 0
+        },
+        {
+          "tMax": 29.7,
+          "tMin": 16.4,
+          "precip": 3,
+          "snow": 0
+        },
+        {
+          "tMax": 24.3,
+          "tMin": 10.8,
+          "precip": 3,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "amenities": [
       "Running Water",
@@ -5742,7 +8901,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.718Z"
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "terrain": {
       "elevation": 356.5,
@@ -5759,6 +8918,87 @@
       "ruggedness": 26.9,
       "ruggednessLabel": "Undulating",
       "summary": "Valley floor, 186m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 352,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 22.8,
+          "tMin": 10,
+          "precip": 14,
+          "snow": 0
+        },
+        {
+          "tMax": 27,
+          "tMin": 12.7,
+          "precip": 1,
+          "snow": 0
+        },
+        {
+          "tMax": 31.9,
+          "tMin": 17.2,
+          "precip": 6,
+          "snow": 0
+        },
+        {
+          "tMax": 37.3,
+          "tMin": 22.7,
+          "precip": 4,
+          "snow": 0
+        },
+        {
+          "tMax": 39.4,
+          "tMin": 26.4,
+          "precip": 9,
+          "snow": 0
+        },
+        {
+          "tMax": 36.8,
+          "tMin": 26.9,
+          "precip": 105,
+          "snow": 0
+        },
+        {
+          "tMax": 31.1,
+          "tMin": 24.7,
+          "precip": 343,
+          "snow": 0
+        },
+        {
+          "tMax": 29.5,
+          "tMin": 23.8,
+          "precip": 383,
+          "snow": 0
+        },
+        {
+          "tMax": 30.5,
+          "tMin": 23.1,
+          "precip": 162,
+          "snow": 0
+        },
+        {
+          "tMax": 31.1,
+          "tMin": 19.8,
+          "precip": 35,
+          "snow": 0
+        },
+        {
+          "tMax": 27.7,
+          "tMin": 15.2,
+          "precip": 8,
+          "snow": 0
+        },
+        {
+          "tMax": 23.5,
+          "tMin": 11.3,
+          "precip": 6,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "amenities": [
       "Pet Friendly",
@@ -5888,7 +9128,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.718Z"
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "terrain": {
       "elevation": 243,
@@ -5905,6 +9145,87 @@
       "ruggedness": 4.1,
       "ruggednessLabel": "Smooth",
       "summary": "Upper slope, 42m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 251,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 23,
+          "tMin": 9.1,
+          "precip": 4,
+          "snow": 0
+        },
+        {
+          "tMax": 28,
+          "tMin": 13.1,
+          "precip": 1,
+          "snow": 0
+        },
+        {
+          "tMax": 32.7,
+          "tMin": 18.6,
+          "precip": 3,
+          "snow": 0
+        },
+        {
+          "tMax": 38.4,
+          "tMin": 24,
+          "precip": 2,
+          "snow": 0
+        },
+        {
+          "tMax": 40.8,
+          "tMin": 27.3,
+          "precip": 5,
+          "snow": 0
+        },
+        {
+          "tMax": 39.1,
+          "tMin": 27.9,
+          "precip": 32,
+          "snow": 0
+        },
+        {
+          "tMax": 36.1,
+          "tMin": 27.1,
+          "precip": 106,
+          "snow": 0
+        },
+        {
+          "tMax": 34.2,
+          "tMin": 25.9,
+          "precip": 98,
+          "snow": 0
+        },
+        {
+          "tMax": 35.4,
+          "tMin": 25.7,
+          "precip": 42,
+          "snow": 0
+        },
+        {
+          "tMax": 35.1,
+          "tMin": 22.6,
+          "precip": 5,
+          "snow": 0
+        },
+        {
+          "tMax": 29.7,
+          "tMin": 16.1,
+          "precip": 5,
+          "snow": 0
+        },
+        {
+          "tMax": 24.9,
+          "tMin": 10.8,
+          "precip": 1,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "amenities": [],
     "tags": [],
@@ -6029,7 +9350,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.718Z"
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "terrain": {
       "elevation": 649.3,
@@ -6046,6 +9367,87 @@
       "ruggedness": 13.2,
       "ruggednessLabel": "Smooth",
       "summary": "Mid slope, 108m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 656,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 28,
+          "tMin": 17,
+          "precip": 5,
+          "snow": 0
+        },
+        {
+          "tMax": 30.9,
+          "tMin": 18.7,
+          "precip": 1,
+          "snow": 0
+        },
+        {
+          "tMax": 33.9,
+          "tMin": 21.7,
+          "precip": 7,
+          "snow": 0
+        },
+        {
+          "tMax": 35.8,
+          "tMin": 24.2,
+          "precip": 16,
+          "snow": 0
+        },
+        {
+          "tMax": 35.6,
+          "tMin": 25,
+          "precip": 40,
+          "snow": 0
+        },
+        {
+          "tMax": 30.8,
+          "tMin": 23.2,
+          "precip": 154,
+          "snow": 0
+        },
+        {
+          "tMax": 27.7,
+          "tMin": 22.1,
+          "precip": 252,
+          "snow": 0
+        },
+        {
+          "tMax": 27.5,
+          "tMin": 21.7,
+          "precip": 215,
+          "snow": 0
+        },
+        {
+          "tMax": 27.6,
+          "tMin": 21.4,
+          "precip": 227,
+          "snow": 0
+        },
+        {
+          "tMax": 28.5,
+          "tMin": 20.5,
+          "precip": 90,
+          "snow": 0
+        },
+        {
+          "tMax": 28.4,
+          "tMin": 18.7,
+          "precip": 17,
+          "snow": 0
+        },
+        {
+          "tMax": 27.5,
+          "tMin": 17,
+          "precip": 6,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "amenities": [],
     "tags": [],
@@ -6170,7 +9572,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.718Z"
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "terrain": {
       "elevation": 496,
@@ -6187,6 +9589,87 @@
       "ruggedness": 22.5,
       "ruggednessLabel": "Undulating",
       "summary": "Lower slope, 201m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 474,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 29.9,
+          "tMin": 17.4,
+          "precip": 6,
+          "snow": 0
+        },
+        {
+          "tMax": 32.3,
+          "tMin": 18.4,
+          "precip": 1,
+          "snow": 0
+        },
+        {
+          "tMax": 34.6,
+          "tMin": 20.5,
+          "precip": 4,
+          "snow": 0
+        },
+        {
+          "tMax": 35,
+          "tMin": 22.2,
+          "precip": 21,
+          "snow": 0
+        },
+        {
+          "tMax": 32.6,
+          "tMin": 23.2,
+          "precip": 96,
+          "snow": 0
+        },
+        {
+          "tMax": 27.2,
+          "tMin": 22.5,
+          "precip": 350,
+          "snow": 0
+        },
+        {
+          "tMax": 25,
+          "tMin": 21.6,
+          "precip": 476,
+          "snow": 0
+        },
+        {
+          "tMax": 25.9,
+          "tMin": 21.6,
+          "precip": 292,
+          "snow": 0
+        },
+        {
+          "tMax": 27,
+          "tMin": 21.6,
+          "precip": 220,
+          "snow": 0
+        },
+        {
+          "tMax": 29,
+          "tMin": 21.2,
+          "precip": 151,
+          "snow": 0
+        },
+        {
+          "tMax": 29.8,
+          "tMin": 19.8,
+          "precip": 26,
+          "snow": 0
+        },
+        {
+          "tMax": 29.4,
+          "tMin": 18.5,
+          "precip": 11,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:07.752Z"
     },
     "amenities": [],
     "tags": [],
@@ -6311,7 +9794,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.718Z"
+      "cachedAt": "2026-08-12T19:18:13.848Z"
     },
     "terrain": {
       "elevation": 301.8,
@@ -6328,6 +9811,87 @@
       "ruggedness": 49.2,
       "ruggednessLabel": "Undulating",
       "summary": "North-facing mid slope, 312m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 316,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 30.9,
+          "tMin": 19.5,
+          "precip": 8,
+          "snow": 0
+        },
+        {
+          "tMax": 34.2,
+          "tMin": 21,
+          "precip": 1,
+          "snow": 0
+        },
+        {
+          "tMax": 37.6,
+          "tMin": 24.2,
+          "precip": 4,
+          "snow": 0
+        },
+        {
+          "tMax": 39.6,
+          "tMin": 27.2,
+          "precip": 15,
+          "snow": 0
+        },
+        {
+          "tMax": 38.4,
+          "tMin": 27.9,
+          "precip": 56,
+          "snow": 0
+        },
+        {
+          "tMax": 34.7,
+          "tMin": 26,
+          "precip": 68,
+          "snow": 0
+        },
+        {
+          "tMax": 32.5,
+          "tMin": 24.8,
+          "precip": 110,
+          "snow": 0
+        },
+        {
+          "tMax": 32.3,
+          "tMin": 24.6,
+          "precip": 114,
+          "snow": 0
+        },
+        {
+          "tMax": 31.6,
+          "tMin": 24.1,
+          "precip": 145,
+          "snow": 0
+        },
+        {
+          "tMax": 31.4,
+          "tMin": 23.3,
+          "precip": 129,
+          "snow": 0
+        },
+        {
+          "tMax": 30.4,
+          "tMin": 21.8,
+          "precip": 75,
+          "snow": 0
+        },
+        {
+          "tMax": 29.3,
+          "tMin": 20,
+          "precip": 30,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:13.848Z"
     },
     "amenities": [
       "Parking"
@@ -6454,7 +10018,7 @@
       ],
       "gridSize": 10,
       "radiusKm": 5,
-      "cachedAt": "2026-08-08T16:44:05.718Z"
+      "cachedAt": "2026-08-12T19:18:13.848Z"
     },
     "terrain": {
       "elevation": 471.3,
@@ -6471,6 +10035,87 @@
       "ruggedness": 120.4,
       "ruggednessLabel": "Highly broken",
       "summary": "North-facing upper slope, 673m of relief within 10km"
+    },
+    "climate": {
+      "modelElevation": 427,
+      "years": 10,
+      "from": "2016-01-01",
+      "to": "2025-12-31",
+      "monthly": [
+        {
+          "tMax": 26.1,
+          "tMin": 17.2,
+          "precip": 30,
+          "snow": 0
+        },
+        {
+          "tMax": 28.9,
+          "tMin": 17.5,
+          "precip": 5,
+          "snow": 0
+        },
+        {
+          "tMax": 32.7,
+          "tMin": 20.3,
+          "precip": 9,
+          "snow": 0
+        },
+        {
+          "tMax": 35.5,
+          "tMin": 23.2,
+          "precip": 13,
+          "snow": 0
+        },
+        {
+          "tMax": 35.8,
+          "tMin": 25,
+          "precip": 75,
+          "snow": 0
+        },
+        {
+          "tMax": 34.3,
+          "tMin": 25,
+          "precip": 91,
+          "snow": 0
+        },
+        {
+          "tMax": 32,
+          "tMin": 23.8,
+          "precip": 132,
+          "snow": 0
+        },
+        {
+          "tMax": 31.8,
+          "tMin": 23.4,
+          "precip": 122,
+          "snow": 0
+        },
+        {
+          "tMax": 31.1,
+          "tMin": 22.9,
+          "precip": 151,
+          "snow": 0
+        },
+        {
+          "tMax": 29.5,
+          "tMin": 21.8,
+          "precip": 199,
+          "snow": 0
+        },
+        {
+          "tMax": 26.6,
+          "tMin": 20.1,
+          "precip": 279,
+          "snow": 0
+        },
+        {
+          "tMax": 25.5,
+          "tMin": 18.4,
+          "precip": 189,
+          "snow": 0
+        }
+      ],
+      "cachedAt": "2026-08-12T19:18:13.848Z"
     },
     "amenities": [],
     "tags": [
