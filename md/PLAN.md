@@ -1,189 +1,233 @@
-# Plan — Terrain Depth Pass
+# Plan
 
-> Companion to `musafir_CLAUDE_CONTEXT.md`. That file describes the system as designed.
-> This file describes what we are building now and why. Read both.
-
----
-
-## The reframe
-
-The project currently presents as a campground **directory**: a list of places you browse.
-Directories built on this stack are indistinguishable from thousands of YelpCamp forks, and
-the recognition happens before anyone reads the code.
-
-The data sources already assembled here (weather, elevation, terrain, daylight) are not a
-directory's feature set. They are a **decision tool's** feature set. A directory answers
-"what campgrounds exist near here." A decision tool answers "should I go to this one, and
-when."
-
-Everything below follows from committing to that second question.
-
-**Consequence:** the campground detail page is the product. It gets the depth. Discovery,
-filtering, and search are downstream of it and are explicitly deferred.
+What is left to build, and why. Edited in place as things ship. See `CLAUDE.md`
+for current state, `md/DESIGN.md` for the visual system, `md/DATA.md` for where
+numbers come from.
 
 ---
 
-## The core insight driving this pass
+## The thesis
 
-The elevation grid is 100 numbers fetched once and cached forever. It is currently treated
-as raw material for a picture. It is also raw material for **analysis**, and that analysis
-costs zero additional API calls.
+The project used to present as a campground **directory**: a list of places you
+browse. Directories built on this stack are indistinguishable from thousands of
+YelpCamp forks, and the recognition happens before anyone reads the code.
 
-From those 100 numbers we derive:
+The data assembled here (weather, elevation, terrain, daylight, climate
+normals) is not a directory's feature set. It is a **decision tool's** feature
+set. A directory answers "what campgrounds exist near here." A decision tool
+answers "should I go to this one, and when."
 
-| Property | Meaning | How |
+**Consequence:** the campground detail page is the product. It gets the depth.
+
+The core insight that made it cheap: the elevation grid is 100 numbers fetched
+once and cached forever, and it is raw material for **analysis**, not just for a
+picture. Six derived properties at zero additional API cost produce sentences no
+listing site produces: *"North-facing mid slope, 380m of relief within 10km."*
+That is the differentiator, more than any visual treatment.
+
+---
+
+## Done
+
+Stages 1 through 4 of the original build order, plus a full UI redo and the
+climate work, which was not in the original plan at all.
+
+- Schema, elevation service, terrain analysis, climate service, seasonality
+- Lazy elevation fetch cached forever, cache invalidated on location change
+- Live weather and daylight, never stored
+- Topo card, cross-section, hover-to-read, twelve-month season strip
+- Amenities and tags pickers on the forms
+- Text search, price filter, sort, pagination on the explore page
+- Photograph carousel
+- The parchment design system across every page
+- **45 real OpenStreetMap campgrounds** with real terrain and climate, replacing
+  the stock YelpCamp census-cities seed. This was an open question in an earlier
+  version of this plan and it is resolved.
+
+`npm test` is 38 passing, covering `terrainAnalysis` and `seasonality` only.
+
+---
+
+## 0. Open a browser
+
+**Blocking everything below that touches the UI.** Three sessions of front-end
+work have never been rendered in a browser, and Bootstrap 5.3 landed underneath
+a navbar designed without it. The compatibility guard in `app.css` is predicted,
+not observed.
+
+Load home, explore, show, new, edit, login, register. Navbar first. Test the
+mobile menu and the flash dismiss specifically; they are the least proven things
+in the codebase.
+
+---
+
+## 1. Stylesheet cleanup
+
+Two items, both worth doing on their own merits, and **neither of them needs
+Bootstrap**. Do these before deciding anything about Bootstrap, because they are
+most of the win and they carry no risk.
+
+**Forms, element-first.** The biggest single win. There are roughly 55 form
+rules across `.form-*`, `.check-*`, `.auth-*`, `.file-upload-*`, `.price-input-*`
+and `.image-delete-*`, against 27 `<input>`, 37 `<label>`, 3 `<textarea>` and 1
+`<select>` in the templates. Style the elements for defaults, keep only the
+genuinely bespoke pieces (the amenity chip picker, the image-delete grid, the
+upload dropzone). **Roughly 55 rules down to 15.**
+
+One gotcha to design in from the start: a bare `input {}` also hits checkboxes,
+radios and file inputs. Use
+`input:not([type="checkbox"]):not([type="radio"]):not([type="file"])`, or wrap
+it in `:where()` to keep specificity at zero.
+
+**Collapse the label rules.** Fourteen rules are all "a label", differing only in
+size and which plate they sit on: `.section-label`, `.stat-label`,
+`.price-label`, `.filter-label`, `.sub-label`, `.runhead`, `.season-key`,
+`.season-month__state`, `.scale-bar`, `.readings`, `.plate-viewer__count`,
+`.chip`, `.check-chip span`, `.btn-musafir`. **Collapse to `.label`,
+`.label--sm`, `.label--ruled`.** Name things by what they are, not where they
+sit. The same move already worked for annotations: thirteen rules setting the
+italic hand face became one grouped rule.
+
+**Then `views/error.ejs`.** Nine `error-*` classes and zero rules. It renders
+unstyled today. A bordered card, a rubric-ink warning mark, an engraved title,
+and a monospaced stack trace behind the dev-only guard.
+
+**Then fold `home.css` in.** 380 lines, the one place a second stylesheet still
+exists. `home.ejs` is standalone with its own `<head>`, so this means either
+converting it to use `boilerplate.ejs` or accepting the duplication permanently.
+
+---
+
+## 2. Decide about Bootstrap
+
+Bootstrap 5.3.3 is loaded and **no markup uses it**. That is a deliberate
+pause, not an unfinished migration.
+
+The case for adopting it: 27 inputs and 37 labels, and form styling is tedious
+work Bootstrap does competently. The agreed order, if it goes ahead, is forms
+first, then the show page (112 distinct classes on one page; with Bootstrap
+doing layout and spacing the honest bespoke set is about 35), then `/campgrounds`
+last alongside the search overhaul, since that work replaces the filter sidebar
+anyway.
+
+**If it goes ahead: theme Bootstrap, do not override it.** 5.3 exposes
+`--bs-body-bg`, `--bs-body-color`, `--bs-border-color`, `--bs-primary`,
+`--bs-btn-*`, `--bs-card-*`, `--bs-navbar-*` and the rest. Map the palette onto
+those and every component recolours with **no override rules at all**. Every
+`!important` this project ever had came from fighting Bootstrap's selectors
+instead of theming its tokens.
+
+The case against: the stylesheet audit found it is not actually bloated (344
+rules, 11.6KB gzipped), Bootstrap's defaults are a modern flat UI fighting a
+hand-drawn chart, and a full conversion was already built and rejected on sight.
+
+**Do step 1 first, then look at the diff and decide.** If the stylesheet is down
+40 rules and reads clean, pull the CDN tags and reclaim the CSP entry. If forms
+are still fighting you, keep it and convert one page. Either path is reversible
+from here; neither is once markup starts depending on it.
+
+---
+
+## 3. Finish or delete the three stubs
+
+Each of these has a schema field or markup but no code behind it. Half-built
+reads worse than not started.
+
+| Stub | What exists | What is missing |
 |---|---|---|
-| **Elevation** | Height at the campground | Bilinear centre of the grid |
-| **Relief** | How dramatic the country is | `max - min` across the grid |
-| **Position** | Valley floor / mid slope / ridge | Percentile rank of centre within the grid |
-| **Aspect** | Which way the land faces | Horn's method gradient at centre, as compass bearing |
-| **Slope** | How steep it is underfoot | `atan(hypot(dz/dE, dz/dN))` |
-| **Ruggedness** | How broken the ground is | Terrain Ruggedness Index over interior cells |
+| **Bookmarking** | `savedCampgrounds` on the User schema | Everything else. Zero references anywhere in controllers, routes or views. |
+| **Distance from user** | `.distance-badge` in `index.ejs`, styled in `app.css` | No `distance.js`. The span is `display:none` forever. |
+| **Region** | The `region` field, cleared on location change | No `geocodeRegion.js`. The field is only ever set to `undefined`, never populated. |
 
-This produces sentences no listing site produces: *"North-facing mid slope, 380m of relief
-within 10km."* That is the differentiator, more than any visual treatment.
+**Bookmarking is the one to do.** Highest value per line, and it is the only
+thing that makes having an account mean anything. One route file, one view, one
+button. Toggle on `POST /campgrounds/:id/bookmark` returning JSON, list on
+`GET /saved`.
 
----
+**Distance is cheap** and the markup is already waiting: one IIFE reading
+`data-lat`/`data-lng` off the cards, `navigator.geolocation`, haversine.
 
-## Visual treatment: the topo card
-
-### Rejected
-
-Pulsing, drifting, looping, or breathing contours. Continuous motion on a data visualization
-reads as a screensaver. Impressive for two views, cheap forever after.
-
-### Building
-
-1. **Draw-on reveal, ordered from the campground's own elevation outward.**
-   Contours nearest the campground's elevation draw first, spreading to higher and lower.
-   Because contours near the campground's elevation pass near the campground, this radiates
-   outward from the pin both in elevation-space and visually. One-shot, on scroll into view.
-   Technique: `pathLength="1"` + `stroke-dasharray` + animated `stroke-dashoffset`.
-
-2. **Cross-section profile.** The grid row through the campground, drawn side-on as an
-   elevation profile with a dot marking where you would stand. Two views of the same data,
-   one from above and one from the side. Real cartography does this; web projects almost
-   never do. Cheap, because the data is already in memory.
-
-3. **Hover to read.** Hovering a contour highlights it and surfaces its elevation. Turns the
-   card from an image into an instrument.
-
-4. **`prefers-reduced-motion`** jumps straight to the final state.
-
-### Two technical requirements that decide whether this looks good
-
-- **The grid is capped at 10x10 by the API.** OpenTopoData's public endpoint accepts a
-  maximum of 100 locations per request. That is *why* the grid is 10x10, and it cannot be
-  raised by asking for more points without multiplying requests against a 1000/day budget.
-  Contours from a 10x10 grid are visibly polygonal. **Fix: bilinear upsample to 40x40 on the
-  client before contouring.** Free, instant, and it is the whole difference between "chunky"
-  and "looks like a real map."
-
-- **Sample a square box on the ground, not in degrees.** A fixed degree step produces a box
-  that is narrower east-west than north-south by `cos(latitude)`. At 30°N that is a 13%
-  horizontal squash in every rendered contour. Divide the longitude step by `cos(lat)`.
+**Region only earns its place if search uses it as a facet.** Do it with the
+search overhaul below, or drop the field.
 
 ---
 
-## Deviations from `musafir_CLAUDE_CONTEXT.md`
+## 4. Constraint-based discovery
 
-The context doc is the spec, but three things in it are wrong or will not work as written.
-Recording them here so the divergence is deliberate.
+**The biggest product gap.** There are terrain properties nobody else has, and
+the only way to find anything is a regex over title, location and description.
 
-1. **`grid[54]` is not the centre.** On a 10x10 grid there is no exact centre cell; index 54
-   is `(row 5, col 4)`, offset half a step, roughly 550m away at a 10km box width. We take
-   the mean of the four central cells (44, 45, 54, 55) instead. Same zero cost, correct
-   position.
+*"Above 2000m, south-facing, under 300km away, low ruggedness, prime in
+December"* is a query no competitor can answer. Every input to it is already on
+the document: `elevation`, `terrain.aspect`, `terrain.slope`,
+`terrain.ruggedness`, `terrain.relief`, `climate`, `geometry`.
 
-2. **`updateCampground` cannot host the location-change check as written.**
-   `controllers/campgrounds.js` calls `findByIdAndUpdate` without `{ new: true }`, so the
-   returned document is pre-update while the database write has already happened. The route
-   also early-returns on geocode failure *after* the location column was already mutated,
-   leaving the record inconsistent. This route gets restructured, not patched.
-
-3. **Joi will reject the new fields.** `schemas.js` defines a strict `Joi.object()`, which
-   errors on unknown keys. `amenities` and `tags` must be declared there or every form
-   submission carrying them fails validation.
-
-Also worth noting: the show page currently serves **hardcoded fake sunrise/sunset**
-(`mockSunData` in the show controller). That gets replaced with the live fetch.
+This is where the data stops being decoration and becomes a product. It replaces
+the filter sidebar, which is why `/campgrounds` should not be restyled before
+this lands.
 
 ---
 
-## Build order
+## 5. The rest, ranked
 
-Each stage leaves the app working.
+**Sun and shade on the actual slope.** Aspect, slope, sunrise and sunset are all
+present. That is enough to say "this slope loses the sun at 15:40 in December".
+That single line is the kind of detail that makes someone stop scrolling.
 
-### Stage 1 — Data foundation
-- `models/campground.js`: `elevation`, `elevationGrid`, `terrain`, `amenities`, `tags`, `region`
-- `models/user.js`: `savedCampgrounds`
-- `schemas.js`: allow `amenities` and `tags`
-- `utils/elevationService.js`: grid fetch, square-on-ground sampling
-- `utils/terrainAnalysis.js`: the derivation table above
+**Compare two campgrounds.** Decision tools compare. Two topo cards, two
+profiles, two terrain readouts, side by side.
 
-### Stage 2 — Route wiring
-- Show controller: lazy elevation fetch, cache permanently, derive terrain once, store it
-- Show controller: replace `mockSunData` with live sunrise-sunset.org
-- Update controller: restructure, invalidate cached grid on location change
+**Terrain on the explore cards.** Every card is text right now. A 40px contour
+sparkline per card, rendered only where a grid is already cached, would make the
+index page unmistakable at a glance. Must not trigger a fetch.
 
-### Stage 3 — Visualization
-- `public/javascripts/topoMap.js`: upsample, contour, animate, cross-section, hover
-- d3 CDN tags in `show.ejs` (`cdn.jsdelivr.net` is already CSP-whitelisted)
-- Topo card CSS
+**Build the verification harness as real files under `test/`.** Three handovers
+have now asked for this and it still has not happened. The template-render and
+class-diff checks, plus the `vm`-based topo harness, all live in scratchpads and
+are thrown away every session. The black-fill bug is exactly what they would
+have caught. Nothing client-side is tested at all.
 
-### Stage 4 — Composition
-- Restructure the show page around three ideas: **the land**, **the sky**, **the practicalities**
-- Surface the derived terrain readout as prose, not just numbers
-- Amenities and tags checkbox grids on `new.ejs` / `edit.ejs`
+**Two data loose ends:**
 
-### Stage 5 — Identity
-- Name decision (see below)
-- Contour line as repeating brand motif: dividers, empty states, 404, loading states
-- Voice pass on copy
-- Wordmark
+- **Frost should be a modifier, not a state.** Testing against places with known
+  seasons got 5 of 6 right and missed Shimla: at 2,200m it reports January as
+  prime when reality is near-freezing nights and regular snow. The obvious fix,
+  moving `cold` to freezing nights, breaks Dzongri, whose correct October to
+  December window would vanish, because frosty nights at altitude are normal and
+  do not disqualify. Let a month stay prime and carry a "freezing nights" note
+  instead. This also rescues `cold`, which currently fires once across all 45.
+- **`utils/climateService.js` has no tests.** The aggregation from 3,650 daily
+  readings to 12 monthly means is unverified: leap years, the year boundary, gaps
+  in the reanalysis, the divide-by-years for totals. Arithmetic that could be
+  quietly off by a few percent with nobody noticing.
 
-Deliberately after the terrain work, because the terrain work teaches us what the brand is.
-
----
-
-## Deferred, on purpose
-
-Filtering and constraint-based discovery, bookmarking, distance-from-user, region reverse
-geocoding. All are cheap once the foundation exists. None of them change how the project
-reads. They come after Stage 4.
-
-**Not building at all:** chat, payments, admin dashboard, follower feeds, notifications.
-Standard resume padding, zero signal.
+**A backfill script** for campgrounds without cached grids was offered and never
+needed, since the seed bakes grids and climate in. It will be needed once users
+start adding campgrounds.
 
 ---
 
-## Open decisions
+## Identity
 
-**Name.** Current: Musafir (traveller). Candidates, ranked:
+Deliberately last, because the terrain work teaches us what the brand is. The
+parchment redo already front-ran the visual half of this.
+
+**The name.** Code stays on `Musafir` until this is decided.
 
 | Name | Case |
 |---|---|
-| **Cairn** | A stack of stones marking a route for whoever comes next. Exactly what the product is. Short, ownable, gives a logo for free that doubles as contour rings edge-on. |
-| **Relief** | The terrain term for elevation range, the literal number we compute. Also means escape from the city. Sharpest concept; hardest to own as a common word. |
+| **Cairn** | A stack of stones marking a route for whoever comes next. Exactly what the product is. Short, ownable, and the logo doubles as contour rings edge-on. |
+| **Relief** | The terrain term for elevation range, the literal number we compute. Also means escape from the city. Sharpest concept, hardest to own as a common word. |
 | **Padav** (पड़ाव) | Hindi for a halt or campsite on a journey. Keeps the cultural root, more precise than Musafir. |
 | **Treeline** | The elevation where forest stops. Evocative, self-explanatory. |
-| **Groundtruth** | Surveying term for data verified on site. Fits the real-places positioning; reads tech rather than outdoors. |
+| **Groundtruth** | Surveying term for data verified on site. Fits the positioning; reads tech rather than outdoors. |
 
-Not blocking. Code stays on `Musafir` until Stage 5.
-
-**Seed data.** Fake seeded campgrounds with placeholder descriptions are the loudest
-remaining tutorial signal. Replacing them with real, verified places would change a
-reviewer's read of this project more than any single feature. Scope and timing undecided.
+Then: contour line as a repeating brand motif across dividers, empty states, 404
+and loading states; a voice pass on the copy; a wordmark.
 
 ---
 
-## Rules carried over from the context doc
+## Not building at all
 
-1. Elevation grid is fetched **lazily on first show-page view**, never on creation, and
-   cached permanently. OpenTopoData allows 1000 calls/day at 1 req/sec. Non-negotiable.
-2. Sunrise/sunset is **never stored**. It changes daily. Fetched live, `null` on failure.
-3. Terrain failures are **silent**. The topo card is enhancement, not critical path. The page
-   renders without it.
-4. No frontend framework. Vanilla JS, IIFE pattern, CDN script tags, no import/export.
-5. Design system is fixed. Only `var(--bg)`, `var(--surface)`, `var(--amber)`, `var(--sage)`,
-   `var(--muted)`, `var(--white)`. No new colours.
+Chat, payments, admin dashboard, follower feeds, notifications. Standard resume
+padding, zero signal.

@@ -371,10 +371,12 @@
     svg.appendChild(trail);
 
     // The marker and labels are HTML, not SVG: preserveAspectRatio="none" would
-    // stretch a circle into an ellipse and the text with it.
+    // stretch the mark into an ellipse and the text with it.
     const standing = cut.centre;
-    const marker = document.createElement("span");
+    const marker = document.createElement("img");
     marker.className = "topo-profile__marker";
+    marker.src = "/images/weather/sunny.gif";
+    marker.alt = "";
     marker.style.top = `${y(standing)}%`;
     if (!reduced) {
       marker.style.opacity = "0";

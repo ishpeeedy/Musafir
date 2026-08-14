@@ -84,10 +84,10 @@ app.use(session(sessionConfig));
 app.use(flash());
 app.use(helmet());
 
-// jsdelivr serves the d3 bundles on the show page; maptiler serves the map SDK.
-// Bootstrap and Font Awesome are no longer loaded from anywhere.
+// jsdelivr serves Bootstrap and the d3 bundles; maptiler serves the map SDK.
 const scriptSrcUrls = ["https://cdn.jsdelivr.net", "https://cdn.maptiler.com/"];
 const styleSrcUrls = [
+  "https://cdn.jsdelivr.net",
   "https://fonts.googleapis.com/",
   "https://fonts.gstatic.com/",
   "https://cdn.maptiler.com/",

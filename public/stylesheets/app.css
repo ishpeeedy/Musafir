@@ -36,6 +36,11 @@
 
   --radius: 2px;
 
+  /* Mats a white-carded GIF into the paper. Used by the weather art and by the
+     marker on the cross-section, so the two cannot drift apart. The hue
+     rotation lands it on the purple plate; drop it to 0deg for a brown one. */
+  --gif-mat: sepia(1) hue-rotate(232deg) saturate(0.6) brightness(1.12) contrast(1.18);
+
   --font-display: "IM Fell English SC", "EB Garamond", Georgia, serif;
   --font-body: "EB Garamond", Georgia, serif;
   --font-hand: "IM Fell English", Georgia, serif;
@@ -44,6 +49,31 @@
 /* Fonts load in boilerplate.ejs. IM Fell SC for labels, its italic for
    annotations, Garamond for body and all numerals — see Figures at the bottom
    for why the numerals are split out. */
+
+/* ------------------------------------------------------------
+   Bootstrap compatibility
+
+   Bootstrap 5.3 loads before this file, so on equal specificity our rules win
+   per property. That covers most of it. These are the cases where Bootstrap
+   sets a property we never declared, so there is nothing of ours to win with.
+
+   Ten of our class names collide with Bootstrap components: .navbar and its
+   children, .nav-link, .alert and variants, .form-control. Only the two below
+   actually change layout. Delete each line as that component is converted to
+   real Bootstrap markup.
+   ------------------------------------------------------------ */
+
+/* Bootstrap stacks .navbar-nav vertically unless it sits inside a
+   .navbar-expand-* wrapper, which our markup does not use yet. */
+.navbar-nav {
+  flex-direction: row;
+}
+
+/* Bootstrap gives this flex-basis: 100%, which pushes the right-hand group
+   onto its own line. */
+.navbar-collapse {
+  flex-basis: auto;
+}
 
 /* ------------------------------------------------------------
    Reset & Base
@@ -1850,7 +1880,7 @@ html:has(.detail-page) {
   max-width: none;
   object-fit: contain;
   mix-blend-mode: multiply;
-  filter: sepia(1) hue-rotate(232deg) saturate(0.6) brightness(1.12) contrast(1.18);
+  filter: var(--gif-mat);
 }
 
 .wx--m {
@@ -2027,7 +2057,11 @@ html:has(.detail-page) {
    a face and colour that fight the sheet. The canvas is grown past the frame so
    those corners fall outside it, while the right edge still lines up and the
    zoom controls survive. Credit moves into .plate-caption instead. */
-#map {
+/* Scoped to the square deliberately. This is the show page's crop, and the
+   listing page shares the id #map: unscoped, it absolutely positions the
+   cluster map and shoves it 34px left, which takes it out of flow and
+   collapses the hero to nothing. */
+.plate #map {
   position: absolute;
   left: -34px;
   top: 0;
@@ -2154,15 +2188,19 @@ html:has(.detail-page) {
 
 /* Centred on the line by transform rather than by guessing a negative margin
    that has to be kept in step with the width. */
+/* The pin, marking where the campground sits on the section. Matted into the
+   paper by the same filter the weather art uses. Nudged up off centre so it
+   reads as sitting on the ridge rather than buried in it. */
 .topo-profile__marker {
   position: absolute;
   left: 50%;
-  width: 9px;
-  height: 9px;
-  transform: translate(-50%, -50%);
-  border: 1.5px solid var(--ink-deep);
-  border-radius: 50%;
-  background: var(--paper);
+  width: 2rem;
+  height: 2rem;
+  transform: translate(-50%, -62%);
+  max-width: none;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: var(--gif-mat);
 }
 
 .topo-profile__axis {
@@ -2237,6 +2275,11 @@ html:has(.detail-page) {
 
 .season-month:last-child {
   border-right: 0;
+}
+
+/* The month you are standing in, marked the way the forecast marks today. */
+.season-month--now {
+  background: rgba(52, 35, 61, 0.09);
 }
 
 .season-month__name {  font-size: 0.64rem;

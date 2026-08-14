@@ -7,6 +7,10 @@ const map = new maptilersdk.Map({
   zoom: 3,
 });
 
+// Same parchment treatment as the show page. Without this the listing map is
+// full-colour OUTDOOR with only the sepia canvas filter over the top.
+themeMap(map);
+
 map.on("load", function () {
   map.addSource("campgrounds", {
     type: "geojson",

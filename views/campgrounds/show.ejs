@@ -314,6 +314,8 @@ function getWeatherIcon(condition) {
       const lo = Math.min.apply(null, means);
       const hi = Math.max.apply(null, means);
       const barHeight = (m) => Math.round(20 + (((m.tMax + m.tMin) / 2 - lo) / ((hi - lo) || 1)) * 80);
+      // The month you are standing in, marked the way the forecast marks today.
+      const thisMonth = new Date().getMonth();
     %>
     <div class="season-section">
       <p class="section-label section-label--ruled section-label--sky">When to go</p>
@@ -328,8 +330,8 @@ function getWeatherIcon(condition) {
       <p class="season-verdict"><%= seasonality.summary %></p>
 
       <div class="season-grid">
-        <% seasonality.months.forEach(m => { %>
-          <div class="season-month season-month--<%= m.state %>" title="<%= m.name %>: <%= m.label %>">
+        <% seasonality.months.forEach((m, i) => { %>
+          <div class="season-month season-month--<%= m.state %> <%= i === thisMonth ? 'season-month--now' : '' %>" title="<%= m.name %>: <%= m.label %>">
             <span class="season-month__name"><%= m.name.slice(0, 3) %></span>
             <span class="season-month__track">
               <span class="season-month__bar" style="height:<%= barHeight(m) %>%"></span>
@@ -437,6 +439,7 @@ function getWeatherIcon(condition) {
   const campground = <%- JSON.stringify(campground) %>;
 </script>
 <script src="/javascripts/gallery.js"></script>
+<script src="/javascripts/mapTheme.js"></script>
 <script src="/javascripts/showPageMap.js"></script>
 <!-- d3-array first: d3-geo and d3-contour both resolve it off the global d3 -->
 <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>

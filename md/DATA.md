@@ -107,7 +107,7 @@ All in `utils/terrainAnalysis.js`.
 
 | Value | Method |
 |---|---|
-| Elevation | Mean of the four central cells. A 10x10 grid has no centre cell; the spec's `grid[54]` is half a step off in both axes, roughly 550m away on a 10km box |
+| Elevation | Mean of the four central cells (44, 45, 54, 55). A 10x10 grid has no centre cell; the obvious `grid[54]` is half a step off in both axes, roughly 550m away on a 10km box |
 | Relief | `max - min` across the grid |
 | Position | Percentile rank of the centre within the grid, labelled valley floor through ridge. Below 20m of relief it reports "level ground", because ranking noise is not information |
 | Aspect | Horn's method gradient, the standard GIS slope kernel, averaged over the four cells around the true centre. Reported as the compass bearing the land **falls toward**. Suppressed below 1° of slope, where a fall line would be noise dressed as fact |
@@ -270,3 +270,43 @@ thing in the output a reader should not trust.
 
 The first two are one-time costs per campground and are already paid for all 45
 seeded ones. Neither runs on the index page, on creation, or on any list view.
+
+WeatherAPI's free tier is 1,000,000 calls/month. At 8 per view that is about
+125,000 campground views. A 1 to 2 hour cache would cut it by 90% if that ever
+becomes the constraint.
+
+---
+
+## Appendix: the `weather` local
+
+What `utils/weatherService.js` hands the view. `null` if the fetch failed, so
+every reference is guarded.
+
+**`weather.current`** — `temp_c`, `temp_f`, `feelslike_c`, `feelslike_f`,
+`condition` (text), `icon` (URL), `humidity`, `wind_kph`, `wind_mph`,
+`precip_mm`, `precip_in`, `uv`, `last_updated`.
+
+**`weather.forecast`** — array of 3 days, index 0 is today. Each carries `date`,
+`maxtemp_c`, `maxtemp_f`, `mintemp_c`, `mintemp_f`, `avgtemp_c`, `avgtemp_f`,
+`condition`, `icon`, `daily_chance_of_rain`, `daily_chance_of_snow`,
+`maxwind_kph`, `totalprecip_mm`, `avghumidity`, `uv`.
+
+**`weather.history`** — array of 7 past days. `date`, `maxtemp_c`, `mintemp_c`,
+`avgtemp_c`, `condition`, `icon`, `totalprecip_mm`, `avghumidity`.
+
+**`weather.historicalAverage`** — `avgtemp_c`, `avgtemp_f`, `total_precip_mm`,
+`total_precip_in`, `avg_humidity`. All strings, already rounded.
+
+**`weather.location`** — `name`, `region`, `country`, `lat`, `lon`, `tz_id`,
+`localtime`.
+
+**`weather.alerts`** — array, usually empty. Each has `headline`, `event`,
+`desc`.
+
+Note that `weather.location.region` is WeatherAPI's idea of the region and is
+unrelated to `campground.region`, which is a separate field that nothing
+currently populates.
+
+**The `icon` URLs are WeatherAPI's own cartoon PNGs and are not used on the show
+page.** The show page draws its own ink symbols in an inline SVG sprite. Do not
+reintroduce the remote icons; see the no-emoji rule in `md/DESIGN.md`.
