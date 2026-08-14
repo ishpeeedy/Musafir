@@ -20,8 +20,10 @@
   const SVG_NS = "http://www.w3.org/2000/svg";
   const OUT_SIZE = 40; // upsampled grid resolution
   const LAYERS = 12; // contour lines drawn
+  const INDEX_EVERY = 3; // every nth contour is an index line, drawn heavier
   const DRAW_MS = 900; // how long one contour takes to draw itself
   const STAGGER_MS = 70; // gap between successive contours starting
+  const TRAIL_MS = 1100; // the dashed route walking the cross-section
 
   const container = document.getElementById("topo-container");
   if (!container) return;
@@ -71,17 +73,27 @@
   ).matches;
 
   const paths = features.map((feature, i) => {
+    // Every nth line is an index contour: heavier, darker, and the only one
+    // that carries its elevation. Standard on any printed topographic sheet,
+    // and it is what stops twelve equal lines reading as a moire.
+    const isIndex = (i + 1) % INDEX_EVERY === 0;
+    const width = isIndex ? "1.9" : "0.85";
+
     const el = document.createElementNS(SVG_NS, "path");
     el.setAttribute("d", path(feature) || "");
     el.setAttribute("fill", "none");
     // var() as an inline style, not a presentation attribute: Safari does not
     // substitute custom properties in presentation attributes.
-    el.style.stroke = "var(--sage)";
-    el.setAttribute("stroke-width", "1.2");
+    el.style.stroke = isIndex ? "var(--ink-deep)" : "var(--ink)";
+    el.setAttribute("stroke-width", width);
+    el.dataset.baseWidth = width;
     el.setAttribute("vector-effect", "non-scaling-stroke");
     // Higher contours read stronger, but never so faint that a low line
     // disappears against the surface colour.
-    el.setAttribute("opacity", (0.3 + (i / (LAYERS - 1)) * 0.45).toFixed(2));
+    el.setAttribute(
+      "opacity",
+      ((isIndex ? 0.62 : 0.4) + (i / (LAYERS - 1)) * 0.34).toFixed(2),
+    );
 
     if (!reduceMotion) {
       // pathLength normalises every contour to a length of 1, so one dash of 1
@@ -98,6 +110,7 @@
   });
 
   body.appendChild(svg);
+  const lettering = letterIndexContours(svg, features, thresholds, path);
   attachHover(svg, paths, thresholds, body);
 
   // Same terrain from the side. The map above answers "what shape is this
@@ -112,11 +125,16 @@
         : null,
     aspectName: container.dataset.aspectName || null,
   });
-  container.appendChild(profile.el);
+  // The card is a true square holding nothing but the map, so the section goes
+  // below the plate pair rather than inside the frame.
+  (document.getElementById("topo-profile") || container).appendChild(profile.el);
 
   const revealed = paths.concat(profile.line);
 
-  if (reduceMotion) return;
+  if (reduceMotion) {
+    lettering.style.opacity = "1";
+    return;
+  }
 
   // One shot, on scroll into view.
   const observer = new IntersectionObserver(
@@ -128,6 +146,8 @@
         revealed.forEach((el) => {
           el.style.strokeDashoffset = "0";
         });
+        lettering.style.opacity = "1";
+        profile.trailReveal.style.transform = "scaleX(1)";
         profile.marker.style.opacity = "1";
       });
     },
@@ -155,7 +175,7 @@
     const clear = () => {
       if (!active) return;
       active.style.opacity = ""; // falls back to the opacity attribute
-      active.setAttribute("stroke-width", "1.2");
+      active.setAttribute("stroke-width", active.dataset.baseWidth);
       active = null;
     };
 
@@ -172,7 +192,10 @@
         clear();
         active = line;
         line.style.opacity = "1";
-        line.setAttribute("stroke-width", "2.4");
+        line.setAttribute(
+          "stroke-width",
+          (parseFloat(line.dataset.baseWidth) + 1.5).toFixed(2),
+        );
         readout.textContent = `${Math.round(levels[i]).toLocaleString()} m`;
         readout.style.opacity = "1";
       });
@@ -195,6 +218,58 @@
       clear();
       readout.style.opacity = "0";
     });
+  }
+
+  /**
+   * Elevations lettered along the index contours themselves.
+   *
+   * The line is not broken by geometry: the label carries a thick stroke in the
+   * paper colour under its fill (paint-order: stroke), which knocks a hole in
+   * whatever it crosses. That is how a printed sheet does it, and it costs one
+   * CSS property instead of splitting every path.
+   *
+   * @returns {Element} the group holding the labels, hidden until reveal
+   */
+  function letterIndexContours(svgEl, feats, levels, pathGen) {
+    const defs = document.createElementNS(SVG_NS, "defs");
+    const group = document.createElementNS(SVG_NS, "g");
+    // Ids must be unique per document, and two cards could share a page.
+    const uid = "tc" + Math.random().toString(36).slice(2, 8);
+
+    if (!reduceMotion) {
+      group.style.opacity = "0";
+      group.style.transition = `opacity 500ms ease-out ${LAYERS * STAGGER_MS + DRAW_MS}ms`;
+    }
+
+    feats.forEach((feature, i) => {
+      if ((i + 1) % INDEX_EVERY !== 0) return;
+
+      const d = pathGen(feature);
+      if (!d) return;
+
+      const id = `${uid}-${i}`;
+      const guide = document.createElementNS(SVG_NS, "path");
+      guide.setAttribute("id", id);
+      guide.setAttribute("d", d);
+      defs.appendChild(guide);
+
+      const text = document.createElementNS(SVG_NS, "text");
+      text.setAttribute("class", "topo-contour-label");
+      text.setAttribute("font-size", "0.72");
+      text.setAttribute("letter-spacing", "0.05");
+
+      const onPath = document.createElementNS(SVG_NS, "textPath");
+      onPath.setAttribute("href", `#${id}`);
+      onPath.setAttribute("startOffset", "32%");
+      onPath.textContent = String(Math.round(levels[i]));
+
+      text.appendChild(onPath);
+      group.appendChild(text);
+    });
+
+    svgEl.appendChild(defs);
+    svgEl.appendChild(group);
+    return group;
   }
 
   /**
@@ -235,13 +310,16 @@
 
     const area = document.createElementNS(SVG_NS, "path");
     area.setAttribute("d", `${line}L${span},${VIEW_H}L0,${VIEW_H}Z`);
-    area.style.fill = "var(--sage-dim)";
+    // Defined on .topo-card__profile so the contrast is tunable from CSS.
+    // An undefined custom property here is not a no-op: `fill` falls back to
+    // its initial value, which is solid black.
+    area.style.fill = "var(--profile-fill)";
     area.setAttribute("stroke", "none");
 
     const ridge = document.createElementNS(SVG_NS, "path");
     ridge.setAttribute("d", line);
     ridge.setAttribute("fill", "none");
-    ridge.style.stroke = "var(--sage)";
+    ridge.style.stroke = "var(--ink)";
     ridge.setAttribute("stroke-width", "1.5");
     ridge.setAttribute("vector-effect", "non-scaling-stroke");
     ridge.setAttribute("stroke-linejoin", "round");
@@ -253,8 +331,44 @@
       ridge.style.transition = `stroke-dashoffset ${DRAW_MS}ms ease-out ${LAYERS * STAGGER_MS}ms`;
     }
 
+    // The route, walking the ground once the ground exists. A dashed line
+    // cannot draw itself with stroke-dashoffset, because the offset is already
+    // carrying the dash pattern, so it is revealed by a clip rect widening
+    // instead. One shot, left to right, stopping at the far edge.
+    const clipId = "tp" + Math.random().toString(36).slice(2, 8);
+    const clip = document.createElementNS(SVG_NS, "clipPath");
+    clip.setAttribute("id", clipId);
+    clip.setAttribute("clipPathUnits", "userSpaceOnUse");
+
+    const window_ = document.createElementNS(SVG_NS, "rect");
+    window_.setAttribute("x", "0");
+    window_.setAttribute("y", "0");
+    window_.setAttribute("width", String(span));
+    window_.setAttribute("height", String(VIEW_H));
+    window_.style.transformOrigin = "0px 0px";
+    if (!reduced) {
+      window_.style.transform = "scaleX(0)";
+      window_.style.transition = `transform ${TRAIL_MS}ms ease-out ${LAYERS * STAGGER_MS + DRAW_MS * 0.6}ms`;
+    }
+    clip.appendChild(window_);
+
+    const trail = document.createElementNS(SVG_NS, "path");
+    trail.setAttribute("d", line);
+    trail.setAttribute("fill", "none");
+    trail.style.stroke = "var(--ink-deep)";
+    trail.setAttribute("stroke-width", "1.7");
+    trail.setAttribute("stroke-dasharray", "3.5 4.5");
+    trail.setAttribute("stroke-linecap", "round");
+    trail.setAttribute("vector-effect", "non-scaling-stroke");
+    trail.setAttribute("clip-path", `url(#${clipId})`);
+
+    const defs = document.createElementNS(SVG_NS, "defs");
+    defs.appendChild(clip);
+
+    svg.appendChild(defs);
     svg.appendChild(area);
     svg.appendChild(ridge);
+    svg.appendChild(trail);
 
     // The marker and labels are HTML, not SVG: preserveAspectRatio="none" would
     // stretch a circle into an ellipse and the text with it.
@@ -278,15 +392,24 @@
       ? `${Math.round(standing)}m at the pin · section down the ${opts.aspectName.toLowerCase()} fall line · ${spanKm}km`
       : `${Math.round(standing)}m at the pin · west to east section · ${spanKm}km`;
 
+    // The marker is placed in percentages taken straight from the viewBox, so
+    // it has to sit in a box that is exactly the plot and nothing else. The
+    // outer element carries padding for the axis figures and the caption; put
+    // the marker against that and it lands low and right of the line, which
+    // reads as the pin sunk into the hill.
+    const plot = document.createElement("div");
+    plot.className = "topo-profile__plot";
+    plot.appendChild(svg);
+    plot.appendChild(marker);
+
     const el = document.createElement("div");
     el.className = "topo-card__profile";
-    el.appendChild(svg);
-    el.appendChild(marker);
+    el.appendChild(plot);
     el.appendChild(top);
     el.appendChild(bottom);
     el.appendChild(label);
 
-    return { el: el, line: ridge, marker: marker };
+    return { el: el, line: ridge, marker: marker, trailReveal: window_ };
   }
 
   function axisLabel(metres, where) {

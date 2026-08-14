@@ -1,35 +1,49 @@
 /* ============================================================
    MUSAFIR — Design System
-   Dark rugged outdoor aesthetic
+   Two inks on aged paper. Brown carries the land, purple the sky.
+   See md/UI_REDO.md for why, and for the contrast measurements.
    ============================================================ */
 
 /* ------------------------------------------------------------
    CSS Variables
    ------------------------------------------------------------ */
 :root {
-  --bg: #0d1510;
-  --surface: #1a2a1e;
-  --surface-alt: #1f3024;
-  --amber: #e8913a;
-  --amber-dim: rgba(232, 145, 58, 0.15);
-  --amber-border: rgba(232, 145, 58, 0.25);
-  --sage: #6a9e72;
-  --sage-dim: rgba(106, 158, 114, 0.15);
-  --white: #ffffff;
-  --muted: #8fa898;
-  --muted-dim: rgba(143, 168, 152, 0.08);
-  --blue-dot: #5b9bd6;
-  --radius-card: 12px;
-  --radius-input: 8px;
-  --radius-chip: 20px;
-  --font-display: "Syne", "Space Grotesk", system-ui, sans-serif;
-  --font-body: "DM Sans", system-ui, sans-serif;
+  /* Paper */
+  --paper-hi: #dccbb5;
+  --paper: #d2bea5;
+  --paper-lo: #c2ad92;
+
+  /* The land: terrain, place, facts, structure */
+  --ink-soft: #5a4032;
+  --ink: #3f2a1e;
+  --ink-deep: #291a12;
+  --panel: #4a2c22;
+  --knockout: #e2d2ba;
+
+  /* The sky: weather, light, time, season */
+  --plum-soft: #4c355c;
+  --plum: #34233d;
+  --plum-deep: #23162b;
+
+  /* Destructive actions only. Rubrication: the one colour besides the text
+     ink that a scribe was allowed. */
+  --danger: #7a2f1e;
+
+  --rule: rgba(63, 42, 30, 0.42);
+  --rule-faint: rgba(63, 42, 30, 0.22);
+  --rule-sky: rgba(52, 35, 61, 0.42);
+  --wash: rgba(63, 42, 30, 0.12);
+
+  --radius: 2px;
+
+  --font-display: "IM Fell English SC", "EB Garamond", Georgia, serif;
+  --font-body: "EB Garamond", Georgia, serif;
+  --font-hand: "IM Fell English", Georgia, serif;
 }
 
-/* ------------------------------------------------------------
-   Google Fonts import — add to boilerplate.ejs <head> if not present:
-   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-   ------------------------------------------------------------ */
+/* Fonts load in boilerplate.ejs. IM Fell SC for labels, its italic for
+   annotations, Garamond for body and all numerals — see Figures at the bottom
+   for why the numerals are split out. */
 
 /* ------------------------------------------------------------
    Reset & Base
@@ -47,12 +61,34 @@ html {
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--white);
+  background-color: var(--paper);
+  color: var(--ink-deep);
   font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  /* IM Fell English SC ships one weight. Without this, every `font-weight: 600`
+     below it renders as a smeared synthetic bold. Garamond has real weights and
+     is unaffected. */
+  font-synthesis: none;
+  /* Column so the footer sits at the bottom of a short page. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1rem 0;
+}
+
+/* The detail page runs its own width and gutters. */
+.page-main:has(.detail-page) {
+  max-width: none;
+  padding: 0;
 }
 
 img {
@@ -60,21 +96,97 @@ img {
   max-width: 100%;
 }
 
+svg {
+  vertical-align: middle;
+}
+
+/* Inline <symbol> library. Out of flow so it never occupies space. */
+.svg-sprite {
+  position: absolute;
+}
+
+/* Form controls do not inherit type from the page by default; Bootstrap's
+   reboot used to do this for us. Without it every input falls back to the
+   system UI font, which on a page set in Garamond is very obvious. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
 a {
-  color: var(--amber);
+  color: var(--ink-deep);
   text-decoration: none;
 }
 
+/* One ink means a link cannot signal itself by changing colour, so it does what
+   ink on paper does and underlines. */
 a:hover {
-  color: var(--white);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+/* Every label is the engraved face; every annotation is the italic one. Size
+   and tracking differ per component, so only the face lives here. */
+.runhead,
+.section-label,
+.sub-label,
+.form-label-musafir,
+.price-label,
+.price-value,
+.stat-label,
+.stat-value,
+.chip,
+.check-chip span,
+.btn-musafir,
+.forecast-day,
+.forecast-temps,
+.season-month__name,
+.season-month__state,
+.season-month__temp,
+.season-key,
+.scale-bar,
+.reviewer-name,
+.reviewer-avatar,
+.readings,
+.gallery-more-overlay,
+.camp-title,
+.current-temp,
+.history-temps,
+.history-precip,
+.topo-profile__axis,
+.topo-contour-label {
+  font-family: var(--font-display);
+}
+
+.note,
+.camp-location,
+.byline,
+.stat-note,
+.current-feels,
+.forecast-meta,
+.history-date,
+.review-body,
+.no-reviews,
+.season-verdict,
+.season-month__precip,
+.plate-caption,
+.topo-profile__label {
+  font-family: var(--font-hand);
+  font-style: italic;
 }
 
 /* ------------------------------------------------------------
    Navbar
    ------------------------------------------------------------ */
 .navbar {
-  background-color: var(--bg) !important;
-  border-bottom: 1px solid rgba(106, 158, 114, 0.1);
+  background-color: var(--paper);
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid var(--wash);
   padding: 0;
   z-index: 100;
 }
@@ -102,19 +214,49 @@ a:hover {
 .navbar-icon {
   height: 32px;
   width: auto;
-  opacity: 0.85;
 }
 
 .navbar-logo {
   height: 22px;
   width: auto;
-  opacity: 0.85;
+}
+
+/* The wordmark is the one deliberate exception to the plate rule: identity is
+   not data, so it carries the second ink.
+   The logo is a PNG we have no vector for, and it is still the old sage green.
+   Recolouring it: zero the bitmap with a filter so only the element's own
+   background paints, then mask that background to the logo's own silhouette.
+   Filters run before masks, which is what makes the order work. */
+.navbar-logo,
+.navbar-icon,
+.footer-logo,
+.footer-icon {
+  filter: opacity(0);
+  background-color: var(--plum-deep);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.navbar-logo,
+.footer-logo {
+  -webkit-mask-image: url("/images/logo.png");
+  mask-image: url("/images/logo.png");
+}
+
+.navbar-icon,
+.footer-icon {
+  -webkit-mask-image: url("/images/icon.png");
+  mask-image: url("/images/icon.png");
 }
 
 /* Toggler */
 .navbar-toggler {
   background: transparent;
-  border: 1px solid rgba(106, 158, 114, 0.2);
+  border: 1px solid var(--rule-faint);
   border-radius: 6px;
   padding: 0.35rem 0.5rem;
   cursor: pointer;
@@ -124,7 +266,7 @@ a:hover {
 
 .navbar-toggler:focus {
   outline: none;
-  border-color: var(--sage);
+  border-color: var(--ink);
 }
 
 /* Collapse wrapper */
@@ -158,7 +300,7 @@ a:hover {
 .nav-link {
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--muted) !important;
+  color: var(--ink-soft);
   padding: 0.4rem 0.85rem;
   border-radius: 6px;
   text-decoration: none;
@@ -173,25 +315,25 @@ a:hover {
 }
 
 .nav-link:hover {
-  color: var(--white) !important;
-  background: rgba(143, 168, 152, 0.08);
+  color: var(--ink-deep);
+  background: rgba(90, 64, 50, 0.08);
 }
 
 .nav-link.active,
 .nav-link[aria-current="page"] {
-  color: var(--amber) !important;
+  color: var(--ink-deep);
 }
 
 /* Register button — styled differently */
 .nav-link--register {
-  color: var(--amber) !important;
-  border: 1px solid var(--amber-border);
+  color: var(--ink-deep);
+  border: 1px solid var(--rule);
   padding: 0.35rem 1rem;
 }
 
 .nav-link--register:hover {
-  background: var(--amber-dim);
-  color: var(--amber) !important;
+  background: var(--wash);
+  color: var(--ink-deep);
 }
 
 /* Logout button */
@@ -202,12 +344,12 @@ a:hover {
 }
 
 .nav-link--logout {
-  color: var(--muted) !important;
+  color: var(--ink-soft);
 }
 
 .nav-link--logout:hover {
-  color: var(--white) !important;
-  background: rgba(220, 80, 80, 0.08);
+  color: var(--ink-deep);
+  background: rgba(122, 47, 30, 0.08);
 }
 
 /* User badge */
@@ -222,21 +364,21 @@ a:hover {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--sage-dim);
-  border: 1px solid rgba(106, 158, 114, 0.3);
+  background: var(--wash);
+  border: 1px solid var(--rule-faint);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--sage);
+  color: var(--ink);
   flex-shrink: 0;
 }
 
 .navbar-user__name {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--white);
+  color: var(--ink-deep);
 }
 
 /* Mobile */
@@ -256,8 +398,8 @@ a:hover {
     top: 60px;
     left: 0;
     right: 0;
-    background: var(--bg);
-    border-bottom: 1px solid rgba(106, 158, 114, 0.1);
+    background: var(--paper);
+    border-bottom: 1px solid var(--wash);
     padding: 0.75rem 2rem 1rem;
     z-index: 99;
   }
@@ -277,7 +419,7 @@ a:hover {
     margin-left: 0;
     margin-top: 0.5rem;
     padding-top: 0.5rem;
-    border-top: 1px solid rgba(106, 158, 114, 0.08);
+    border-top: 1px solid var(--wash);
     width: 100%;
   }
 
@@ -290,30 +432,49 @@ a:hover {
 /* ------------------------------------------------------------
    Shared Utility
    ------------------------------------------------------------ */
-.section-label {
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+.section-label {  font-size: 0.74rem;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink);
 }
 
-.section-heading {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--white);
+/* A label sitting on a rule that runs out to the margin, the way a plate is
+   captioned. The rule is drawn by the label so the two can never drift apart. */
+.section-label--ruled {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.1rem;
 }
 
-.sub-label {
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 1.25rem 0 0.6rem;
+.section-label--ruled::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.section-label--sky {
+  color: var(--plum);
+}
+
+.section-label--sky.section-label--ruled::after {
+  background: var(--rule-sky);
+}
+
+/* Annotations and asides. */
+.note {  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.note--sky {
+  color: var(--plum-soft);
+}
+
+.prose {
+  font-size: 1.06rem;
+  max-width: 62ch;
+  margin: 0 0 1.4rem;
 }
 
 /* ------------------------------------------------------------
@@ -323,63 +484,65 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  border-radius: var(--radius-input);
-  padding: 0.65rem 1.5rem;
+  border-radius: var(--radius);
+  padding: 0.6rem 1.4rem 0.65rem;
   cursor: pointer;
   transition:
     background 0.2s,
     color 0.2s,
     border-color 0.2s;
-  border: none;
+  border: 1px solid transparent;
   text-decoration: none;
 }
 
+/* No highlight colour exists, so weight does the work: a solid block of ink with
+   the paper knocked out of it. */
 .btn-musafir--primary {
-  background-color: var(--amber);
-  color: var(--bg);
+  background-color: var(--panel);
+  border-color: var(--panel);
+  color: var(--knockout);
 }
 
 .btn-musafir--primary:hover {
-  background-color: #f0a050;
-  color: var(--bg);
+  background-color: var(--ink-deep);
+  border-color: var(--ink-deep);
+  color: var(--knockout);
 }
 
 .btn-musafir--outline {
   background: transparent;
-  border: 1px solid var(--amber-border);
-  color: var(--amber);
+  border: 1px solid var(--rule);
+  color: var(--ink-deep);
 }
 
 .btn-musafir--outline:hover {
-  border-color: var(--amber);
-  background: var(--amber-dim);
+  border-color: var(--ink-deep);
+  background: var(--wash);
 }
 
 .btn-musafir--ghost {
   background: transparent;
-  border: 1px solid rgba(143, 168, 152, 0.2);
-  color: var(--muted);
+  border: 1px solid rgba(90, 64, 50, 0.2);
+  color: var(--ink-soft);
 }
 
 .btn-musafir--ghost:hover {
-  border-color: var(--muted);
-  color: var(--white);
+  border-color: var(--ink-soft);
+  color: var(--ink-deep);
 }
 
 .btn-musafir--danger {
   background: transparent;
-  border: 1px solid rgba(220, 80, 80, 0.3);
-  color: #e08080;
+  border: 1px solid rgba(122, 47, 30, 0.3);
+  color: var(--danger);
 }
 
 .btn-musafir--danger:hover {
-  background: rgba(220, 80, 80, 0.1);
-  border-color: #e08080;
+  background: rgba(122, 47, 30, 0.1);
+  border-color: var(--danger);
 }
 
 .btn-musafir--sm {
@@ -391,23 +554,6 @@ a:hover {
   width: 100%;
 }
 
-/* Keep Bootstrap btn working elsewhere on the site */
-.btn {
-  border-radius: var(--radius-input);
-  background-color: var(--amber);
-  color: var(--bg);
-  border: none;
-  font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  padding: 0.6rem 1.4rem;
-}
-
-.btn:hover {
-  background-color: #f0a050;
-  color: var(--bg);
-}
-
 /* ------------------------------------------------------------
    Chips
    ------------------------------------------------------------ */
@@ -415,104 +561,172 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  border-radius: var(--radius-chip);
-  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  background: var(--paper-hi);
+  color: var(--ink);
+  padding: 0.24rem 0.6rem 0.28rem;
 }
 
 .chip-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
   margin-bottom: 0.75rem;
 }
 
-.chip--amenity {
-  background: var(--sage-dim);
-  border: 1px solid rgba(106, 158, 114, 0.3);
-  color: var(--sage);
+.chip-row--terrain {
+  margin-top: 1rem;
 }
 
 .chip--tag {
-  background: var(--muted-dim);
-  border: 1px solid rgba(143, 168, 152, 0.2);
-  color: var(--muted);
-}
-
-.chip--terrain {
-  background: var(--sage-dim);
-  border: 1px solid rgba(106, 158, 114, 0.25);
-  color: var(--sage);
-  font-size: 0.7rem;
+  border-style: dashed;
+  color: var(--ink-soft);
 }
 
 /* ------------------------------------------------------------
    Forms
    ------------------------------------------------------------ */
+/* A well cut into the sheet: recessed paper that lifts back up on focus. */
 .form-control,
 .textarea-musafir {
-  background: var(--surface);
-  border: 1px solid rgba(106, 158, 114, 0.2);
-  border-radius: var(--radius-input);
-  color: #ffffff;
-  padding: 0.75rem 1rem;
+  background: var(--paper-lo);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--ink-deep);
+  padding: 0.6rem 0.75rem;
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 1rem;
   width: 100%;
-  transition: border-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   resize: vertical;
 }
 
 .form-control:focus,
 .textarea-musafir:focus {
-  color: #ffffff;
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: var(--amber);
-  background: var(--surface-alt);
+  color: var(--ink-deep);
+  border-color: var(--ink-deep);
+  background: var(--paper-hi);
 }
 
 .form-control::placeholder,
 .textarea-musafir::placeholder {
-  color: var(--muted);
-  opacity: 0.6;
+  color: var(--ink-soft);
+  opacity: 0.75;
 }
 
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.1rem;
 }
 
 .form-label-musafir {
   display: block;
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-size: 0.66rem;
+  letter-spacing: 0.19em;
   text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 0.5rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.4rem;
+}
+
+/* Amenity and tag pickers. A checked chip goes solid, same knockout panel as the
+   primary button, so "chosen" reads the same everywhere. */
+.check-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.check-chip {
+  cursor: pointer;
+  user-select: none;
+}
+
+.check-chip input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.check-chip span {
+  display: inline-block;
+  padding: 0.3rem 0.75rem 0.34rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  background: var(--paper-hi);
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    color 0.15s;
+}
+
+.check-chip:hover span {
+  border-color: var(--ink);
+  color: var(--ink-deep);
+}
+
+.check-chip input:checked + span {
+  border-color: var(--panel);
+  background: var(--panel);
+  color: var(--knockout);
+}
+
+/* Keyboard users need to see where they are, since the box itself is hidden */
+.check-chip input:focus-visible + span {
+  outline: 2px solid var(--ink-deep);
+  outline-offset: 2px;
 }
 
 /* ------------------------------------------------------------
    Alerts
    ------------------------------------------------------------ */
+/* Bootstrap used to supply the box; only the colours were ever ours. */
 .alert {
-  border-radius: var(--radius-card);
-  border: 1px solid rgba(106, 158, 114, 0.3);
-  background: var(--surface);
-  color: var(--white);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule-faint);
+  background: var(--paper-hi);
+  color: var(--ink-deep);
+  padding: 0.7rem 0.9rem 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .alert-success {
-  border-color: rgba(106, 158, 114, 0.4);
-  background: rgba(106, 158, 114, 0.1);
+  border-color: var(--rule);
+  background: var(--wash);
 }
 
 .alert-danger {
-  border-color: rgba(220, 80, 80, 0.4);
-  background: rgba(220, 80, 80, 0.1);
+  border-color: rgba(122, 47, 30, 0.4);
+  background: rgba(122, 47, 30, 0.1);
+  color: var(--danger);
+}
+
+.alert-close {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  line-height: 1;
+  font-size: 1.3rem;
+  padding: 0 0.2rem;
+  color: inherit;
+  opacity: 0.55;
+}
+
+.alert-close:hover {
+  opacity: 1;
 }
 
 /* ============================================================
@@ -530,9 +744,9 @@ a:hover {
 .auth-card {
   width: 100%;
   max-width: 420px;
-  background: var(--surface);
-  border-radius: var(--radius-card);
-  border: 1px solid rgba(106, 158, 114, 0.15);
+  background: var(--paper-hi);
+  border-radius: var(--radius);
+  border: 1px solid var(--wash);
   padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
@@ -547,7 +761,7 @@ a:hover {
   font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 800;
-  color: var(--white);
+  color: var(--ink-deep);
   letter-spacing: -0.02em;
   margin-bottom: 0.4rem;
   text-align: center;
@@ -555,7 +769,7 @@ a:hover {
 
 .auth-sub {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin: 0;
 }
 
@@ -567,23 +781,24 @@ a:hover {
 
 .auth-divider {
   height: 1px;
-  background: rgba(106, 158, 114, 0.12);
+  background: var(--wash);
 }
 
 .auth-switch {
   text-align: center;
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin: 0;
 }
 
 .auth-switch a {
-  color: var(--amber);
+  color: var(--ink-deep);
   font-weight: 600;
 }
 
 .auth-switch a:hover {
-  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 /* ============================================================
@@ -613,7 +828,7 @@ a:hover {
   font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 800;
-  color: var(--white);
+  color: var(--ink-deep);
   letter-spacing: -0.01em;
   margin-bottom: 0.4rem;
   text-align: center;
@@ -621,14 +836,14 @@ a:hover {
 
 .form-page__sub {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin: 0;
 }
 
 .camp-form {
-  background: var(--surface);
-  border-radius: var(--radius-card);
-  border: 1px solid rgba(106, 158, 114, 0.12);
+  background: var(--paper-hi);
+  border-radius: var(--radius);
+  border: 1px solid var(--wash);
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -645,7 +860,7 @@ a:hover {
 .price-input-prefix {
   position: absolute;
   left: 1rem;
-  color: var(--amber);
+  color: var(--ink-deep);
   font-weight: 700;
   font-size: 1rem;
   pointer-events: none;
@@ -653,7 +868,7 @@ a:hover {
 }
 
 .price-input {
-  padding-left: 2rem !important;
+  padding-left: 2rem;
 }
 
 /* File upload zone */
@@ -663,36 +878,36 @@ a:hover {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border: 1px dashed rgba(106, 158, 114, 0.3);
-  border-radius: var(--radius-input);
+  border: 1px dashed var(--rule-faint);
+  border-radius: var(--radius);
   padding: 2rem 1rem;
   cursor: pointer;
   transition:
     border-color 0.2s,
     background 0.2s;
-  color: var(--muted);
+  color: var(--ink-soft);
   text-align: center;
 }
 
 .file-upload-zone:hover {
-  border-color: var(--sage);
-  background: var(--sage-dim);
+  border-color: var(--ink);
+  background: var(--wash);
 }
 
 .file-upload-zone svg {
-  color: var(--sage);
+  color: var(--ink);
   opacity: 0.7;
 }
 
 .file-upload-zone__text {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--white);
+  color: var(--ink-deep);
 }
 
 .file-upload-zone__sub {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 .file-upload-zone__input {
@@ -702,7 +917,7 @@ a:hover {
 /* Form hint */
 .form-hint {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin: -0.25rem 0 0.5rem;
 }
 
@@ -716,8 +931,8 @@ a:hover {
 .image-delete-item {
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid rgba(106, 158, 114, 0.15);
-  background: rgba(13, 21, 16, 0.5);
+  border: 1px solid var(--wash);
+  background: rgba(41, 26, 18, 0.5);
 }
 
 .image-delete-item img {
@@ -736,16 +951,16 @@ a:hover {
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--ink-soft);
   transition: color 0.2s;
 }
 
 .image-delete-label:hover {
-  color: #e08080;
+  color: var(--danger);
 }
 
 .image-delete-checkbox {
-  accent-color: #e08080;
+  accent-color: var(--danger);
   width: 14px;
   height: 14px;
   cursor: pointer;
@@ -753,12 +968,12 @@ a:hover {
 
 /* Checked state — highlight the card */
 .image-delete-checkbox:checked ~ span {
-  color: #e08080;
+  color: var(--danger);
 }
 
 .image-delete-item:has(.image-delete-checkbox:checked) {
-  border-color: rgba(220, 80, 80, 0.4);
-  background: rgba(220, 80, 80, 0.05);
+  border-color: rgba(122, 47, 30, 0.4);
+  background: rgba(122, 47, 30, 0.05);
 }
 
 /* Form actions */
@@ -813,7 +1028,7 @@ a:hover {
   font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 800;
-  color: var(--white);
+  color: var(--ink-deep);
   letter-spacing: -0.01em;
   margin-bottom: 0.3rem;
   text-align: left;
@@ -821,7 +1036,7 @@ a:hover {
 
 .explore-map-sub {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin: 0;
 }
 
@@ -830,8 +1045,8 @@ a:hover {
   height: 420px;
   border-radius: 0;
   border: none;
-  border-top: 1px solid rgba(106, 158, 114, 0.1);
-  border-bottom: 1px solid rgba(106, 158, 114, 0.1);
+  border-top: 1px solid var(--wash);
+  border-bottom: 1px solid var(--wash);
 }
 
 /* ------------------------------------------------------------
@@ -859,10 +1074,10 @@ a:hover {
 }
 
 .filter-form {
-  background: var(--surface);
-  border-radius: var(--radius-card);
+  background: var(--paper-hi);
+  border-radius: var(--radius);
   padding: 1.25rem;
-  border: 1px solid rgba(106, 158, 114, 0.12);
+  border: 1px solid var(--wash);
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
@@ -876,13 +1091,13 @@ a:hover {
 
 .filter-reset {
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .filter-reset:hover {
-  color: var(--amber);
+  color: var(--ink-deep);
 }
 
 .filter-group {
@@ -896,7 +1111,7 @@ a:hover {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 .filter-input-wrap {
@@ -908,16 +1123,16 @@ a:hover {
   left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--muted);
+  color: var(--ink-soft);
   pointer-events: none;
 }
 
 .filter-input {
   width: 100%;
-  background: rgba(13, 21, 16, 0.6);
-  border: 1px solid rgba(106, 158, 114, 0.15);
-  border-radius: var(--radius-input);
-  color: #ffffff;
+  background: rgba(41, 26, 18, 0.6);
+  border: 1px solid var(--wash);
+  border-radius: var(--radius);
+  color: var(--ink-deep);
   padding: 0.6rem 0.85rem 0.6rem 2.2rem;
   font-family: var(--font-body);
   font-size: 0.85rem;
@@ -925,14 +1140,12 @@ a:hover {
 }
 
 .filter-input:focus {
-  color: #ffffff;
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: var(--amber);
+  color: var(--ink-deep);
+  border-color: var(--ink-deep);
 }
 
 .filter-input::placeholder {
-  color: var(--muted);
+  color: var(--ink-soft);
   opacity: 0.5;
 }
 
@@ -949,47 +1162,45 @@ a:hover {
 }
 
 .filter-price-sep {
-  color: var(--muted);
+  color: var(--ink-soft);
   font-size: 0.8rem;
   text-align: center;
 }
 
 .filter-select {
   width: 100%;
-  background: rgba(13, 21, 16, 0.6);
-  border: 1px solid rgba(106, 158, 114, 0.15);
-  border-radius: var(--radius-input);
-  color: #ffffff;
+  background: rgba(41, 26, 18, 0.6);
+  border: 1px solid var(--wash);
+  border-radius: var(--radius);
+  color: var(--ink-deep);
   padding: 0.6rem 0.85rem;
   font-family: var(--font-body);
   font-size: 0.85rem;
   cursor: pointer;
   transition: border-color 0.2s;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238fa898' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235a4032' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.85rem center;
   padding-right: 2rem;
 }
 
 .filter-select:focus {
-  color: #ffffff;
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: var(--amber);
+  color: var(--ink-deep);
+  border-color: var(--ink-deep);
 }
 
 .filter-select option {
-  background: var(--surface);
-  color: var(--white);
+  background: var(--paper-hi);
+  color: var(--ink-deep);
 }
 
 /* Sidebar add CTA */
 .sidebar-add-cta {
-  background: var(--surface);
-  border-radius: var(--radius-card);
+  background: var(--paper-hi);
+  border-radius: var(--radius);
   padding: 1.1rem 1.25rem;
-  border: 1px solid rgba(106, 158, 114, 0.12);
+  border: 1px solid var(--wash);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -997,7 +1208,7 @@ a:hover {
 
 .sidebar-add-cta__text {
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin: 0;
 }
 
@@ -1016,16 +1227,16 @@ a:hover {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(106, 158, 114, 0.08);
+  border-bottom: 1px solid var(--wash);
 }
 
 .results-count {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 .results-count strong {
-  color: var(--white);
+  color: var(--ink-deep);
   font-weight: 600;
 }
 
@@ -1033,25 +1244,25 @@ a:hover {
 .explore-empty {
   padding: 3rem 2rem;
   text-align: center;
-  border: 1px dashed rgba(106, 158, 114, 0.15);
-  border-radius: var(--radius-card);
+  border: 1px dashed var(--wash);
+  border-radius: var(--radius);
 }
 
 .explore-empty__title {
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--ink-deep);
   margin-bottom: 0.5rem;
 }
 
 .explore-empty__sub {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 .explore-empty__sub a {
-  color: var(--amber);
+  color: var(--ink-deep);
 }
 
 /* ------------------------------------------------------------
@@ -1066,9 +1277,9 @@ a:hover {
 .camp-card {
   display: grid;
   grid-template-columns: 280px 1fr;
-  background: var(--surface);
-  border-radius: var(--radius-card);
-  border: 1px solid rgba(106, 158, 114, 0.12);
+  background: var(--paper-hi);
+  border-radius: var(--radius);
+  border: 1px solid var(--wash);
   overflow: hidden;
   transition:
     border-color 0.2s,
@@ -1077,7 +1288,7 @@ a:hover {
 }
 
 .camp-card:hover {
-  border-color: rgba(106, 158, 114, 0.3);
+  border-color: var(--rule-faint);
   transform: translateY(-1px);
 }
 
@@ -1106,21 +1317,21 @@ a:hover {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
-  background: rgba(13, 21, 16, 0.85);
-  border: 1px solid var(--amber-border);
+  background: rgba(41, 26, 18, 0.85);
+  border: 1px solid var(--rule);
   border-radius: 6px;
   padding: 0.25rem 0.6rem;
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--amber);
+  color: var(--ink-deep);
   backdrop-filter: blur(4px);
 }
 
 .camp-card__price-night {
   font-size: 0.65rem;
   font-weight: 400;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 /* Body column */
@@ -1142,7 +1353,7 @@ a:hover {
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--ink-deep);
   line-height: 1.2;
   margin: 0;
   text-align: left;
@@ -1150,7 +1361,7 @@ a:hover {
 
 .camp-card__location {
   font-size: 0.8rem;
-  color: var(--sage);
+  color: var(--ink);
   font-weight: 500;
   margin: 0;
   display: flex;
@@ -1160,7 +1371,7 @@ a:hover {
 
 .camp-card__desc {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   line-height: 1.65;
   margin: 0.25rem 0 0;
 }
@@ -1174,7 +1385,7 @@ a:hover {
 
 .distance-badge {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 /* ------------------------------------------------------------
@@ -1186,7 +1397,7 @@ a:hover {
   justify-content: center;
   gap: 0.4rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(106, 158, 114, 0.08);
+  border-top: 1px solid var(--wash);
   flex-wrap: wrap;
 }
 
@@ -1206,9 +1417,9 @@ a:hover {
   border-radius: 6px;
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid rgba(106, 158, 114, 0.12);
+  color: var(--ink-soft);
+  background: var(--paper-hi);
+  border: 1px solid var(--wash);
   text-decoration: none;
   transition:
     border-color 0.2s,
@@ -1217,19 +1428,15 @@ a:hover {
 }
 
 .page-btn:hover {
-  color: var(--white);
-  border-color: rgba(106, 158, 114, 0.3);
+  color: var(--ink-deep);
+  border-color: var(--rule-faint);
   text-decoration: none;
 }
 
 .page-btn--active {
-  background: var(--amber-dim);
-  border-color: var(--amber-border);
-  color: var(--amber);
-}
-
-.page-btn--active:hover {
-  color: var(--amber);
+  background: var(--wash);
+  border-color: var(--rule);
+  color: var(--ink-deep);
 }
 
 .page-btn--disabled {
@@ -1239,7 +1446,7 @@ a:hover {
 }
 
 .page-ellipsis {
-  color: var(--muted);
+  color: var(--ink-soft);
   font-size: 0.8rem;
   padding: 0 0.25rem;
 }
@@ -1287,509 +1494,503 @@ a:hover {
 }
 
 /* ============================================================
-   DETAIL PAGE
+   DETAIL PAGE — the campground sheet, laid out as a folio plate
    ============================================================ */
 
+/* Everything here is sized in rem, so this one line is the 1.25x scale. Still
+   scoped: explore and the forms were laid out against a 16px root and have not
+   been checked at 20px. */
+html:has(.detail-page) {
+  font-size: 20px;
+}
+
 .detail-page {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 2rem 4rem;
+  padding: 0 clamp(1rem, 4vw, 3.25rem) 5rem;
+  /* Opaque, and load bearing. This element creates a stacking context, so
+     anything inside it using mix-blend-mode blends against the backdrop
+     *within* it. With no background here the weather GIFs multiply against
+     transparency, which is a no-op, and their white cards stay visible. */
+  background: var(--paper);
+  position: relative;
+  z-index: 1;
 }
 
 /* ------------------------------------------------------------
-   Gallery
+   Folio frame
+   ------------------------------------------------------------ */
+.folio {
+  border-left: 1px solid var(--rule-faint);
+  border-right: 1px solid var(--rule-faint);
+  padding: 0 clamp(0.75rem, 2.5vw, 2rem);
+}
+
+.runhead {
+  padding: 1.1rem 0 0.65rem;
+  margin-bottom: 1.1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------
+   Identity
+   ------------------------------------------------------------ */
+.camp-title {  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+  line-height: 1.04;
+  letter-spacing: 0.035em;
+  color: var(--ink-deep);
+  margin: 0 0 0.5rem;
+}
+
+.camp-location {  font-size: 1.12rem;
+  color: var(--ink-soft);
+  margin: 0 0 1.4rem;
+}
+
+/* Used by the explore cards, which still set their own location line. */
+.loc-icon {
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+.byline {  color: var(--ink-soft);
+  margin: 1.5rem 0 0;
+}
+
+.byline a {
+  color: var(--ink-deep);
+  text-decoration-thickness: 1px;
+}
+
+.owner-controls {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+
+.owner-controls form {
+  display: inline;
+}
+
+/* ------------------------------------------------------------
+   Photo plate
    ------------------------------------------------------------ */
 .detail-gallery {
   display: grid;
-  grid-template-columns: 60% 40%;
-  gap: 4px;
-  height: 420px;
-  margin: 0 -2rem 2.5rem;
-  overflow: hidden;
-}
-
-.gallery-main {
-  height: 100%;
-  overflow: hidden;
-}
-
-.gallery-main img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.gallery-main img:hover {
-  transform: scale(1.02);
+  grid-template-columns: 2fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 2.2rem;
 }
 
 .gallery-stack {
   display: grid;
   grid-template-rows: 1fr 1fr;
-  gap: 4px;
-  height: 100%;
+  gap: 0.5rem;
 }
 
-.gallery-thumb {
+.gallery-frame {
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--ink-soft);
+  background: var(--paper-lo);
+  min-height: 0;
 }
 
-.gallery-thumb img {
+.gallery-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
 }
 
-.gallery-thumb img:hover {
-  transform: scale(1.03);
-}
-
-.gallery-thumb--more {
-  cursor: pointer;
+.gallery-main {
+  aspect-ratio: 16 / 10;
 }
 
 .gallery-more-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(13, 21, 16, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: 0.05em;
-  backdrop-filter: blur(2px);
+  display: grid;
+  place-items: center;
+  background: rgba(41, 26, 18, 0.66);
+  color: var(--knockout);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 /* ------------------------------------------------------------
-   Hero two-column
+   Hero — land on the left, sky on the right
    ------------------------------------------------------------ */
 .detail-hero {
   display: grid;
-  grid-template-columns: 58% 42%;
-  gap: 2.5rem;
-  margin-bottom: 3rem;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3.5vw, 3rem);
   align-items: start;
+  margin-bottom: 3.25rem;
 }
 
-/* LEFT column */
-.detail-identity {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+/* The fold between the two plates. */
+.detail-sky {
+  border-left: 1px solid var(--rule-sky);
+  padding-left: clamp(1.25rem, 2.5vw, 2.25rem);
 }
 
-.camp-title {
-  font-family: var(--font-display);
-  font-size: 2.6rem;
-  font-weight: 800;
-  color: var(--white);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  text-align: left;
-}
-
-.camp-location {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--sage);
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.loc-icon {
-  font-size: 0.85rem;
-  color: var(--sage);
-}
-
-.camp-description {
-  color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.75;
-  margin: 0.25rem 0 0.5rem;
-}
-
-.camp-discoverer {
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin-top: 0.5rem;
-}
-
-.camp-discoverer a {
-  color: var(--sage);
-  font-weight: 600;
-}
-
-.camp-discoverer a:hover {
-  color: var(--white);
-}
-
-.owner-controls {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-/* RIGHT column */
-.detail-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  position: sticky;
-  top: 1.5rem;
-}
-
-/* Price badge */
 .price-badge {
-  background: var(--surface);
-  border-radius: var(--radius-card);
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  border: 1px solid rgba(106, 158, 114, 0.15);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  background: var(--panel);
+  color: var(--knockout);
+  padding: 0.5rem 1.05rem 0.55rem;
+  margin-bottom: 1.5rem;
 }
 
-.price-label {
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+.price-label {  font-size: 0.66rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted);
+  opacity: 0.82;
 }
 
-.price-value {
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--amber);
-  letter-spacing: -0.01em;
+.price-value {  font-size: 1.62rem;
+  letter-spacing: 0.02em;
 }
 
-/* 2x2 Stat grid */
+/* ------------------------------------------------------------
+   Measures. The plate break inside one row is deliberate: elevation is land,
+   daylight and the sun times are sky.
+   ------------------------------------------------------------ */
 .stat-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--rule);
+  margin-bottom: 1.6rem;
 }
 
 .stat-card {
-  background: var(--surface);
-  border-radius: var(--radius-card);
-  padding: 0.9rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  border: 1px solid rgba(106, 158, 114, 0.12);
-  transition: border-color 0.2s;
+  padding: 0.7rem 0.8rem 0.75rem;
+  border-right: 1px solid var(--rule-faint);
 }
 
-.stat-card:hover {
-  border-color: rgba(106, 158, 114, 0.3);
-}
-
-.stat-icon {
-  font-size: 1rem;
-  line-height: 1;
-  margin-bottom: 0.1rem;
-}
-
-.stat-icon.sage {
-  color: var(--sage);
-}
-.stat-icon.amber {
-  color: var(--amber);
+.stat-card:last-child {
+  border-right: 0;
 }
 
 .stat-label {
+  display: block;
   font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.17em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink-soft);
+  margin-bottom: 0.2rem;
 }
 
 .stat-value {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.01em;
+  display: block;
+  font-size: 1.28rem;
+  color: var(--ink-deep);
+}
+
+.stat-note {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin-top: 0.15rem;
+}
+
+.stat-card--sky {
+  border-right-color: var(--rule-sky);
+}
+
+.stat-card--sky .stat-label,
+.stat-card--sky .stat-note {
+  color: var(--plum-soft);
+}
+
+.stat-card--sky .stat-value {
+  color: var(--plum-deep);
 }
 
 /* ------------------------------------------------------------
-   Conditions Card
+   Conditions — the sky plate
    ------------------------------------------------------------ */
-.conditions-card {
-  background: var(--surface);
-  border-radius: var(--radius-card);
-  padding: 1.25rem;
-  border: 1px solid rgba(106, 158, 114, 0.12);
-}
-
-.conditions-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.conditions-updated {
-  font-size: 0.65rem;
-  color: var(--muted);
-  font-style: italic;
-}
-
-/* Current strip */
 .conditions-current {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(143, 168, 152, 0.1);
-  margin-bottom: 0.25rem;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.4rem;
 }
 
-.current-temp-block {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
-.current-temp {
-  font-family: var(--font-display);
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--white);
+.current-temp {  font-size: 2.3rem;
   line-height: 1;
+  color: var(--plum-deep);
 }
 
 .current-feels {
-  font-size: 0.75rem;
-  color: var(--muted);
+  display: block;
+  font-size: 0.95rem;
+  color: var(--plum-soft);
+  margin-top: 0.35rem;
 }
 
-.current-chips {
+/* The GIFs sit on a white card; multiply renders white as whatever is behind
+   it, so the card dissolves into the paper. Two catches: an ancestor in the
+   stacking context must paint a background (see .detail-page), and sepia(1)
+   maps white to (1, 1, 0.937), so brightness has to push it back to the clip
+   point. Those last two numbers are the dial if the art looks washed. */
+.wx {
+  display: block;
+  width: 2.3rem;
+  height: 2.3rem;
+  flex: none;
+  margin: 0 auto;
+  /* Opt out of the global img rule above: inside a fixed track it resolves
+     against the track, clamps the width, and stretches the art. object-fit
+     letterboxes rather than distorts if anything pins a dimension again. */
+  max-width: none;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: sepia(1) hue-rotate(232deg) saturate(0.6) brightness(1.12) contrast(1.18);
+}
+
+.wx--m {
+  width: 2.3rem;
+  height: 2.3rem;
+}
+
+.wx--lg {
+  width: 5rem;
+  height: 5rem;
+}
+
+/* As a flex item the auto margins eat free space and shove it away from the
+   temperature instead of centring the pair. */
+.conditions-current .wx {
+  margin: 0;
+}
+
+/* Letterpress contractions instead of pictograms. A chart labels with
+   abbreviations, and it reads better than an emoji ever did. */
+/* One line, always. Three readings spread across the column rather than
+   wrapping the last one onto a row of its own. */
+.readings {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  align-items: flex-end;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--plum-soft);
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--rule-sky);
 }
 
-.cond-chip {
-  background: var(--muted-dim);
-  border-radius: 6px;
-  padding: 0.25rem 0.6rem;
-  font-size: 0.75rem;
-  color: var(--white);
+.readings span {
   white-space: nowrap;
 }
 
-/* 3-day forecast */
+.readings b {
+  font-weight: 400;
+  color: var(--plum-deep);
+}
+
+.sub-label {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--plum-soft);
+  margin: 1.5rem 0 0.65rem;
+}
+
 .forecast-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
+  border: 1px solid var(--rule-sky);
 }
 
 .forecast-col {
-  background: rgba(13, 21, 16, 0.5);
-  border: 1px solid rgba(143, 168, 152, 0.1);
-  border-radius: 8px;
-  padding: 0.65rem 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
+  padding: 0.7rem 0.4rem 0.75rem;
   text-align: center;
+  border-right: 1px solid var(--rule-sky);
+}
+
+.forecast-col:last-child {
+  border-right: 0;
 }
 
 .forecast-col--today {
-  border-color: var(--amber-border);
-  background: var(--amber-dim);
+  background: rgba(52, 35, 61, 0.08);
 }
 
 .forecast-day {
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--amber);
-}
-
-.forecast-icon {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
+  display: block;
+  font-size: 0.76rem;
+  letter-spacing: 0.15em;
+  color: var(--plum);
+  margin-bottom: 0.4rem;
 }
 
 .forecast-temps {
-  font-size: 0.85rem;
-  color: var(--white);
+  display: block;
+  font-size: 1.16rem;
+  color: var(--plum-deep);
+  margin-top: 0.35rem;
 }
 
-.forecast-temps strong {
-  color: var(--white);
+.forecast-temps span {
+  color: var(--plum-soft);
 }
 
-.forecast-stats {
-  font-size: 0.62rem;
-  color: var(--muted);
-  line-height: 1.4;
+.forecast-meta {
+  display: block;
+  font-size: 0.86rem;
+  color: var(--plum-soft);
+  margin-top: 0.2rem;
 }
 
-/* 7-day history */
 .history-table {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  border-top: 1px solid var(--rule-sky);
 }
 
+/* The icon track is auto, not fixed, so the row follows whatever size modifier
+   the icon carries instead of fighting it. */
 .history-row {
   display: grid;
-  grid-template-columns: 1fr auto auto auto;
+  grid-template-columns: 0.7rem 1fr auto auto auto;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.25rem;
-  border-bottom: 1px solid rgba(143, 168, 152, 0.06);
-  font-size: 0.78rem;
-  position: relative;
-}
-
-.history-row:nth-child(even) {
-  background: rgba(143, 168, 152, 0.03);
-}
-
-.history-row:last-child {
-  border-bottom: none;
-}
-
-.history-row--rain {
-  padding-left: 0.85rem;
+  gap: 0.55rem;
+  padding: 0.28rem 0;
+  border-bottom: 1px solid var(--rule-sky);
+  font-size: 1rem;
+  color: var(--plum);
 }
 
 .rain-dot {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--blue-dot);
+  width: 0.7rem;
+  height: 0.7rem;
+  color: var(--plum-deep);
 }
 
-.history-date {
-  color: var(--muted);
-  font-weight: 500;
-  font-size: 0.75rem;
+.history-date {}
+
+.history-temps {  font-size: 1.02rem;
+  color: var(--plum-deep);
 }
 
-.history-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-
-.history-temps {
-  color: var(--white);
-  font-size: 0.78rem;
-  white-space: nowrap;
-}
-
-.history-temps strong {
-  color: var(--white);
-}
-
-.history-meta {
-  color: var(--muted);
-  font-size: 0.7rem;
-  white-space: nowrap;
+.history-precip {  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+  color: var(--plum-soft);
   text-align: right;
-}
-
-.history-precip {
-  color: var(--blue-dot);
-  margin-left: 0.4rem;
+  min-width: 5.4ch;
 }
 
 /* ------------------------------------------------------------
-   Terrain Section — breaks out wider than the page, but not full bleed
-
-   It used to be 100vw with a -50vw pull. vw units include the vertical
-   scrollbar, so the section was always wider than the visible viewport by the
-   scrollbar's width, which is what produced the horizontal scrollbar. 80vw
-   never reaches the edge, so there is nothing to overflow.
+   Terrain. Geographic left, contour right, matched squares, one caption below.
+   The header and cross-section sit outside the frame so it stays square.
    ------------------------------------------------------------ */
 .terrain-section {
-  --terrain-width: clamp(320px, 80vw, 1600px);
-  width: var(--terrain-width);
-  /* Centre a block that is wider than its container, without a transform:
-     a transform would become the containing block for the map's overlays. */
-  margin-left: calc(50% - var(--terrain-width) / 2);
-  margin-bottom: 3rem;
+  margin-bottom: 3.25rem;
 }
 
-.terrain-section__label {
-  margin-bottom: 1rem;
-}
-
-#map {
-  width: 100%;
-  height: 460px;
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  margin-bottom: 4px;
-  border: none;
-}
-
-/* Topo card */
-.topo-card {
-  background: var(--surface);
-  border-radius: var(--radius-card);
-  overflow: hidden;
+.plate-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
   margin-bottom: 0.75rem;
-  border: 1px solid rgba(106, 158, 114, 0.12);
-  /* The body is square, so width is what sets its height. Bounded by viewport
-     height rather than width, otherwise an 80% wide square is 1500px tall and
-     no longer fits on a screen. */
-  width: min(100%, 82vh);
-  margin-inline: auto;
 }
 
-.topo-card__header {
+.plate {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid var(--ink-soft);
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.plate-caption {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0.9rem 1.1rem 0.6rem;
-  border-bottom: 1px solid rgba(143, 168, 152, 0.08);
+  gap: 1rem;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  margin-bottom: 2.2rem;
 }
 
-.topo-card__meta {
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  opacity: 0.6;
+.plate-caption a {
+  color: var(--ink);
+  text-decoration-thickness: 1px;
 }
 
-/* Square, because the sampled ground is a 10km square. A wide banner could
-   only show it by cropping most of it away or stretching the terrain. */
+/* The MapTiler logo sits bottom-left and its attribution bottom-right, both in
+   a face and colour that fight the sheet. The canvas is grown past the frame so
+   those corners fall outside it, while the right edge still lines up and the
+   zoom controls survive. Credit moves into .plate-caption instead. */
+#map {
+  position: absolute;
+  left: -34px;
+  top: 0;
+  width: calc(100% + 34px);
+  height: calc(100% + 34px);
+}
+
+/* Light touch: the layers are recoloured properly in showPageMap.js, so this
+   only knocks back whatever that pass could not reach. */
+#map canvas {
+  filter: sepia(0.22) saturate(0.7) contrast(1.05);
+}
+
+/* A trig point, not a balloon pin: the survey mark for a station whose position
+   is known, which is what a campground is here. */
+.trig-mark {
+  width: 26px;
+  height: 26px;
+  color: var(--ink-deep);
+  display: block;
+}
+
+.north-arrow {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 26px;
+  height: 34px;
+  color: var(--ink-deep);
+  opacity: 0.85;
+}
+
+.scale-bar {
+  position: absolute;
+  left: 12px;
+  bottom: 11px;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-deep);
+}
+
+.scale-bar__rule {
+  display: block;
+  width: 84px;
+  height: 6px;
+  margin-bottom: 3px;
+  border: 1px solid var(--ink-deep);
+  background: repeating-linear-gradient(
+    to right,
+    var(--ink-deep) 0 21px,
+    transparent 21px 42px
+  );
+}
+
+/* Contour card. topoMap.js builds this SVG and references these class names,
+   so renaming any of them means editing that file too. */
 .topo-card__body {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  position: relative;
-  overflow: hidden;
-  /* Confines repaints to this box, so the readout moving over a large SVG
-     cannot smear the contours behind it. */
-  contain: paint;
+  position: absolute;
+  inset: 0;
 }
 
 .topo-card__body svg {
@@ -1798,36 +1999,54 @@ a:hover {
   display: block;
 }
 
-/* Elevation readout that follows the pointer across the contour map */
-.topo-readout {
-  position: absolute;
-  /* Positioned by transform, never by left/top. Mutating left/top on every
-     mousemove forces layout and invalidates a paint rect over the contour SVG
-     underneath, which Chromium leaves as visible smears. will-change puts this
-     on its own compositing layer so moving it never repaints the map at all. */
-  top: 0;
-  left: 0;
-  transform: translate(-999px, -999px);
-  will-change: transform;
-  padding: 0.2rem 0.55rem;
-  border-radius: var(--radius-chip);
-  background: rgba(13, 21, 16, 0.92);
-  border: 1px solid var(--amber-border);
-  color: var(--white);
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
+/* Elevations lettered along the contour. The paper-coloured stroke paints under
+   the fill and knocks a hole in whatever the digits cross, so the line breaks to
+   make room without splitting a path. Width is in user units: the viewBox is 40. */
+.topo-contour-label {  fill: var(--ink-deep);
+  stroke: var(--paper);
+  stroke-width: 0.19;
+  paint-order: stroke;
+  stroke-linejoin: round;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 120ms ease-out;
 }
 
-/* Cross-section profile, injected under the contour map by topoMap.js */
+.topo-readout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms linear;
+  background: var(--paper-hi);
+  border: 1px solid var(--ink);
+  color: var(--ink-deep);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 0.12rem 0.4rem 0.16rem;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+/* Cross-section. The fill lives here rather than in topoMap.js so its contrast
+   can be tuned without touching the renderer. */
 .topo-card__profile {
-  height: 92px;
+  --profile-fill: rgba(63, 42, 30, 0.34);
+
   position: relative;
-  border-top: 1px solid rgba(143, 168, 152, 0.08);
+  height: 168px;
+  border: 1px solid var(--rule);
+  border-bottom: 0;
+  padding: 0 3.4rem 1.75rem 0;
+  margin-bottom: 1.6rem;
+}
+
+/* The plot is exactly the drawing area, so the marker's percentages line up
+   with the viewBox. Sizing it against the padded parent instead is what put
+   the pin inside the hill rather than on it. */
+.topo-profile__plot {
+  position: relative;
+  height: 100%;
 }
 
 .topo-card__profile svg {
@@ -1836,28 +2055,25 @@ a:hover {
   display: block;
 }
 
-/* Where you would be standing, on the centre line of the section */
+/* Centred on the line by transform rather than by guessing a negative margin
+   that has to be kept in step with the width. */
 .topo-profile__marker {
   position: absolute;
   left: 50%;
-  width: 7px;
-  height: 7px;
-  margin: -3.5px 0 0 -3.5px;
+  width: 9px;
+  height: 9px;
+  transform: translate(-50%, -50%);
+  border: 1.5px solid var(--ink-deep);
   border-radius: 50%;
-  background: var(--amber);
-  box-shadow: 0 0 0 3px rgba(232, 145, 58, 0.18);
+  background: var(--paper);
 }
 
-/* Vertical scale. Without it the section shows shape but not magnitude. */
 .topo-profile__axis {
   position: absolute;
-  left: 0.7rem;
-  font-size: 0.6rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  opacity: 0.75;
-  pointer-events: none;
+  right: 0.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-deep);
 }
 
 .topo-profile__axis--top {
@@ -1865,534 +2081,425 @@ a:hover {
 }
 
 .topo-profile__axis--bottom {
-  bottom: 0.35rem;
+  bottom: 2.2rem;
 }
 
 .topo-profile__label {
   position: absolute;
-  right: 0.9rem;
-  bottom: 0.5rem;
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  opacity: 0.6;
-}
-
-/* Amenity and tag pickers on the new / edit forms */
-.check-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.check-chip {
-  cursor: pointer;
-  user-select: none;
-}
-
-.check-chip input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.check-chip span {
-  display: inline-block;
-  padding: 0.45rem 0.9rem;
-  border-radius: var(--radius-chip);
-  border: 1px solid rgba(143, 168, 152, 0.25);
-  background: var(--muted-dim);
-  color: var(--muted);
-  font-size: 0.8rem;
-  transition:
-    border-color 0.15s,
-    background 0.15s,
-    color 0.15s;
-}
-
-.check-chip:hover span {
-  border-color: rgba(106, 158, 114, 0.4);
-  color: var(--white);
-}
-
-.check-chip input:checked + span {
-  border-color: var(--amber-border);
-  background: var(--amber-dim);
-  color: var(--amber);
-}
-
-/* Keyboard users need to see where they are, since the box itself is hidden */
-.check-chip input:focus-visible + span {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
-}
-
-/* Prose readout derived from the elevation grid, no extra API call */
-.terrain-readout {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--white);
-  letter-spacing: -0.01em;
-  margin-bottom: 1rem;
-  max-width: 46ch;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.45rem;
+  font-size: 1rem;
+  color: var(--ink-deep);
 }
 
 .terrain-metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-}
-
-.terrain-metric__note {
-  font-size: 0.68rem;
-  color: var(--muted);
-  line-height: 1.35;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1px solid var(--rule);
 }
 
 /* ------------------------------------------------------------
-   When to go — twelve monthly normals, classified
-
-   Shares the terrain section's breakout width. States are separated by
-   lightness and by an explicit label under each month, never by colour alone,
-   so the strip still reads if you cannot tell sage from amber.
+   When to go. Five states with no hue between them, so the encoding is engraved
+   texture ordered by ink density, which also survives greyscale and colour
+   blindness. Bar height is the monthly mean, bar fill is the state.
    ------------------------------------------------------------ */
 .season-section {
-  --terrain-width: clamp(320px, 80vw, 1600px);
-  width: var(--terrain-width);
-  margin-left: calc(50% - var(--terrain-width) / 2);
-  margin-bottom: 3rem;
+  margin-bottom: 3.25rem;
 }
 
-.season-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-}
-
+/* Provenance line, tucked under the section label. */
 .season-source {
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  opacity: 0.7;
-  text-align: right;
+  display: block;
+  margin: -0.5rem 0 1.1rem;
 }
 
-.season-verdict {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--white);
-  letter-spacing: -0.01em;
-  margin-bottom: 1.25rem;
-  max-width: 60ch;
+.season-verdict {  font-size: 1.14rem;
+  color: var(--plum-deep);
+  max-width: 62ch;
+  margin: 0 0 1.5rem;
 }
 
 .season-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 0.4rem;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  border: 1px solid var(--rule-sky);
 }
 
 .season-month {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.3rem;
-  padding: 0.7rem 0.5rem;
-  border-radius: var(--radius-input);
-  background: var(--surface);
-  border: 1px solid rgba(143, 168, 152, 0.1);
+  padding: 0.6rem 0.25rem 0.7rem;
+  border-right: 1px solid var(--rule-sky);
   text-align: center;
 }
 
-.season-month__name {
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--muted);
+.season-month:last-child {
+  border-right: 0;
+}
+
+.season-month__name {  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  color: var(--plum);
+}
+
+.season-month__track {
+  width: 100%;
+  height: 84px;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--rule-sky);
 }
 
 .season-month__bar {
-  height: 5px;
-  border-radius: 3px;
-  background: var(--muted-dim);
+  width: 100%;
+  border: 1px solid var(--plum);
+  border-bottom: 0;
 }
 
-.season-month__state {
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--white);
+.season-month__state {  font-size: 0.55rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--plum);
+  min-height: 1.5em;
 }
 
-.season-month__temp {
-  font-size: 0.68rem;
-  color: var(--white);
-  opacity: 0.75;
+.season-month__temp {  font-size: 0.72rem;
+  color: var(--plum-deep);
 }
 
-.season-month__precip {
-  font-size: 0.62rem;
-  color: var(--muted);
+.season-month__precip {  font-size: 0.7rem;
+  color: var(--plum-soft);
 }
 
-/* Prime is the only state that gets the accent. Everything else recedes. */
-.season-month--prime {
-  border-color: var(--amber-border);
-  background: var(--amber-dim);
+/* Least ink to most: empty and cold, through to solid and unarguable. */
+.season-month--snowbound .season-month__bar,
+.season-swatch--snowbound {
+  background-image: radial-gradient(circle at 50% 50%, var(--plum) 0.7px, transparent 0.9px);
+  background-size: 7px 7px;
 }
 
-.season-month--prime .season-month__bar {
-  background: var(--amber);
-}
-
-.season-month--prime .season-month__state {
-  color: var(--amber);
-}
-
-.season-month--wet .season-month__bar {
-  background: var(--blue-dot);
-}
-
-.season-month--snowbound .season-month__bar {
-  background: var(--white);
-  opacity: 0.55;
-}
-
-/* Hatched rather than a new colour: the palette has no "hot", and a solid
-   amber bar would read as prime. The label under it carries the meaning. */
-.season-month--hot .season-month__bar {
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--amber) 0 3px,
-    transparent 3px 6px
+.season-month--cold .season-month__bar,
+.season-swatch--cold {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--plum) 0 0.7px,
+    transparent 0.7px 5px
   );
 }
 
-.season-month--cold .season-month__bar {
-  background: var(--sage);
+/* Parallel line shading is how an engraved chart renders water. */
+.season-month--wet .season-month__bar,
+.season-swatch--wet {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--plum) 0 0.8px,
+    transparent 0.8px 4.5px
+  );
+}
+
+.season-month--hot .season-month__bar,
+.season-swatch--hot {
+  background-image:
+    repeating-linear-gradient(45deg, var(--plum) 0 0.8px, transparent 0.8px 3.6px),
+    repeating-linear-gradient(-45deg, var(--plum) 0 0.8px, transparent 0.8px 3.6px);
+}
+
+/* The only solid on the strip, so the answer is visible at a glance. */
+.season-month--prime .season-month__bar,
+.season-swatch--prime {
+  background: var(--plum-deep);
+  border-color: var(--plum-deep);
 }
 
 .season-key {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 0.9rem;
+  gap: 0.4rem 1.4rem;
+  margin-top: 1rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--plum-soft);
 }
 
 .season-key__item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.65rem;
-  color: var(--muted);
+  gap: 0.45rem;
+}
+
+/* Explains what bar height encodes, pushed to the far end of the key. */
+.season-key__note {
+  margin-left: auto;
 }
 
 .season-swatch {
-  width: 14px;
-  height: 5px;
-  border-radius: 3px;
+  width: 22px;
+  height: 12px;
+  border: 1px solid var(--plum);
   display: inline-block;
 }
 
-.season-swatch--prime {
-  background: var(--amber);
-}
-.season-swatch--wet {
-  background: var(--blue-dot);
-}
-.season-swatch--snowbound {
-  background: rgba(255, 255, 255, 0.55);
-}
-.season-swatch--hot {
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--amber) 0 3px,
-    transparent 3px 6px
-  );
-}
-.season-swatch--cold {
-  background: var(--sage);
-}
-
-/* Twelve columns stop being readable well before the phone breakpoint */
-@media (max-width: 1100px) {
-  .season-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-}
-
-@media (max-width: 620px) {
-  .season-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .season-section {
-    --terrain-width: 100%;
-    margin-left: 0;
-  }
-}
-
-/* Terrain chips row */
-.terrain-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
-
 /* ------------------------------------------------------------
-   Community Section
+   Field notes
    ------------------------------------------------------------ */
 .community-section {
-  padding-top: 1rem;
+  padding-top: 0.5rem;
 }
 
-.community-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.review-count-badge {
-  background: var(--amber-dim);
-  border: 1px solid var(--amber-border);
-  border-radius: 20px;
-  padding: 0.3rem 0.8rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--amber);
-}
-
-/* Reviews grid */
 .reviews-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.1rem;
+  margin-bottom: 2.25rem;
 }
 
 .review-card {
-  background: var(--surface);
-  border-radius: var(--radius-card);
-  padding: 1.25rem;
-  border: 1px solid rgba(106, 158, 114, 0.12);
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  border: 1px solid var(--rule);
+  padding: 1rem 1.1rem 1.1rem;
+  background: var(--paper-hi);
 }
 
-.review-card__top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.review-date {
-  font-size: 0.7rem;
-  color: var(--muted);
-}
-
-.review-body {
-  font-size: 0.9rem;
-  color: var(--muted);
-  line-height: 1.65;
-  font-style: italic;
-  flex: 1;
+.review-body {  font-size: 1.02rem;
+  color: var(--ink);
+  margin: 0.7rem 0 1rem;
 }
 
 .review-card__bottom {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.55rem;
+  border-top: 1px solid var(--rule-faint);
+  padding-top: 0.65rem;
+}
+
+/* Only the author's own note carries a delete, and it sits at the far end. */
+.review-card__bottom form {
+  margin-left: auto;
+}
+
+/* The count beside the section label, which should not be lettered as a label. */
+.review-count {
+  letter-spacing: 0.1em;
+  text-transform: none;
+  color: var(--ink-soft);
 }
 
 .reviewer-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--sage-dim);
-  border: 1px solid rgba(106, 158, 114, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--sage);
-  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  background: var(--panel);
+  color: var(--knockout);
+  font-size: 0.76rem;
+  flex: none;
 }
 
-.reviewer-name {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--white);
+.reviewer-name {  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  color: var(--ink-soft);
 }
 
-.no-reviews {
-  color: var(--muted);
-  font-size: 0.9rem;
+.no-reviews {  color: var(--ink-soft);
   margin-bottom: 2rem;
-  text-align: center;
-  padding: 2rem;
-  border: 1px dashed rgba(143, 168, 152, 0.15);
-  border-radius: var(--radius-card);
 }
 
-/* Field Note form */
 .field-note-form {
-  background: var(--surface);
-  border-radius: var(--radius-card);
-  padding: 2rem;
-  border: 1px solid rgba(106, 158, 114, 0.12);
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-.field-note-form__header {
-  text-align: center;
-  margin-bottom: 1.75rem;
-}
-
-.field-note-form__title {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--white);
-  margin-bottom: 0.3rem;
-}
-
-.field-note-form__sub {
-  font-size: 0.8rem;
-  color: var(--muted);
+  border: 1px solid var(--rule);
+  padding: 1.4rem 1.5rem 1.6rem;
+  max-width: 640px;
 }
 
 /* ------------------------------------------------------------
-   Map (show page specific override)
+   Star rating. Replaces starability, which painted gold PNG sprites that could
+   not be recoloured. stars.css was deleted with it.
    ------------------------------------------------------------ */
-.maplibregl-canvas {
-  border-radius: var(--radius-card);
+.rating-stars {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--ink-deep);
+}
+
+.rating-stars svg {
+  width: 15px;
+  height: 15px;
+}
+
+.rating-star--off {
+  opacity: 0.24;
+}
+
+.rating-input {
+  display: inline-flex;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.rating-input > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rating-input > label {
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ink);
+  opacity: 0.22;
+  transition: opacity 90ms linear;
+  margin: 0 1px;
+}
+
+.rating-input > label::before {
+  content: "\2605";
+}
+
+/* CSS has no previous-sibling combinator, so :has() does the work: a label is
+   lit if a later sibling input is checked, or if it is the label immediately
+   after the checked one. Hover overrides the checked state so the preview
+   always wins. */
+.rating-input > input:checked + label,
+.rating-input > label:has(~ input:checked) {
+  opacity: 1;
+}
+
+.rating-input:hover > input:checked + label,
+.rating-input:hover > label:has(~ input:checked) {
+  opacity: 0.4;
+}
+
+.rating-input > label:hover,
+.rating-input > label:has(~ label:hover) {
+  opacity: 1;
+}
+
+.rating-input > input:focus-visible + label {
+  outline: 1px dotted var(--ink-deep);
 }
 
 /* ------------------------------------------------------------
-   Index page cards (preserve for other pages)
+   Figures. IM Fell SC has old-style figures sitting at x-height, so its digits
+   read small beside its own caps. Numerals go to Garamond, lining and tabular.
    ------------------------------------------------------------ */
-.card {
-  border-radius: var(--radius-card) !important;
-  border: 1px solid rgba(106, 158, 114, 0.15);
-  background-color: var(--surface);
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-  color: var(--white);
+.price-value,
+.stat-value,
+.current-temp,
+.readings b,
+.forecast-temps,
+.history-temps,
+.history-precip,
+.season-month__temp,
+.scale-bar,
+.topo-readout,
+.topo-profile__axis {
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
-.card-title {
-  color: var(--amber);
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.card-body {
-  padding: 1.25rem;
-}
-
-.campground-img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-}
-
-.list-group-item {
-  background: transparent;
-  border-color: rgba(106, 158, 114, 0.12);
-  color: var(--muted);
+.price-value,
+.stat-value,
+.current-temp,
+.readings b,
+.forecast-temps,
+.history-temps,
+.history-precip,
+.season-month__temp,
+.scale-bar,
+.topo-profile__axis {
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
 }
 
 /* ------------------------------------------------------------
-   Responsive
+   Detail page responsive
    ------------------------------------------------------------ */
-@media (max-width: 900px) {
+@media (max-width: 980px) {
   .detail-hero {
     grid-template-columns: 1fr;
   }
 
-  .detail-sidebar {
-    position: static;
+  .detail-sky {
+    border-left: 0;
+    border-top: 1px solid var(--rule-sky);
+    padding-left: 0;
+    padding-top: 1.5rem;
   }
 
-  /* Below this width the breakout is pointless, so sit in the page flow */
-  .terrain-section {
-    --terrain-width: 100%;
-    margin-left: 0;
-  }
-
-  .reviews-grid {
+  .plate-pair {
     grid-template-columns: 1fr;
+  }
+
+  .terrain-metrics {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .terrain-metrics .stat-card:nth-child(3) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  html:has(.detail-page) {
+    font-size: 18px;
   }
 
   .detail-gallery {
     grid-template-columns: 1fr;
-    height: 300px;
   }
 
-  .gallery-stack {
-    display: none;
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .gallery-main {
-    height: 300px;
+  .stat-grid .stat-card:nth-child(2) {
+    border-right: 0;
   }
 
-  .terrain-section {
-    padding: 0 1rem;
+  .season-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .season-month:nth-child(6n) {
+    border-right: 0;
+  }
+
+  .terrain-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .terrain-metrics .stat-card:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .plate-caption {
+    flex-direction: column;
+    gap: 0.2rem;
   }
 }
 
-@media (max-width: 600px) {
-  .detail-page {
-    padding: 0 1rem 3rem;
+@media (max-width: 460px) {
+  .season-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .camp-title {
-    font-size: 1.8rem;
-  }
-
-  .current-chips {
-    align-items: flex-start;
-  }
-
-  .conditions-current {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .forecast-stats {
-    font-size: 0.58rem;
-  }
-
-  .community-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+  .season-month:nth-child(3n) {
+    border-right: 0;
   }
 }
+
 /* ------------------------------------------------------------
    Footer
    ------------------------------------------------------------ */
 .footer {
-  background-color: var(--bg);
-  border-top: 1px solid rgba(106, 158, 114, 0.12);
+  background-color: var(--paper);
+  border-top: 1px solid var(--wash);
   padding: 1.25rem 0;
   margin-top: 4rem;
 }
@@ -2437,7 +2544,7 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 500;
@@ -2445,7 +2552,7 @@ a:hover {
 }
 
 .footer-link:hover {
-  color: var(--white);
+  color: var(--ink-deep);
   text-decoration: none;
 }
 
@@ -2460,13 +2567,13 @@ a:hover {
 }
 
 .footer-divider {
-  color: rgba(143, 168, 152, 0.25);
+  color: rgba(90, 64, 50, 0.25);
   font-size: 0.7rem;
 }
 
 .footer-copy {
   font-size: 0.78rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   opacity: 0.6;
 }
 

@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: var(--bg);
+  background: var(--paper);
 }
 
 .home-hero__bg {
@@ -13,12 +13,12 @@
   background:
     radial-gradient(
       ellipse 80% 60% at 70% 50%,
-      rgba(106, 158, 114, 0.06) 0%,
+      var(--wash) 0%,
       transparent 70%
     ),
     radial-gradient(
       ellipse 40% 40% at 20% 80%,
-      rgba(232, 145, 58, 0.04) 0%,
+      var(--wash) 0%,
       transparent 60%
     );
   pointer-events: none;
@@ -48,7 +48,7 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sage);
+  color: var(--ink);
   margin-bottom: 1.25rem;
 }
 
@@ -56,7 +56,7 @@
   font-family: var(--font-display);
   font-size: clamp(2.8rem, 6vw, 5rem);
   font-weight: 800;
-  color: var(--white);
+  color: var(--ink-deep);
   line-height: 1.05;
   letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
@@ -65,7 +65,7 @@
 
 .home-hero__sub {
   font-size: 1.05rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   line-height: 1.75;
   max-width: 480px;
   margin-bottom: 2.5rem;
@@ -86,9 +86,9 @@
    Stats bar
    ------------------------------------------------------------ */
 .home-stats {
-  border-top: 1px solid rgba(106, 158, 114, 0.1);
-  border-bottom: 1px solid rgba(106, 158, 114, 0.1);
-  background: var(--surface);
+  border-top: 1px solid var(--wash);
+  border-bottom: 1px solid var(--wash);
+  background: var(--paper-hi);
 }
 
 .home-stats__inner {
@@ -110,19 +110,19 @@
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--amber);
+  color: var(--ink-deep);
 }
 
 .home-stat__label {
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   letter-spacing: 0.03em;
 }
 
 .home-stat__divider {
   width: 1px;
   height: 32px;
-  background: rgba(106, 158, 114, 0.15);
+  background: var(--wash);
   flex-shrink: 0;
 }
 
@@ -147,27 +147,27 @@
   font-family: var(--font-display);
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--white);
+  color: var(--ink-deep);
   letter-spacing: -0.01em;
   text-align: left;
 }
 
 .home-section-sub {
   font-size: 0.9rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin: 0;
 }
 
 .home-section-link {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--amber);
+  color: var(--ink-deep);
   text-decoration: none;
   white-space: nowrap;
 }
 
 .home-section-link:hover {
-  color: var(--white);
+  color: var(--ink-deep);
 }
 
 /* ------------------------------------------------------------
@@ -196,14 +196,14 @@
   overflow: hidden;
   text-decoration: none;
   display: block;
-  border: 1px solid rgba(106, 158, 114, 0.12);
+  border: 1px solid var(--wash);
   transition:
     border-color 0.2s,
     transform 0.2s;
 }
 
 .featured-card:hover {
-  border-color: rgba(106, 158, 114, 0.35);
+  border-color: var(--rule-faint);
   transform: translateY(-2px);
   text-decoration: none;
 }
@@ -240,8 +240,8 @@
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(13, 21, 16, 0.85) 0%,
-    rgba(13, 21, 16, 0.1) 50%,
+    rgba(41, 26, 18, 0.85) 0%,
+    var(--wash) 50%,
     transparent 100%
   );
 }
@@ -257,7 +257,7 @@
 
 .featured-card__location {
   font-size: 0.72rem;
-  color: var(--sage);
+  color: var(--ink);
   font-weight: 500;
   margin-bottom: 0.3rem;
   letter-spacing: 0.03em;
@@ -267,7 +267,7 @@
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--ink-deep);
   margin-bottom: 0.5rem;
   line-height: 1.2;
   text-align: left;
@@ -280,13 +280,13 @@
 .featured-card__price {
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--amber);
+  color: var(--ink-deep);
 }
 
 .featured-card__price span {
   font-size: 0.7rem;
   font-weight: 400;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
 /* ------------------------------------------------------------
@@ -294,7 +294,7 @@
    ------------------------------------------------------------ */
 .home-features {
   padding: 4rem 0;
-  border-top: 1px solid rgba(106, 158, 114, 0.08);
+  border-top: 1px solid var(--wash);
 }
 
 .home-features__inner {
@@ -311,10 +311,10 @@
 }
 
 .feature-card {
-  background: var(--surface);
+  background: var(--paper-hi);
   border-radius: 12px;
   padding: 1.5rem;
-  border: 1px solid rgba(106, 158, 114, 0.1);
+  border: 1px solid var(--wash);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -322,7 +322,7 @@
 }
 
 .feature-card:hover {
-  border-color: rgba(106, 158, 114, 0.25);
+  border-color: var(--rule-faint);
 }
 
 .feature-card__icon {
@@ -334,14 +334,14 @@
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--ink-deep);
   text-align: left;
   margin: 0;
 }
 
 .feature-card__body {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   line-height: 1.65;
   margin: 0;
 }
@@ -350,9 +350,9 @@
    CTA band
    ------------------------------------------------------------ */
 .home-cta-band {
-  background: var(--surface);
-  border-top: 1px solid rgba(106, 158, 114, 0.1);
-  border-bottom: 1px solid rgba(106, 158, 114, 0.1);
+  background: var(--paper-hi);
+  border-top: 1px solid var(--wash);
+  border-bottom: 1px solid var(--wash);
   padding: 4rem 0;
 }
 
@@ -371,7 +371,7 @@
   font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 800;
-  color: var(--white);
+  color: var(--ink-deep);
   letter-spacing: -0.01em;
   text-align: center;
   margin: 0;
@@ -379,7 +379,7 @@
 
 .home-cta-band__sub {
   font-size: 0.9rem;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin: 0;
 }
 
@@ -433,4 +433,10 @@
   .home-stat__divider {
     display: none;
   }
+}
+
+/* Hero contour decoration. Stroked here rather than on the paths, because
+   presentation attributes do not resolve custom properties. */
+.home-hero__topo path {
+  stroke: var(--ink);
 }

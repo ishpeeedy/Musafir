@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-lg">
+<nav class="navbar">
   <div class="navbar-inner">
 
     <!-- Brand -->
@@ -8,22 +8,22 @@
     </a>
 
     <!-- Mobile toggle -->
+    <!-- ui.js binds the toggle off aria-controls, so the accessible attribute
+         is the hook and there is no second source of truth. -->
     <button
       class="navbar-toggler"
       type="button"
-      data-toggle="collapse"
-      data-target="#navbarNav"
       aria-controls="navbarNav"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
     </button>
 
     <!-- Nav links -->
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <div class="navbar-nav navbar-nav--left">
         <a class="nav-link" href="/">Home</a>
         <a class="nav-link" href="/campgrounds">Explore</a>
