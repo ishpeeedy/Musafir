@@ -152,7 +152,7 @@ a:hover {
 .reviewer-name,
 .reviewer-avatar,
 .readings,
-.gallery-more-overlay,
+.plate-viewer__count,
 .camp-title,
 .current-temp,
 .history-temps,
@@ -1578,47 +1578,144 @@ html:has(.detail-page) {
 /* ------------------------------------------------------------
    Photo plate
    ------------------------------------------------------------ */
-.detail-gallery {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 0.5rem;
+.plate-viewer {
   margin-bottom: 2.2rem;
 }
 
-.gallery-stack {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: 0.5rem;
-}
-
-.gallery-frame {
+.plate-viewer__frame {
   position: relative;
-  overflow: hidden;
   border: 1px solid var(--ink-soft);
   background: var(--paper-lo);
-  min-height: 0;
 }
 
-.gallery-frame img {
+/* The frame only becomes a fixed window once gallery.js has marked the track
+   live. Until then there is nothing to clip against and the photographs stack
+   as a plain column, so the page degrades to something readable rather than to
+   one image with the rest hidden behind an inert frame. */
+.plate-viewer__frame:has(.is-live) {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.plate-viewer__track {
+  list-style: none;
+  height: 100%;
+}
+
+.plate-viewer__track.is-live {
+  display: flex;
+  transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.plate-viewer__slide {
+  flex: 0 0 100%;
+  height: 100%;
+}
+
+.plate-viewer__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The drag gesture is ours; the browser's image drag would fight it. */
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Arrows sit on the plate as paper tabs, and invert to solid ink on hover the
+   same way the primary button does. */
+.plate-viewer__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.2rem;
+  height: 2.8rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border: 1px solid var(--ink-soft);
+  background: var(--paper);
+  color: var(--ink-deep);
+  transition:
+    background 0.15s,
+    color 0.15s,
+    opacity 0.15s;
+}
+
+.plate-viewer__nav svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.plate-viewer__nav:hover:not(:disabled) {
+  background: var(--panel);
+  color: var(--knockout);
+}
+
+.plate-viewer__nav:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.plate-viewer__nav--prev {
+  left: 0.6rem;
+}
+
+.plate-viewer__nav--next {
+  right: 0.6rem;
+}
+
+.plate-viewer__nav--next svg {
+  transform: scaleX(-1);
+}
+
+.plate-viewer__bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.plate-viewer__strip {
+  display: flex;
+  gap: 0.35rem;
+  list-style: none;
+  overflow-x: auto;
+  flex: 1;
+  scrollbar-width: thin;
+}
+
+.plate-viewer__thumb {
+  display: block;
+  width: 3.4rem;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  cursor: pointer;
+  border: 1px solid var(--rule-faint);
+  background: var(--paper-lo);
+  opacity: 0.5;
+  transition:
+    opacity 0.15s,
+    border-color 0.15s;
+}
+
+.plate-viewer__thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.gallery-main {
-  aspect-ratio: 16 / 10;
+.plate-viewer__thumb:hover,
+.plate-viewer__thumb.is-current {
+  opacity: 1;
+  border-color: var(--ink-deep);
 }
 
-.gallery-more-overlay {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(41, 26, 18, 0.66);
-  color: var(--knockout);
-  font-size: 0.8rem;
+.plate-viewer__count {
+  font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
 
 /* ------------------------------------------------------------
@@ -2389,6 +2486,7 @@ html:has(.detail-page) {
    Figures. IM Fell SC has old-style figures sitting at x-height, so its digits
    read small beside its own caps. Numerals go to Garamond, lining and tabular.
    ------------------------------------------------------------ */
+.plate-viewer__count,
 .price-value,
 .stat-value,
 .current-temp,
@@ -2403,6 +2501,7 @@ html:has(.detail-page) {
   font-variant-numeric: lining-nums tabular-nums;
 }
 
+.plate-viewer__count,
 .price-value,
 .stat-value,
 .current-temp,

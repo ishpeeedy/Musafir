@@ -33,6 +33,10 @@ function getWeatherIcon(condition) {
     <path fill="currentColor" d="M12 2.6 14.9 9.3 22.1 10 16.7 14.8 18.3 21.9 12 18.2 5.7 21.9 7.3 14.8 1.9 10 9.1 9.3Z" />
   </symbol>
 
+  <symbol id="mark-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 5 8 12l7 7" />
+  </symbol>
+
   <symbol id="mark-drop" viewBox="0 0 12 12">
     <path fill="currentColor" d="M6 1.2c0 0 4.3 4.9 4.3 7.1a4.3 4.3 0 0 1-8.6 0C1.7 6.1 6 1.2 6 1.2Z" />
   </symbol>
@@ -46,25 +50,50 @@ function getWeatherIcon(condition) {
       <span><%= campground.region || campground.location %></span>
     </div>
 
-    <!-- ================================================== the photo plate -->
+    <!-- ================================================== the photo plate
+         One plate at a time, leafed through like a folio. gallery.js takes
+         over on load; without it the track is still a readable column of
+         photographs, so the page never depends on the script. -->
     <% if (campground.images.length >= 1) { %>
-    <div class="detail-gallery">
-      <div class="gallery-frame gallery-main">
-        <img src="<%= campground.images[0].url %>" alt="<%= campground.title %>" />
-      </div>
-      <div class="gallery-stack">
-        <% if (campground.images.length >= 2) { %>
-          <div class="gallery-frame"><img src="<%= campground.images[1].url %>" alt="" /></div>
+    <% const plates = campground.images.length; %>
+    <div class="plate-viewer" role="group" aria-roledescription="carousel" aria-label="Photographs">
+      <div class="plate-viewer__frame">
+        <ul class="plate-viewer__track">
+          <% campground.images.forEach((image, i) => { %>
+            <li class="plate-viewer__slide" aria-label="<%= i + 1 %> of <%= plates %>">
+              <img
+                src="<%= image.url %>"
+                alt="<%= campground.title %>, photograph <%= i + 1 %>"
+                <%= i === 0 ? '' : 'loading="lazy"' %>
+              />
+            </li>
+          <% }) %>
+        </ul>
+
+        <% if (plates > 1) { %>
+          <button class="plate-viewer__nav plate-viewer__nav--prev" type="button" aria-label="Previous photograph">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#mark-chevron"></use></svg>
+          </button>
+          <button class="plate-viewer__nav plate-viewer__nav--next" type="button" aria-label="Next photograph">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#mark-chevron"></use></svg>
+          </button>
         <% } %>
-        <% if (campground.images.length >= 3) { %>
-          <div class="gallery-frame">
-            <img src="<%= campground.images[2].url %>" alt="" />
-            <% if (campground.images.length > 3) { %>
-              <span class="gallery-more-overlay"><%= campground.images.length - 3 %> more</span>
-            <% } %>
-          </div>
-        <% } %>
       </div>
+
+      <% if (plates > 1) { %>
+        <div class="plate-viewer__bar">
+          <ol class="plate-viewer__strip">
+            <% campground.images.forEach((image, i) => { %>
+              <li>
+                <button type="button" class="plate-viewer__thumb" aria-label="Photograph <%= i + 1 %>">
+                  <img src="<%= image.url %>" alt="" loading="lazy" />
+                </button>
+              </li>
+            <% }) %>
+          </ol>
+          <span class="plate-viewer__count" aria-live="polite">1 of <%= plates %></span>
+        </div>
+      <% } %>
     </div>
     <% } %>
 
@@ -407,6 +436,7 @@ function getWeatherIcon(condition) {
   const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
   const campground = <%- JSON.stringify(campground) %>;
 </script>
+<script src="/javascripts/gallery.js"></script>
 <script src="/javascripts/showPageMap.js"></script>
 <!-- d3-array first: d3-geo and d3-contour both resolve it off the global d3 -->
 <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>

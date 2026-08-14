@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(\"--- err ---\")",
+      "PowerShell(node \"C:\\\\Users\\\\Speedy\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Speedy-dev-Musafir\\\\28ddffb1-ab9f-4e52-9173-13a08bbbafbe\\\\scratchpad\\\\harness.js\")",
+      "PowerShell(git -C \"c:\\\\Users\\\\Speedy\\\\dev\\\\Musafir\" status --short)"
+    ]
+  }
+}
