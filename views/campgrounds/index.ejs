@@ -281,20 +281,7 @@
                  seeded descriptions are assembled from the same measurements as
                  terrain.summary, so it printed the next column twice. -->
             <div class="camp-card__id">
-              <!-- Conditions sit with the title, beside the photograph. The
-                   purple against a brown title is the same deliberate mixed
-                   row the show page uses for its hero measures: the ink still
-                   follows the plate, only the position is shared. -->
-              <div class="camp-card__head">
-                <h2 class="camp-card__title"><%= campground.title %></h2>
-                <% if (wx) { %>
-                  <span class="camp-card__wx">
-                    <img class="wx wx--card" src="<%= wx.icon %>" alt="" />
-                    <span class="camp-card__temp"><%= wx.temp_c %>°</span>
-                    <span class="camp-card__wxnote">now</span>
-                  </span>
-                <% } %>
-              </div>
+              <h2 class="camp-card__title"><%= campground.title %></h2>
               <p class="camp-card__location"><span class="loc-icon">⊙</span> <%= campground.location %></p>
 
               <% if (card.verdict) { %>
@@ -315,6 +302,19 @@
               <% } %>
 
               <p class="camp-card__cost">₹<%= campground.price %> <span class="camp-card__cost-unit">/ night</span></p>
+
+              <!-- Current conditions, under the price. Purple against the brown
+                   identity block is the same deliberate mixed reading the show
+                   page uses for its hero measures: the ink still follows the
+                   plate, only the position is shared. -->
+              <% if (wx) { %>
+                <span class="camp-card__wx">
+                  <img class="wx wx--card" src="<%= wx.icon %>" alt="" />
+                  <span class="camp-card__temp"><%= wx.temp_c %>°</span>
+                  <span class="camp-card__wxnote">now</span>
+                </span>
+              <% } %>
+
               <span class="distance-badge" style="display:none"></span>
             </div>
 

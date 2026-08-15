@@ -1,0 +1,27 @@
+<%
+  /*
+    The cairn mark, inlined rather than an <img src="...svg">.
+    An SVG loaded through <img> is an isolated document and cannot inherit
+    currentColor, which is the whole reason this is an SVG. Inlined, it takes
+    the ink of whatever it sits in: --plum-deep in the chrome, --knockout on a
+    solid panel, no per-context CSS and no filter-and-mask recolouring.
+
+    Source of truth is public/cairn_trapezium.svg. If that file changes, change
+    these paths with it.
+  */
+%>
+<%
+  /*
+    NOT class="mark". Bootstrap 5.3 styles `mark, .mark` as the highlighted-text
+    utility, with padding and a pale --bs-highlight-bg, so the logo picked up a
+    near-white box on every page that loads Bootstrap. home.ejs has its own
+    <head> and does not, which is why the home page looked right and nothing
+    else did.
+  */
+%>
+<svg class="brand-mark <%= typeof markClass !== 'undefined' ? markClass : '' %>"
+     viewBox="0 0 826 1402" fill="currentColor" aria-hidden="true" focusable="false">
+  <path d="M87.7033 956.019L743.509 906.466L826 1402H0L87.7033 956.019Z"/>
+  <path d="M195.458 390.787L643.197 459.276L727 831L112 872L195.458 390.787Z"/>
+  <path d="M195.458 0H704.131L643.197 390.787L212 330.5L195.458 0Z"/>
+</svg>

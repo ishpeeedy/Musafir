@@ -182,7 +182,15 @@ Every one was a real bug. Most were silent.
     `.plate #map` for exactly this reason. Unscoped it absolutely positions the
     cluster map, shoves it 34px left, takes it out of flow and collapses the
     listing hero. That bug shipped once already.
-11. **Never round-trip a source file through PowerShell `Get-Content` /
+11. **Bootstrap only loads on pages using `boilerplate.ejs`.** `home.ejs` has
+    its own `<head>` and does not load it. So a Bootstrap collision looks
+    correct on the home page and wrong everywhere else, which reads like a
+    page-specific bug and is not one. This cost an hour when the logo's class
+    was `mark`: Bootstrap styles `mark, .mark` as its text-highlight utility,
+    so the mark carried a padded near-white box on every page but home. It is
+    `.brand-mark` now, and `test/renderChrome.test.js` fails if any bare class
+    name collides with a Bootstrap utility that paints.
+12. **Never round-trip a source file through PowerShell `Get-Content` /
     `Set-Content`.** In PS 5.1 `Get-Content` with no `-Encoding` reads a
     BOM-less UTF-8 file as ANSI, so every multi-byte character is mangled, and
     `Set-Content -Encoding utf8` then bakes the mangling in *and* adds a BOM.
@@ -190,14 +198,14 @@ Every one was a real bug. Most were silent.
     disclosure caret, which shipped as `â–¸`. Use the Edit tool or Node's
     `fs.readFileSync(f, "utf8")`. The mojibake signature to grep for is a run
     starting `Â`, `Ã`, `â` or `ã`.
-12. **Colour literals in JavaScript are invisible to every CSS token sweep.**
+13. **Colour literals in JavaScript are invisible to every CSS token sweep.**
     `clusterMap.js` carried the Material cyan/blue/indigo from the original
     tutorial through the entire palette migration, because nothing that greps
     `:root` or the stylesheets can see it. Same blind spot as trap 1 in the
     other direction. Grep `#[0-9a-f]{6}` in `public/javascripts/` after any
     palette change; MapLibre paint properties are style JSON and cannot use
     `var()`, so they will always be literals.
-13. **The old dark palette left dark-on-dark literals behind.** The migration
+14. **The old dark palette left dark-on-dark literals behind.** The migration
     swapped 77 colour literals but `rgba(41, 26, 18, α)` survived in three
     places, where it had been a dark surface under white text. Once `--white`
     became `--ink-deep` the text went dark and the background did not. The
@@ -206,7 +214,7 @@ Every one was a real bug. Most were silent.
     `.image-delete-item`**, where it is a container behind an image rather than
     behind text, so it is harmless but it is the same leftover. Grep that
     literal before trusting any contrast on a surface you have not measured.
-14. **The elevation API host is `api.opentopodata.org`.** `api.open-topo-data.com`
+15. **The elevation API host is `api.opentopodata.org`.** `api.open-topo-data.com`
     has no DNS record. That wrong host sat in the spec for a whole stage while
     every fetch failed silently at the network layer. **If terrain stops
     appearing, check this first.**

@@ -256,10 +256,17 @@ test("the card carries both plates", async (t) => {
     assert.ok(html.includes("<b>24</b><i>12</i>"));
   });
 
-  await t.test("current conditions sit with the title, not in the sky column", () => {
-    const head = html.slice(html.indexOf("camp-card__head"), html.indexOf("camp-card__location"));
-    assert.ok(head.includes("/images/weather/sunny.gif"), "weather art belongs beside the title");
-    assert.ok(head.includes("24°"));
+  await t.test("current conditions sit under the price, not in the sky column", () => {
+    const identity = html.slice(
+      html.indexOf("camp-card__cost"),
+      html.indexOf("camp-card__land"),
+    );
+    assert.ok(identity.includes("/images/weather/sunny.gif"), "weather art belongs under the price");
+    assert.ok(identity.includes("24°"));
+  });
+
+  await t.test("the title is held to one line", () => {
+    assert.ok(!html.includes("camp-card__head"), "the title/weather row is gone");
   });
 
   await t.test("both plates are labelled", () => {

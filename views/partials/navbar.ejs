@@ -1,49 +1,50 @@
-<nav class="navbar">
+<%
+  /*
+    No mobile menu, deliberately. The nav is small enough not to need one, and
+    dropping it removed the hamburger (whose stroke="var(--ink)" never resolved,
+    so it was drawing nothing), the .navbar-collapse mechanism, half of ui.js
+    and one of the two Bootstrap compatibility rules. Below 30rem the wordmark
+    hides and the mark carries the brand on its own.
+
+    Browsing needs no account, so nothing here asks for one. Register lives on
+    the sign-in page; contributor actions live in the account menu.
+
+    WORDMARK: swap this one string to compare the two settings.
+  */
+  const WORDMARK = "CAIRN";
+%>
+<nav class="navbar" data-autohide>
   <div class="navbar-inner">
 
-    <!-- Brand -->
-    <a class="navbar-brand" href="/">
-      <img src="/images/icon.png" alt="Musafir Icon" class="navbar-icon" />
-      <img src="/images/logo.png" alt="Musafir" class="navbar-logo" />
+    <a class="navbar-brand" href="/" aria-label="<%= WORDMARK %>, home">
+      <%- include('mark') %>
+      <span class="navbar-wordmark"><%= WORDMARK %></span>
     </a>
 
-    <!-- Mobile toggle -->
-    <!-- ui.js binds the toggle off aria-controls, so the accessible attribute
-         is the hook and there is no second source of truth. -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </button>
+    <div class="navbar-nav">
+      <a class="nav-link" href="/campgrounds">Explore</a>
 
-    <!-- Nav links -->
-    <div class="navbar-collapse" id="navbarNav">
-      <div class="navbar-nav navbar-nav--left">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/campgrounds">Explore</a>
-        <a class="nav-link" href="/campgrounds/new">Add Campground</a>
-      </div>
-
-      <div class="navbar-nav navbar-nav--right">
-        <% if (!currentUser) { %>
-          <a class="nav-link" href="/login">Login</a>
-          <a class="nav-link nav-link--register" href="/register">Register</a>
-        <% } else { %>
-          <span class="navbar-user">
+      <% if (!currentUser) { %>
+        <a class="nav-link" href="/login">Sign in</a>
+      <% } else { %>
+        <%
+          /* Native <details> rather than a scripted dropdown: same pattern as
+             the filter folds, no JavaScript, and with none it degrades to an
+             open list instead of an unreachable menu. */
+        %>
+        <details class="navbar-account">
+          <summary class="navbar-account__summary" aria-label="Account">
             <span class="navbar-user__avatar"><%= currentUser.username.charAt(0).toUpperCase() %></span>
-            <span class="navbar-user__name">@<%= currentUser.username %></span>
-          </span>
-          <form action="/logout" method="POST" class="navbar-logout">
-            <button type="submit" class="nav-link nav-link--logout">Logout</button>
-          </form>
-        <% } %>
-      </div>
+          </summary>
+          <div class="navbar-account__menu">
+            <span class="navbar-account__who">@<%= currentUser.username %></span>
+            <a class="navbar-account__item" href="/campgrounds/new">Add campground</a>
+            <form action="/logout" method="POST" class="navbar-logout">
+              <button type="submit" class="navbar-account__item navbar-account__item--danger">Log out</button>
+            </form>
+          </div>
+        </details>
+      <% } %>
     </div>
 
   </div>

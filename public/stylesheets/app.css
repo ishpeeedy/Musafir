@@ -61,22 +61,19 @@
    per property. That covers most of it. These are the cases where Bootstrap
    sets a property we never declared, so there is nothing of ours to win with.
 
-   Ten of our class names collide with Bootstrap components: .navbar and its
-   children, .nav-link, .alert and variants, .form-control. Only the two below
-   actually change layout. Delete each line as that component is converted to
-   real Bootstrap markup.
+   Our class names collide with Bootstrap components: .navbar and its children,
+   .nav-link, .alert and variants, .form-control. Only the one below actually
+   changes layout. Delete it as that component is converted to real Bootstrap
+   markup.
+
+   The .navbar-collapse guard that used to sit here is gone with the element:
+   the navbar no longer collapses.
    ------------------------------------------------------------ */
 
 /* Bootstrap stacks .navbar-nav vertically unless it sits inside a
-   .navbar-expand-* wrapper, which our markup does not use yet. */
+   .navbar-expand-* wrapper, which our markup does not use. */
 .navbar-nav {
   flex-direction: row;
-}
-
-/* Bootstrap gives this flex-basis: 100%, which pushes the right-hand group
-   onto its own line. */
-.navbar-collapse {
-  flex-basis: auto;
 }
 
 /* ------------------------------------------------------------
@@ -239,6 +236,10 @@ a:hover {
 /* ------------------------------------------------------------
    Navbar
    ------------------------------------------------------------ */
+/* Sticky so it can hide by transform without the page reflowing: the element
+   keeps its place in the flow either way. navbar.js adds --hidden on scroll
+   down and takes it off on scroll up, and does nothing at all under
+   prefers-reduced-motion. */
 .navbar {
   background-color: var(--paper);
   position: sticky;
@@ -246,6 +247,11 @@ a:hover {
   border-bottom: 1px solid var(--wash);
   padding: 0;
   z-index: 100;
+  transition: transform 0.25s ease;
+}
+
+.navbar--hidden {
+  transform: translateY(-100%);
 }
 
 .navbar-inner {
@@ -259,79 +265,56 @@ a:hover {
   gap: 2rem;
 }
 
-/* Brand */
+/* ------------------------------------------------------------
+   Brand
+
+   The wordmark is the one deliberate exception to the plate rule: identity is
+   not data, so it carries the second ink. It is live type rather than a
+   bitmap, so renaming is a string edit, it scales with the type scale, and it
+   is selectable. The mark is inline SVG taking currentColor, which is what
+   retired the filter-and-mask hack that used to recolour a sage-green PNG.
+   ------------------------------------------------------------ */
 .navbar-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.55rem;
   text-decoration: none;
+  flex-shrink: 0;
+  color: var(--plum-deep);
+}
+
+.navbar-brand:hover {
+  text-decoration: none;
+}
+
+/* Sized in rem so the brand keeps its proportion against the nav type at any
+   root size. These were fixed px and stopped scaling when the 1.25x scale went
+   sitewide, which quietly shrank the brand on every page. */
+/* Not .mark: Bootstrap owns `mark, .mark` as its text-highlight utility, which
+   put a padded near-white box behind the logo on every page that loads
+   Bootstrap. See the Bootstrap compatibility note at the top of this file. */
+.brand-mark {
+  display: block;
+  height: 1.6rem;
+  width: auto;
   flex-shrink: 0;
 }
 
-.navbar-icon {
-  height: 32px;
-  width: auto;
+.navbar-wordmark {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.22em;
+  /* IM Fell SC has no second weight; font-synthesis: none on the body means
+     asking for one would render nothing rather than a fake bold. */
+  line-height: 1;
 }
 
-.navbar-logo {
-  height: 22px;
-  width: auto;
-}
-
-/* The wordmark is the one deliberate exception to the plate rule: identity is
-   not data, so it carries the second ink.
-   The logo is a PNG we have no vector for, and it is still the old sage green.
-   Recolouring it: zero the bitmap with a filter so only the element's own
-   background paints, then mask that background to the logo's own silhouette.
-   Filters run before masks, which is what makes the order work. */
-.navbar-logo,
-.navbar-icon,
-.footer-logo,
-.footer-icon {
-  filter: opacity(0);
-  background-color: var(--plum-deep);
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-}
-
-.navbar-logo,
-.footer-logo {
-  -webkit-mask-image: url("/images/logo.png");
-  mask-image: url("/images/logo.png");
-}
-
-.navbar-icon,
-.footer-icon {
-  -webkit-mask-image: url("/images/icon.png");
-  mask-image: url("/images/icon.png");
-}
-
-/* Toggler */
-.navbar-toggler {
-  background: transparent;
-  border: 1px solid var(--rule-faint);
-  border-radius: 6px;
-  padding: 0.35rem 0.5rem;
-  cursor: pointer;
-  display: none;
-  margin-left: auto;
-}
-
-.navbar-toggler:focus {
-  outline: none;
-  border-color: var(--ink);
-}
-
-/* Collapse wrapper */
-.navbar-collapse {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex: 1;
+/* Below this the mark carries the brand alone. This is the whole of the
+   responsive nav behaviour, and the reason there is no hamburger. */
+@media (max-width: 30rem) {
+  .navbar-wordmark {
+    display: none;
+  }
 }
 
 /* Nav groups */
@@ -344,26 +327,19 @@ a:hover {
   padding: 0;
 }
 
-.navbar-nav--left {
-  gap: 0.1rem;
-}
-
-.navbar-nav--right {
+.navbar-nav {
   margin-left: auto;
-  gap: 0.25rem;
 }
 
 /* Nav links */
 .nav-link {
+  position: relative;
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--ink-soft);
-  padding: 0.4rem 0.85rem;
-  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
   text-decoration: none;
-  transition:
-    color 0.2s,
-    background 0.2s;
+  transition: color 0.2s;
   letter-spacing: 0.02em;
   background: transparent;
   border: none;
@@ -371,9 +347,41 @@ a:hover {
   font-family: var(--font-body);
 }
 
+/* A rule drawn under the word, not a recessed button. Ink on paper underlines;
+   it does not depress. Wiping in from the left rather than fading keeps it
+   feeling drawn. */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.15rem;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s ease;
+}
+
+/* text-decoration: none is load bearing here. .nav-link is an <a>, so the
+   global a:hover underline paints on top of the ::after rule above and you get
+   two lines. The native one appears instantly and cannot be animated, which is
+   what made the pair read as static even while the pseudo-element was sliding
+   in behind it. */
 .nav-link:hover {
   color: var(--ink-deep);
-  background: rgba(90, 64, 50, 0.08);
+  text-decoration: none;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* The underline is the affordance; without motion it simply appears. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-link::after {
+    transition: none;
+  }
 }
 
 .nav-link.active,
@@ -381,40 +389,86 @@ a:hover {
   color: var(--ink-deep);
 }
 
-/* Register button — styled differently */
-.nav-link--register {
-  color: var(--ink-deep);
-  border: 1px solid var(--rule);
-  padding: 0.35rem 1rem;
+/* ------------------------------------------------------------
+   Account menu
+
+   Native <details>, same as the filter folds. No script, and with JavaScript
+   off it degrades to an open list rather than a menu nothing can reach.
+
+   Sign in is a plain link, not a panel: DESIGN.md reserves the solid accent
+   object for real CTAs, and if it appears in the chrome it stops meaning
+   anything on the pages that need it.
+   ------------------------------------------------------------ */
+.navbar-account {
+  position: relative;
 }
 
-.nav-link--register:hover {
-  background: var(--wash);
-  color: var(--ink-deep);
-}
-
-/* Logout button */
-.navbar-logout {
-  display: inline;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-link--logout {
-  color: var(--ink-soft);
-}
-
-.nav-link--logout:hover {
-  color: var(--ink-deep);
-  background: rgba(122, 47, 30, 0.08);
-}
-
-/* User badge */
-.navbar-user {
+.navbar-account__summary {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  list-style: none;
+  padding: 0.2rem;
+  border-radius: var(--radius);
+}
+
+.navbar-account__summary::-webkit-details-marker {
+  display: none;
+}
+
+.navbar-account__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  min-width: 11rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-hi);
+  border: 1px solid var(--rule-faint);
+  border-radius: var(--radius);
+  padding: 0.35rem;
+  z-index: 10;
+}
+
+.navbar-account__who {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  padding: 0.35rem 0.6rem 0.5rem;
+  border-bottom: 1px solid var(--rule-faint);
+  margin-bottom: 0.35rem;
+}
+
+.navbar-account__item {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  text-align: left;
+  color: var(--ink);
+  background: none;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  text-decoration: none;
+  width: 100%;
+}
+
+.navbar-account__item:hover {
+  background: var(--wash);
+  color: var(--ink-deep);
+  text-decoration: none;
+}
+
+/* Rubrication: the one colour a scribe was allowed besides the text ink, and
+   here it marks the only destructive item in the menu. */
+.navbar-account__item--danger {
+  color: var(--danger);
+}
+
+.navbar-logout {
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar-user__avatar {
@@ -432,59 +486,9 @@ a:hover {
   flex-shrink: 0;
 }
 
-.navbar-user__name {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--ink-deep);
-}
 
-/* Mobile */
-@media (max-width: 1239px) {
-  .navbar-toggler {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .navbar-collapse {
-    display: none;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    background: var(--paper);
-    border-bottom: 1px solid var(--wash);
-    padding: 0.75rem 2rem 1rem;
-    z-index: 99;
-  }
-
-  .navbar-collapse.show {
-    display: flex;
-  }
-
-  .navbar-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    gap: 0;
-  }
-
-  .navbar-nav--right {
-    margin-left: 0;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--wash);
-    width: 100%;
-  }
-
-  .nav-link {
-    width: 100%;
-    padding: 0.6rem 0.5rem;
-  }
-}
+/* No mobile block. The nav is two or three items, so it fits at every width;
+   below 30rem the wordmark hides and that is the whole of it. */
 
 /* ------------------------------------------------------------
    Shared Utility
@@ -1520,39 +1524,99 @@ a:hover {
      widest because it carries twelve months of bars, temperatures and
      initials, and those have to stay legible. */
   display: grid;
-  grid-template-columns: 15rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.6fr);
+  /* The first track is the photograph, and it is square, so this width is also
+     its height. At 15rem the square stood ~75px taller than the text columns
+     and left a band of dead paper across the row. 11rem lands close to what the
+     three text columns actually come to. */
+  grid-template-columns: 11rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.6fr);
   background: var(--paper-hi);
   border-radius: var(--radius);
-  border: 1px solid var(--wash);
   overflow: hidden;
-  transition:
-    border-color 0.2s,
-    transform 0.2s;
   /* The whole plate is the link now, so the card needs no button of its own. */
   text-decoration: none;
   color: inherit;
+  /* For the dashed border, which is a pseudo-element rather than a real border
+     because CSS cannot animate a border's dash pattern. */
+  position: relative;
+}
+
+/* The card's edge, drawn as four rules rather than `border`, because the dashes
+   have to be able to march and a real border's pattern cannot be animated.
+   Sits above the content and ignores the pointer, so it never interferes with
+   the link.
+
+   Each layer is one dash period, tiled. The marching version of this was tried
+   twice and scrapped: the pattern swap on hover could not be tweened (gradients
+   with different stop counts do not interpolate reliably), and what was left
+   read as a jump rather than a transition. The border is now simply the card's
+   edge, and the hover affordance is the paper lifting instead. */
+.camp-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: var(--radius);
+  background-image:
+    repeating-linear-gradient(90deg, var(--ink-soft) 0 6px, transparent 6px 12px),
+    repeating-linear-gradient(90deg, var(--ink-soft) 0 6px, transparent 6px 12px),
+    repeating-linear-gradient(0deg, var(--ink-soft) 0 6px, transparent 6px 12px),
+    repeating-linear-gradient(0deg, var(--ink-soft) 0 6px, transparent 6px 12px);
+  background-size:
+    12px 1px,
+    12px 1px,
+    1px 12px,
+    1px 12px;
+  background-position:
+    0 0,
+    0 100%,
+    0 0,
+    100% 0;
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
 }
 
 /* The whole row is one anchor, so the global a:hover underline would strike
-   every line of text in it. The lift and the image zoom carry the affordance;
-   .camp-card:hover (0,2,0) outweighs a:hover (0,1,1) without !important. */
+   every line of text in it. .camp-card:hover (0,2,0) outweighs a:hover (0,1,1)
+   without needing !important.
+
+   The affordance is the sheet lifting: --knockout is the lightest value in the
+   paper family, so the card reads as raised toward the light without leaving
+   the palette. */
+.camp-card {
+  transition: background-color 0.2s ease;
+}
+
 .camp-card:hover {
-  border-color: var(--rule-faint);
-  transform: translateY(-1px);
   text-decoration: none;
+  background: var(--knockout);
 }
 
 /* Square, and pinned to the top rather than stretched. As a plain grid cell it
    grew to whatever the tallest column was, which on a long row gave a 1:2
    portrait crop out of landscape photographs. */
+/* Stretches to the row rather than being square.
+   A square image could never fix the dead paper, because the gap was not coming
+   from the image's ratio: all four tracks are in one grid row, so the row is as
+   tall as the tallest of them and the shorter ones show bare paper. A square
+   only decided which track won. Stretching means the photograph fills its own
+   track completely and the height is set by the text instead. */
 .camp-card__img {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1 / 1;
-  align-self: start;
 }
 
+/* Absolutely positioned, which is the whole trick.
+
+   Left in flow, the photograph contributes its own intrinsic aspect ratio to
+   the grid row: a landscape shot gave a ~330px row and a portrait one dragged
+   the same card to ~410px, regardless of how little text was in it. The row is
+   as tall as its tallest item, so the photograph was still dictating the height
+   and the text columns still had paper to spare underneath.
+
+   Out of flow it contributes nothing. The row is sized by the text alone, and
+   the image fills whatever that comes to. */
 .camp-card__img img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1670,7 +1734,9 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem;
-  margin-top: 0.45rem;
+  /* Last in the land column, so it takes the slack the same way. */
+  margin-top: auto;
+  padding-top: 0.45rem;
 }
 
 .camp-chip {
@@ -1693,7 +1759,9 @@ a:hover {
   font-size: 0.72rem;
   color: var(--ink-soft);
   font-style: italic;
-  margin: 0.45rem 0 0;
+  margin: 0;
+  margin-top: auto;
+  padding-top: 0.45rem;
 }
 
 .camp-card__title {
@@ -1704,6 +1772,11 @@ a:hover {
   line-height: 1.2;
   margin: 0;
   text-align: left;
+  /* One line, always. A two-line name pushed every row below it out of
+     alignment, and the rows are meant to be scanned down a column. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .camp-card__location {
@@ -1848,26 +1921,26 @@ a:hover {
   outline-offset: 1px;
 }
 
+/* margin-top: auto drops the verdict to the foot of its column, so the shorter
+   columns fill their height instead of stacking at the top and leaving a block
+   of empty paper the dashed border draws a box around. Pushing only the last
+   element keeps the strip, its temperatures and its initials tight together as
+   one unit, which space-between would have pulled apart. */
 .camp-card__when {
   font-size: 0.85rem;
   color: var(--plum);
   margin: 0.15rem 0 0;
+  margin-top: auto;
+  padding-top: 0.4rem;
 }
 
-/* Title and current conditions on one line, so the reading is next to the
-   photograph rather than at the far end of the row. */
-.camp-card__head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
+/* Under the price, at the foot of the identity block. */
 .camp-card__wx {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  flex-shrink: 0;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  align-self: flex-start;
 }
 
 /* One line above the whole list, not one per row. */
@@ -2007,7 +2080,7 @@ a:hover {
      underneath. Letting the grid reflow on its own put the land column under
      the image, which is the narrowest track on the row. */
   .camp-card {
-    grid-template-columns: 12rem minmax(0, 1fr) minmax(0, 1.4fr);
+    grid-template-columns: 10rem minmax(0, 1fr) minmax(0, 1.4fr);
   }
 
   .camp-card__img {
@@ -2035,6 +2108,7 @@ a:hover {
 
   .camp-card__img {
     grid-row: auto;
+    align-self: start;
     /* A square at full card width would be enormous once stacked, so the
        photograph becomes a banner instead. */
     aspect-ratio: 2 / 1;
@@ -3210,19 +3284,22 @@ html {
 .footer-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
+  color: var(--plum-deep);
 }
 
-.footer-icon {
-  height: 22px;
-  width: auto;
-  opacity: 0.8;
+.brand-mark--footer {
+  height: 1.35rem;
+  opacity: 0.85;
 }
 
-.footer-logo {
-  height: 26px;
-  width: auto;
-  opacity: 0.8;
+.footer-wordmark {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  color: var(--plum-deep);
+  opacity: 0.85;
 }
 
 .footer-links {

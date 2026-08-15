@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 826 1402"
+     fill="currentColor" color="#23162b">
+  <!--
+    Cairn mark. Three stacked stones.
+
+    fill="currentColor" with color="#23162b" as a presentation attribute means
+    this renders in --plum-deep on its own (opened directly, in a README, or as
+    a favicon), and takes the page's ink when inlined into a template, because
+    any CSS rule outbids a presentation attribute. So the same file is both the
+    standalone asset and the inline mark, including knockout on a dark panel.
+
+    Deep purple is deliberate: --plum-deep is the one sanctioned exception to
+    the plate rule in md/DESIGN.md. Identity sits outside the data system, and
+    the wordmark carrying the second ink keeps purple present in the chrome so
+    it does not read as confined to the weather sections.
+  -->
+  <path d="M87.7033 956.019L743.509 906.466L826 1402H0L87.7033 956.019Z"/>
+  <path d="M195.458 390.787L643.197 459.276L727 831L112 872L195.458 390.787Z"/>
+  <path d="M195.458 0H704.131L643.197 390.787L212 330.5L195.458 0Z"/>
+</svg>
