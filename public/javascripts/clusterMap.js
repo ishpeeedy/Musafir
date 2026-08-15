@@ -1,10 +1,22 @@
 maptilersdk.config.apiKey = maptilerApiKey;
 
+// Mirrors of the :root tokens in app.css. MapLibre paint properties are style
+// JSON rather than CSS, so var() cannot be used and these have to be literals.
+// The map shows where places are, which is the land, so it is inked in brown:
+// purple is the sky plate and carries weather, light and season only.
+const INK_SOFT = "#5a4032";
+const INK = "#3f2a1e";
+const INK_DEEP = "#291a12";
+const PAPER_HI = "#dccbb5";
+const KNOCKOUT = "#e2d2ba";
+
 const map = new maptilersdk.Map({
   container: "map",
   style: maptilersdk.MapStyle.OUTDOOR,
-  center: [-103.59179687498357, 40.66995747013945],
-  zoom: 3,
+  // Every seeded campground is in India, so opening over Kansas meant the first
+  // thing anyone saw was an empty map they had to drag halfway round the world.
+  center: [79.5, 22.5],
+  zoom: 3.7,
 });
 
 // Same parchment treatment as the show page. Without this the listing map is
@@ -26,18 +38,26 @@ map.on("load", function () {
     source: "campgrounds",
     filter: ["has", "point_count"],
     paint: {
-      // Use step expressions (https://docs.maptiler.com/gl-style-specification/expressions/#step)
-      // with three steps to implement three types of circles:
+      // Density of ink, not a change of hue. The Material cyan/blue/indigo that
+      // used to be here came from the tutorial and survived the palette
+      // migration because it lives in JavaScript, where no CSS token sweep
+      // reaches it. Same blind spot as trap 1 in CLAUDE.md.
+      //
+      // Literal hex because MapLibre paint properties are style JSON, not CSS,
+      // so var() does not resolve. These are --ink-soft, --ink, --ink-deep and
+      // must be updated by hand if those tokens move.
       "circle-color": [
         "step",
         ["get", "point_count"],
-        "#00BCD4",
+        INK_SOFT,
         10,
-        "#2196F3",
+        INK,
         30,
-        "#3F51B5",
+        INK_DEEP,
       ],
       "circle-radius": ["step", ["get", "point_count"], 15, 10, 20, 30, 25],
+      "circle-stroke-width": 1,
+      "circle-stroke-color": PAPER_HI,
     },
   });
 
@@ -51,6 +71,11 @@ map.on("load", function () {
       "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
       "text-size": 12,
     },
+    // Knockout on the solid ink, the same accent-object treatment the price
+    // panel and the CTA use.
+    paint: {
+      "text-color": KNOCKOUT,
+    },
   });
 
   map.addLayer({
@@ -59,10 +84,10 @@ map.on("load", function () {
     source: "campgrounds",
     filter: ["!", ["has", "point_count"]],
     paint: {
-      "circle-color": "#11b4da",
+      "circle-color": INK_DEEP,
       "circle-radius": 4,
       "circle-stroke-width": 1,
-      "circle-stroke-color": "#fff",
+      "circle-stroke-color": PAPER_HI,
     },
   });
 

@@ -209,4 +209,66 @@ const analyseTerrain = (grid, opts = {}) => {
   };
 };
 
+/**
+ * Elevations sampled along the fall line, edge to edge through the centre.
+ *
+ * The same cut the show page's cross-section draws, at low resolution, for the
+ * sparkline on an explore card. Cutting a fixed west-east row instead would be
+ * arbitrary: on a north-facing slope it traverses the hill and draws a nearly
+ * flat line that says nothing about the ground you would pitch on.
+ *
+ * Bilinear between cells, so the line is smooth rather than stepped. Falls back
+ * to west-east where the ground is too flat to have a fall line, which is the
+ * same fallback the show page uses.
+ *
+ * @param {number[]} grid      Flat row-major elevation array
+ * @param {number}   bearing   Compass degrees the land falls toward, or null
+ * @param {object}   [opts]
+ * @param {number}   [opts.gridSize=10]
+ * @param {number}   [opts.samples=24]
+ * @returns {number[]|null} elevations along the cut, or null if unusable
+ */
+const sampleFallLine = (grid, bearing, opts = {}) => {
+  const gridSize = opts.gridSize || 10;
+  const samples = opts.samples || 24;
+
+  if (!Array.isArray(grid) || grid.length !== gridSize * gridSize) return null;
+  if (grid.some((v) => typeof v !== "number" || !Number.isFinite(v))) return null;
+
+  // Bearing runs clockwise from north; the grid runs east in col and north in
+  // row. A null bearing means no meaningful downhill, so cut west to east.
+  const rad = ((typeof bearing === "number" ? bearing : 90) * Math.PI) / 180;
+  const dCol = Math.sin(rad);
+  const dRow = Math.cos(rad);
+
+  const centre = (gridSize - 1) / 2;
+  // Longest half-length that keeps both ends inside the grid.
+  const half = Math.min(
+    Math.abs(dCol) < 1e-9 ? Infinity : centre / Math.abs(dCol),
+    Math.abs(dRow) < 1e-9 ? Infinity : centre / Math.abs(dRow),
+  );
+
+  const at = (row, col) => {
+    const r = Math.min(Math.max(row, 0), gridSize - 1);
+    const c = Math.min(Math.max(col, 0), gridSize - 1);
+    const r0 = Math.floor(r), c0 = Math.floor(c);
+    const r1 = Math.min(r0 + 1, gridSize - 1), c1 = Math.min(c0 + 1, gridSize - 1);
+    const fr = r - r0, fc = c - c0;
+    return (
+      grid[r0 * gridSize + c0] * (1 - fr) * (1 - fc) +
+      grid[r0 * gridSize + c1] * (1 - fr) * fc +
+      grid[r1 * gridSize + c0] * fr * (1 - fc) +
+      grid[r1 * gridSize + c1] * fr * fc
+    );
+  };
+
+  const out = [];
+  for (let i = 0; i < samples; i++) {
+    const t = (i / (samples - 1)) * 2 - 1; // -1 uphill, +1 downhill
+    out.push(at(centre + dRow * half * t, centre + dCol * half * t));
+  }
+  return out;
+};
+
 module.exports = analyseTerrain;
+module.exports.sampleFallLine = sampleFallLine;

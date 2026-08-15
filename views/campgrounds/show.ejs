@@ -331,12 +331,12 @@ function getWeatherIcon(condition) {
 
       <div class="season-grid">
         <% seasonality.months.forEach((m, i) => { %>
-          <div class="season-month season-month--<%= m.state %> <%= i === thisMonth ? 'season-month--now' : '' %>" title="<%= m.name %>: <%= m.label %>">
+          <div class="season-month season-month--<%= m.state %> <%= i === thisMonth ? 'season-month--now' : '' %>" title="<%= m.name %>: <%= m.label %><%= m.frost ? ', freezing nights' : '' %>">
             <span class="season-month__name"><%= m.name.slice(0, 3) %></span>
             <span class="season-month__track">
               <span class="season-month__bar" style="height:<%= barHeight(m) %>%"></span>
             </span>
-            <span class="season-month__state"><%= m.label %></span>
+            <span class="season-month__state"><%= m.label %><% if (m.frost) { %><i class="season-month__frost" aria-hidden="true">&dagger;</i><% } %></span>
             <span class="season-month__temp"><%= Math.round(m.tMax) %>°/<%= Math.round(m.tMin) %>°</span>
             <span class="season-month__precip"><%= m.snow >= 1 ? m.snow + 'cm' : m.precip + 'mm' %></span>
           </div>
@@ -349,6 +349,9 @@ function getWeatherIcon(condition) {
         <span class="season-key__item"><i class="season-swatch season-swatch--snowbound"></i>Snowbound</span>
         <span class="season-key__item"><i class="season-swatch season-swatch--hot"></i>Too hot</span>
         <span class="season-key__item"><i class="season-swatch season-swatch--cold"></i>Cold</span>
+        <% if (seasonality.months.some(m => m.frost)) { %>
+          <span class="season-key__item"><i class="season-month__frost">&dagger;</i>Freezing nights</span>
+        <% } %>
         <span class="season-key__item season-key__note">Bar height, monthly mean</span>
       </div>
     </div>

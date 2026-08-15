@@ -28,6 +28,16 @@ const FREEZING_DAY_MAX = 0; // a day that never gets above freezing
 const MONSOON_MM = 200; // ~6.7mm a day, unambiguously monsoon-grade
 const HOT_MAX_C = 35;
 const COLD_MIN_C = -5;
+/**
+ * Frost is a modifier, not a state.
+ *
+ * Moving `cold` up to freezing nights would be the obvious fix for Shimla,
+ * which at 2,200m reports January as prime when reality is near-freezing nights
+ * and regular snow. It also breaks Dzongri, whose correct October to December
+ * window would vanish, because frosty nights at altitude are normal and do not
+ * disqualify a month. So a month can stay prime and carry the warning instead.
+ */
+const FROST_MIN_C = 0;
 
 const STATES = {
   snowbound: { label: "Snowbound", rank: 0 },
@@ -143,6 +153,8 @@ const analyseSeasonality = (climate, opts = {}) => {
     short: SHORT[i],
     state: states[i],
     label: STATES[states[i]].label,
+    // Modifier, not a state. A prime month can still freeze at night.
+    frost: m.tMin <= FROST_MIN_C,
     tMax: m.tMax,
     tMin: m.tMin,
     precip: m.precip,
@@ -181,6 +193,22 @@ const analyseSeasonality = (climate, opts = {}) => {
       `No comfortable window. ${fallback.name} is the least hostile month, and it is ${fallback.label.toLowerCase()}.`,
     );
   }
+  // Frost inside the best window is the Shimla case: months that genuinely are
+  // the right time to go and will still freeze overnight. Saying "Best December
+  // to February" and stopping there is the part that was wrong.
+  const frostInBest = best
+    ? Array.from({ length: best.length }, (_, i) => months[(best.start + i) % 12]).filter(
+        (m) => m.frost,
+      )
+    : [];
+  if (frostInBest.length) {
+    sentences.push(
+      frostInBest.length === best.length
+        ? "Freezing nights throughout."
+        : `Freezing nights in ${frostInBest.map((m) => m.name).join(", ")}.`,
+    );
+  }
+
   if (snow) sentences.push(`Snowbound ${runPhrase(snow)}.`);
   if (wet) sentences.push(`Under monsoon ${runPhrase(wet)}.`);
   if (hot && !wet) sentences.push(`Too hot ${runPhrase(hot)}.`);
@@ -199,6 +227,40 @@ const analyseSeasonality = (climate, opts = {}) => {
   };
 };
 
+/**
+ * Where this place stands today, and when it next comes good.
+ *
+ * The list page's whole job is "should I go, and when", and a twelve-month
+ * strip does not answer it at a glance. This does.
+ *
+ * Deliberately reports the *next* prime month rather than the start of the
+ * longest window: in October, a place whose best run is April to June but which
+ * is also prime in November should say November. The longest window is the
+ * right answer to "when is it best", not to "when can I go".
+ *
+ * @param {object|null} analysis   output of analyseSeasonality
+ * @param {number} monthIndex      0-11, passed in rather than read from the
+ *                                 clock so this stays testable
+ * @returns {{good: boolean, label: string, frost: boolean, next: string|null}|null}
+ */
+const verdictFor = (analysis, monthIndex) => {
+  if (!analysis || !analysis.months || !analysis.months[monthIndex]) return null;
+  const here = analysis.months[monthIndex];
+
+  if (here.state === "prime") {
+    return { good: true, label: here.label, frost: here.frost, next: null };
+  }
+
+  for (let i = 1; i <= 11; i++) {
+    const m = analysis.months[(monthIndex + i) % 12];
+    if (m.state === "prime") {
+      return { good: false, label: here.label, frost: here.frost, next: m.name };
+    }
+  }
+  return { good: false, label: here.label, frost: here.frost, next: null };
+};
+
 module.exports = analyseSeasonality;
 module.exports.MONTHS = MONTHS;
 module.exports.STATES = STATES;
+module.exports.verdictFor = verdictFor;

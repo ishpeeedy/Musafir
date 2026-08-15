@@ -3,7 +3,7 @@ const Campground = require("../models/campground");
 const maptilerClient = require("@maptiler/client");
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 const { cloudinary } = require("../cloudinary");
-const { getWeatherData } = require("../utils/weatherService");
+const { getWeatherData, getCurrentWeatherFor } = require("../utils/weatherService");
 const { buildSunData } = require("../utils/sunService");
 const getElevationGrid = require("../utils/elevationService");
 const analyseTerrain = require("../utils/terrainAnalysis");
@@ -11,6 +11,17 @@ const getClimateNormals = require("../utils/climateService");
 const analyseSeasonality = require("../utils/seasonality");
 // Single source of truth for the checkbox grids, shared with Joi validation
 const { AMENITIES, TAGS } = require("../schemas");
+const {
+  parseConstraints,
+  filterCampgrounds,
+  suggestRelaxations,
+  describeConstraints,
+  ASPECT_GROUPS,
+  RUGGEDNESS,
+  SLOPE,
+  POSITIONS,
+  MONTHS,
+} = require("../utils/discovery");
 
 const ELEVATION_RADIUS_KM = 5;
 const ELEVATION_GRID_SIZE = 10;
@@ -28,82 +39,193 @@ if (!process.env.MAPTILER_API_KEY) {
   }
 }
 
+const PAGE_SIZE = 10;
+
+const SORTERS = {
+  "price-asc": (a, b) => a.price - b.price,
+  "price-desc": (a, b) => b.price - a.price,
+  // ObjectId hex sorts in creation order, since the timestamp leads the bytes.
+  newest: (a, b) => String(b._id).localeCompare(String(a._id)),
+  oldest: (a, b) => String(a._id).localeCompare(String(b._id)),
+};
+
+/**
+ * Condition text to weather art. Same mapping and same GIFs the show page uses,
+ * matted into the paper by --gif-mat. Duplicated from the inline helper at the
+ * top of show.ejs; worth extracting to a shared util if a third caller appears.
+ */
+const wxIcon = (condition) => {
+  const c = (condition || "").toLowerCase();
+  if (c.includes("sun") || c.includes("clear")) return "/images/weather/sunny.gif";
+  if (c.includes("partly cloudy") || c.includes("partial")) return "/images/weather/partly-cloudy.gif";
+  if (c.includes("cloudy") || c.includes("overcast")) return "/images/weather/cloudy.gif";
+  if (c.includes("thunder") || c.includes("storm")) return "/images/weather/thunderstorm.gif";
+  if (c.includes("heavy rain") || c.includes("torrential")) return "/images/weather/heavy-rain.gif";
+  if (c.includes("rain") || c.includes("drizzle") || c.includes("shower")) return "/images/weather/rain.gif";
+  if (c.includes("snow") || c.includes("blizzard")) return "/images/weather/snow.gif";
+  if (c.includes("sleet") || c.includes("ice")) return "/images/weather/sleet.gif";
+  if (c.includes("fog") || c.includes("mist") || c.includes("haze")) return "/images/weather/foggy.gif";
+  if (c.includes("wind")) return "/images/weather/windy.gif";
+  return "/images/weather/cloudy.gif";
+};
+
+/**
+ * Fall-line elevations for the card sparkline, or null where no grid is cached.
+ * Reads only what is already on the document; it must never trigger a fetch.
+ */
+const profileRow = (campground) => {
+  const grid = campground.elevationGrid?.data;
+  if (!grid || !grid.length) return null;
+  return analyseTerrain.sampleFallLine(
+    grid,
+    campground.terrain?.aspectBearing ?? null,
+    { gridSize: campground.elevationGrid.gridSize || 10 },
+  );
+};
+
+const matchesText = (campground, search) => {
+  const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").trim();
+  if (!escaped.length || escaped.length > 60) return true;
+  const re = new RegExp(escaped, "i");
+  return (
+    re.test(campground.title) ||
+    re.test(campground.location) ||
+    re.test(campground.description)
+  );
+};
+
 module.exports.index = async (req, res) => {
-  // Get query parameters
   const { search, minPrice, maxPrice, sort } = req.query;
-  const page = parseInt(req.query.page) || 1;
-  const limit = 10;
 
-  // Build query object
-  let query = {};
-
-  // Text search with partial matching using regex
-  if (search) {
-    const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").trim();
-    if (escaped.length > 0 && escaped.length <= 60) {
-      const searchRegex = new RegExp(escaped, "i"); // Case-insensitive regex
-      query.$or = [
-        { title: searchRegex },
-        { location: searchRegex },
-        { description: searchRegex },
-      ];
+  // Rebuild the query string minus some keys, so pagination carries every
+  // active constraint and a relaxation link drops exactly one. Repeated fields
+  // (the amenity and tag checkboxes) survive as repeats.
+  const queryWithout = (...drop) => {
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(req.query)) {
+      if (drop.includes(key)) continue;
+      for (const one of [].concat(value)) params.append(key, one);
     }
-  }
-
-  // Price filter
-  if (minPrice || maxPrice) {
-    query.price = {};
-    if (minPrice) query.price.$gte = parseFloat(minPrice);
-    if (maxPrice) query.price.$lte = parseFloat(maxPrice);
-  }
-
-  // Build sort object
-  let sortOption = {};
-  switch (sort) {
-    case "price-asc":
-      sortOption = { price: 1 };
-      break;
-    case "price-desc":
-      sortOption = { price: -1 };
-      break;
-    case "newest":
-      sortOption = { _id: -1 };
-      break;
-    case "oldest":
-      sortOption = { _id: 1 };
-      break;
-    default:
-      sortOption = { _id: -1 }; // Default: newest first
-  }
-
-  // Paginate campgrounds
-  const options = {
-    page,
-    limit,
-    sort: sortOption,
-    lean: false, // Need virtuals for popUpMarkup
+    return params.toString();
   };
 
-  const result = await Campground.paginate(query, options);
+  // One fetch, then everything in memory. Terrain constraints could be Mongo
+  // queries but season constraints cannot, because seasonality is derived per
+  // request rather than stored. Filtering in two places would make the result
+  // count disagree with itself. This route already loaded the whole collection
+  // for the cluster map, so it is one query fewer than before. See
+  // utils/discovery.js for where the seam goes when the collection grows.
+  const all = await Campground.find({});
 
-  // Get all campgrounds for the cluster map (not paginated)
-  const allCampgrounds = await Campground.find({});
+  const constraints = parseConstraints(req.query);
+  const { matched, skipped } = filterCampgrounds(all, constraints);
+
+  let results = matched;
+  if (search) results = results.filter((c) => matchesText(c, search));
+  if (minPrice) results = results.filter((c) => c.price >= parseFloat(minPrice));
+  if (maxPrice) results = results.filter((c) => c.price <= parseFloat(maxPrice));
+
+  results = results.slice().sort(SORTERS[sort] || SORTERS.newest);
+
+  const totalDocs = results.length;
+  const totalPages = Math.max(1, Math.ceil(totalDocs / PAGE_SIZE));
+  // Clamped, because tightening a filter while on page 4 would otherwise land
+  // on an empty page that reads as "no results".
+  const page = Math.min(Math.max(1, parseInt(req.query.page) || 1), totalPages);
+  const docs = results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  // Ratings for the visible page only: one extra query pulling nothing but the
+  // rating field. The review array of ids is already on the document, so the
+  // count costs nothing and only the mean needs this.
+  await Campground.populate(docs, { path: "reviews", select: "rating" });
+
+  // Per-card extras, for the visible page only. Seasonality is arithmetic over
+  // data already on the document, so it is free. Weather is one API call per
+  // card, which is why it is scoped to the ten being rendered rather than to
+  // every match.
+  const thisMonth = new Date().getMonth();
+  const cards = new Map(
+    docs.map((c) => {
+      const season = c.climate
+        ? analyseSeasonality(c.climate, { elevation: c.elevation })
+        : null;
+      const ratings = (c.reviews || []).map((r) => r.rating).filter((n) => typeof n === "number");
+      return [
+        String(c._id),
+        {
+          season,
+          // The headline finding: is it good now, and if not, when.
+          verdict: analyseSeasonality.verdictFor(season, thisMonth),
+          // One row of the cached grid, for the profile sparkline. Never
+          // fetches: a campground with no cached grid simply has no line. See
+          // the lazy fetch rule in CLAUDE.md.
+          profile: profileRow(c),
+          reviews: ratings.length
+            ? {
+                count: ratings.length,
+                mean: Math.round((ratings.reduce((s, n) => s + n, 0) / ratings.length) * 10) / 10,
+              }
+            : null,
+        },
+      ];
+    }),
+  );
+
+  const fetched = await getCurrentWeatherFor(docs);
+  const weather = new Map(
+    [...fetched].map(([id, wx]) => [id, { ...wx, icon: wxIcon(wx.condition) }]),
+  );
 
   res.render("campgrounds/index", {
-    campgrounds: result.docs,
+    campgrounds: docs,
+    // Keyed by id rather than merged onto the documents, because these are
+    // Mongoose documents and attaching fields to them is asking for the
+    // subdocument trap in CLAUDE.md.
+    cards,
+    weather,
     pagination: {
-      page: result.page,
-      totalPages: result.totalPages,
-      hasNextPage: result.hasNextPage,
-      hasPrevPage: result.hasPrevPage,
-      nextPage: result.nextPage,
-      prevPage: result.prevPage,
-      totalDocs: result.totalDocs,
+      page,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+      nextPage: page + 1,
+      prevPage: page - 1,
+      totalDocs,
+      base: queryWithout("page"),
     },
     filters: { search, minPrice, maxPrice, sort },
+    discovery: {
+      constraints,
+      summary: describeConstraints(constraints),
+      // Campgrounds with no cached survey data cannot be judged, which is not
+      // the same as failing. Reported rather than silently dropped.
+      skipped,
+      surveyed: all.length - skipped,
+      total: all.length,
+      relaxations:
+        totalDocs === 0
+          ? suggestRelaxations(all, constraints).map((r) => ({
+              ...r,
+              href: `/campgrounds?${queryWithout("page", r.key)}`,
+            }))
+          : [],
+      // Option lists for the sidebar, from the same tables discovery matches
+      // against, so a control can never offer a value that cannot match.
+      options: {
+        aspects: Object.keys(ASPECT_GROUPS),
+        ruggedness: RUGGEDNESS,
+        slope: SLOPE,
+        positions: POSITIONS,
+        months: MONTHS,
+        amenities: AMENITIES,
+        tags: TAGS,
+      },
+    },
+    // The map shows what matched. With constraints active a map of all 45 would
+    // contradict the list beside it.
     clusterMapData: {
       type: "FeatureCollection",
-      features: allCampgrounds.map((campground) => ({
+      features: results.map((campground) => ({
         type: "Feature",
         geometry: campground.geometry,
         properties: {

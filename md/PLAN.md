@@ -43,21 +43,28 @@ climate work, which was not in the original plan at all.
 - **45 real OpenStreetMap campgrounds** with real terrain and climate, replacing
   the stock YelpCamp census-cities seed. This was an open question in an earlier
   version of this plan and it is resolved.
+- **Constraint-based discovery.** `utils/discovery.js` matches on elevation,
+  aspect, position, ruggedness, slope, relief, season, amenities and tags, all
+  in one in-memory pass. The explore page states the query back in prose, sets
+  aside campgrounds it cannot judge rather than failing them, and on an empty
+  result names which single condition to drop and what dropping it would find.
+- **Frost is a modifier, not a state.** A month can be prime and still freeze
+  overnight. Fixes the Shimla miss without breaking Dzongri's correct window.
 
-`npm test` is 38 passing, covering `terrainAnalysis` and `seasonality` only.
+`npm test` is 103 passing: `terrainAnalysis`, `seasonality`, `discovery`, and a
+full render of the explore page in every shape.
 
 ---
 
 ## 0. Open a browser
 
-**Blocking everything below that touches the UI.** Three sessions of front-end
-work have never been rendered in a browser, and Bootstrap 5.3 landed underneath
-a navbar designed without it. The compatibility guard in `app.css` is predicted,
-not observed.
+The show page has been looked at and is right. **Everything else still has
+not**, and the explore page changed substantially after that check: the sidebar
+went from three controls to fourteen.
 
-Load home, explore, show, new, edit, login, register. Navbar first. Test the
-mobile menu and the flash dismiss specifically; they are the least proven things
-in the codebase.
+Load explore first, at full width and at 1100px and below. Then home, new, edit,
+login, register. Test the mobile menu and the flash dismiss specifically; they
+are the least proven things in the codebase.
 
 ---
 
@@ -152,19 +159,48 @@ search overhaul below, or drop the field.
 
 ---
 
-## 4. Constraint-based discovery
+## 4. Finish discovery
 
-**The biggest product gap.** There are terrain properties nobody else has, and
-the only way to find anything is a regex over title, location and description.
+The matching layer is built. Three things are still open.
 
-*"Above 2000m, south-facing, under 300km away, low ruggedness, prime in
-December"* is a query no competitor can answer. Every input to it is already on
-the document: `elevation`, `terrain.aspect`, `terrain.slope`,
-`terrain.ruggedness`, `terrain.relief`, `climate`, `geometry`.
+**Distance from the user is the missing constraint.** It is the one that needs
+the browser: geolocation resolves client-side, caches in `sessionStorage`, and
+appends `near=lat,lng` to the query string. Then it is a haversine inside
+`matchCampground` like any other constraint. No `2dsphere` index needed, because
+`$geoNear` has to be the first stage of an aggregation pipeline and so could
+never compose with the in-memory season filter anyway. **If the user declines
+the permission, that control must say it is unavailable rather than silently
+returning a wrong count.**
 
-This is where the data stops being decoration and becomes a product. It replaces
-the filter sidebar, which is why `/campgrounds` should not be restyled before
-this lands.
+**Sort by fit.** With constraints active, "newest first" is noise. Sort by
+distance when known, otherwise by the length of the prime window. Deliberately
+left out of the first pass rather than guessed at.
+
+**A saved query.** Constraints already live in the URL, so a bookmark is a
+saved search rather than a saved campground. That makes item 3 above worth more
+than it was.
+
+**Store weather on a periodic fetch.** Decided, not yet built. The explore
+cards currently call WeatherAPI once per card with a 30 minute in-process cache
+in `utils/weatherService.js`, which is fine for one user and wrong for more: the
+list page costs more API calls than a detail page, and the cache dies with the
+process.
+
+The intended end state is a background job that refreshes current conditions for
+every campground on a fixed interval and writes them to the document, so page
+views cost nothing. Roughly:
+
+- `campground.weather: { temp_c, condition, fetchedAt }` on the schema.
+- One scheduled pass over all campgrounds, spaced to respect the rate limit,
+  writing `fetchedAt` each time.
+- Reads render whatever is stored and show the age when it is stale, rather than
+  falling back to a live fetch. A figure with its age attached is honest; a
+  silent live fetch reintroduces the per-view cost.
+
+This does not contradict "weather is never stored" in `md/DATA.md`. That rule
+exists so nothing stale is ever presented as current, which a visible
+`fetchedAt` satisfies. **Sunrise and sunset stay unstored regardless**, since
+they are derived per day and cost no call.
 
 ---
 
@@ -181,21 +217,13 @@ profiles, two terrain readouts, side by side.
 sparkline per card, rendered only where a grid is already cached, would make the
 index page unmistakable at a glance. Must not trigger a fetch.
 
-**Build the verification harness as real files under `test/`.** Three handovers
-have now asked for this and it still has not happened. The template-render and
-class-diff checks, plus the `vm`-based topo harness, all live in scratchpads and
-are thrown away every session. The black-fill bug is exactly what they would
-have caught. Nothing client-side is tested at all.
+**Extend the render harness to the other pages.** `test/renderIndex.test.js`
+does the explore page. The show page, the forms and the auth pages still have
+none, and the `vm`-based topo harness still does not exist, so nothing
+client-side is tested. Extend that file rather than starting a new pattern.
 
-**Two data loose ends:**
+**One data loose end:**
 
-- **Frost should be a modifier, not a state.** Testing against places with known
-  seasons got 5 of 6 right and missed Shimla: at 2,200m it reports January as
-  prime when reality is near-freezing nights and regular snow. The obvious fix,
-  moving `cold` to freezing nights, breaks Dzongri, whose correct October to
-  December window would vanish, because frosty nights at altitude are normal and
-  do not disqualify. Let a month stay prime and carry a "freezing nights" note
-  instead. This also rescues `cold`, which currently fires once across all 45.
 - **`utils/climateService.js` has no tests.** The aggregation from 3,650 daily
   readings to 12 monthly means is unverified: leap years, the year boundary, gaps
   in the reanalysis, the divide-by-years for totals. Arithmetic that could be

@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate') %>
+<% const c = discovery.constraints; %>
 
 <div class="explore-page">
 
@@ -15,94 +16,195 @@
         <% } %>
       </p>
     </div>
-    <div id="map"></div>
+    <div class="explore-map-frame">
+      <div id="map"></div>
+    </div>
+    <!-- The crop takes MapTiler's own logo and attribution off the corners, so
+         the credit has to be given back here. Same move as the show page's
+         plate caption. -->
+    <p class="explore-map-credit">
+      <a href="https://www.maptiler.com/" rel="noopener">MapTiler</a> ·
+      <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap contributors</a>
+    </p>
   </div>
 
 
   <!-- ============================================================
-       TWO-COLUMN: filter sidebar + campground cards
+       CONSTRAINT BAND — the chart's title block, full width.
+       Primary row always visible; everything else folded away, because
+       fourteen controls open at once push the results below the fold.
        ============================================================ -->
-  <div class="explore-body">
+  <section class="filter-band">
+    <form action="/campgrounds" method="GET" class="filter-form">
 
-    <!-- LEFT: Filter sidebar -->
-    <aside class="explore-sidebar">
-      <form action="/campgrounds" method="GET" class="filter-form">
-
-        <div class="filter-header">
-          <span class="section-label">FILTERS</span>
-          <a href="/campgrounds" class="filter-reset">Reset</a>
-        </div>
-
-        <!-- Search -->
+      <div class="filter-row">
         <div class="filter-group">
           <label class="filter-label" for="search">SEARCH</label>
           <div class="filter-input-wrap">
             <svg class="filter-input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
-            <input
-              type="text"
-              class="filter-input"
-              id="search"
-              name="search"
-              placeholder="Title, location..."
-              value="<%= filters.search || '' %>"
-            />
+            <input type="text" class="filter-input" id="search" name="search"
+                   placeholder="Title, location..." value="<%= filters.search || '' %>" />
           </div>
         </div>
 
-        <!-- Price range -->
         <div class="filter-group">
-          <label class="filter-label">PRICE RANGE</label>
+          <label class="filter-label">ELEVATION</label>
           <div class="filter-price-row">
-            <input
-              type="number"
-              class="filter-input filter-input--price"
-              name="minPrice"
-              placeholder="₹ Min"
-              value="<%= filters.minPrice || '' %>"
-              min="0"
-            />
+            <input type="number" class="filter-input filter-input--price" name="elevMin"
+                   placeholder="Min m" min="0" step="100" value="<%= c.elevMin ?? '' %>" />
             <span class="filter-price-sep">—</span>
-            <input
-              type="number"
-              class="filter-input filter-input--price"
-              name="maxPrice"
-              placeholder="₹ Max"
-              value="<%= filters.maxPrice || '' %>"
-              min="0"
-            />
+            <input type="number" class="filter-input filter-input--price" name="elevMax"
+                   placeholder="Max m" min="0" step="100" value="<%= c.elevMax ?? '' %>" />
           </div>
         </div>
 
-        <!-- Sort -->
         <div class="filter-group">
-          <label class="filter-label" for="sort">SORT BY</label>
-          <select class="filter-select" id="sort" name="sort">
-            <option value="newest" <%= filters.sort === 'newest' ? 'selected' : '' %>>Newest First</option>
-            <option value="oldest" <%= filters.sort === 'oldest' ? 'selected' : '' %>>Oldest First</option>
-            <option value="price-asc" <%= filters.sort === 'price-asc' ? 'selected' : '' %>>Price: Low to High</option>
-            <option value="price-desc" <%= filters.sort === 'price-desc' ? 'selected' : '' %>>Price: High to Low</option>
+          <label class="filter-label" for="aspect">FACING</label>
+          <select class="filter-select" id="aspect" name="aspect">
+            <option value="">Any direction</option>
+            <% discovery.options.aspects.forEach(a => { %>
+              <option value="<%= a %>" <%= c.aspect === a ? 'selected' : '' %>><%= a.charAt(0).toUpperCase() + a.slice(1) %>-facing</option>
+            <% }) %>
           </select>
         </div>
 
-        <button type="submit" class="btn-musafir btn-musafir--primary btn-musafir--full">
-          Apply Filters
-        </button>
+        <div class="filter-group">
+          <label class="filter-label filter-label--sky" for="primeIn">GOOD IN</label>
+          <select class="filter-select filter-select--sky" id="primeIn" name="primeIn">
+            <option value="">Any month</option>
+            <% discovery.options.months.forEach((m, i) => { %>
+              <option value="<%= i + 1 %>" <%= c.primeIn === i + 1 ? 'selected' : '' %>><%= m %></option>
+            <% }) %>
+          </select>
+        </div>
 
-      </form>
-
-      <!-- Add campground CTA -->
-      <div class="sidebar-add-cta">
-        <p class="sidebar-add-cta__text">Know a great spot?</p>
-        <a href="/campgrounds/new" class="btn-musafir btn-musafir--outline btn-musafir--full">
-          + Add Campground
-        </a>
+        <div class="filter-group filter-group--action">
+          <button type="submit" class="btn-musafir btn-musafir--primary btn-musafir--full">Apply</button>
+        </div>
       </div>
 
-    </aside>
+      <!-- Folded away. Native details, so this needs no JavaScript and still
+           works with none. -->
+      <div class="filter-folds">
 
-    <!-- RIGHT: Results + cards + pagination -->
+        <details class="filter-fold" <%= (c.position || c.ruggedMax || c.slopeMax || c.reliefMin || c.primeMin || c.noSnow || c.noFrost || filters.minPrice || filters.maxPrice) ? 'open' : '' %>>
+          <summary class="filter-fold__summary">More conditions</summary>
+          <div class="filter-row filter-row--dense">
+
+            <div class="filter-group">
+              <label class="filter-label">PRICE</label>
+              <div class="filter-price-row">
+                <input type="number" class="filter-input filter-input--price" name="minPrice"
+                       placeholder="₹ Min" min="0" value="<%= filters.minPrice || '' %>" />
+                <span class="filter-price-sep">—</span>
+                <input type="number" class="filter-input filter-input--price" name="maxPrice"
+                       placeholder="₹ Max" min="0" value="<%= filters.maxPrice || '' %>" />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label" for="position">POSITION</label>
+              <select class="filter-select" id="position" name="position">
+                <option value="">Anywhere on the slope</option>
+                <% discovery.options.positions.forEach(p => { %>
+                  <option value="<%= p %>" <%= (c.position || []).includes(p) ? 'selected' : '' %>><%= p %></option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label" for="ruggedMax">GROUND, AT ROUGHEST</label>
+              <select class="filter-select" id="ruggedMax" name="ruggedMax">
+                <option value="">Any</option>
+                <% discovery.options.ruggedness.forEach(r => { %>
+                  <option value="<%= r %>" <%= c.ruggedMax === r ? 'selected' : '' %>><%= r %></option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label" for="slopeMax">SLOPE, AT STEEPEST</label>
+              <select class="filter-select" id="slopeMax" name="slopeMax">
+                <option value="">Any</option>
+                <% discovery.options.slope.forEach(s => { %>
+                  <option value="<%= s %>" <%= c.slopeMax === s ? 'selected' : '' %>><%= s %></option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label" for="reliefMin">RELIEF, AT LEAST</label>
+              <input type="number" class="filter-input" id="reliefMin" name="reliefMin"
+                     placeholder="metres" min="0" step="100" value="<%= c.reliefMin ?? '' %>" />
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label filter-label--sky" for="primeMin">GOOD MONTHS IN A ROW</label>
+              <input type="number" class="filter-input filter-input--sky" id="primeMin" name="primeMin"
+                     placeholder="at least" min="1" max="12" value="<%= c.primeMin ?? '' %>" />
+            </div>
+
+            <div class="filter-group filter-group--wide">
+              <div class="check-grid">
+                <label class="check-chip check-chip--sky">
+                  <input type="checkbox" name="noSnow" value="1" <%= c.noSnow ? 'checked' : '' %> />
+                  <span>Never snowbound</span>
+                </label>
+                <label class="check-chip check-chip--sky">
+                  <input type="checkbox" name="noFrost" value="1" <%= c.noFrost ? 'checked' : '' %> />
+                  <span>No freezing nights</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label" for="sort">SORT BY</label>
+              <select class="filter-select" id="sort" name="sort">
+                <option value="newest" <%= filters.sort === 'newest' ? 'selected' : '' %>>Newest First</option>
+                <option value="oldest" <%= filters.sort === 'oldest' ? 'selected' : '' %>>Oldest First</option>
+                <option value="price-asc" <%= filters.sort === 'price-asc' ? 'selected' : '' %>>Price: Low to High</option>
+                <option value="price-desc" <%= filters.sort === 'price-desc' ? 'selected' : '' %>>Price: High to Low</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <details class="filter-fold" <%= (c.amenities || []).length ? 'open' : '' %>>
+          <summary class="filter-fold__summary">
+            Amenities<% if ((c.amenities || []).length) { %> <span class="filter-fold__count"><%= c.amenities.length %></span><% } %>
+          </summary>
+          <div class="check-grid check-grid--band">
+            <% discovery.options.amenities.forEach(a => { %>
+              <label class="check-chip">
+                <input type="checkbox" name="amenities" value="<%= a %>" <%= (c.amenities || []).includes(a) ? 'checked' : '' %> />
+                <span><%= a %></span>
+              </label>
+            <% }) %>
+          </div>
+        </details>
+
+        <details class="filter-fold" <%= (c.tags || []).length ? 'open' : '' %>>
+          <summary class="filter-fold__summary">
+            Tags<% if ((c.tags || []).length) { %> <span class="filter-fold__count"><%= c.tags.length %></span><% } %>
+          </summary>
+          <div class="check-grid check-grid--band">
+            <% discovery.options.tags.forEach(t => { %>
+              <label class="check-chip">
+                <input type="checkbox" name="tags" value="<%= t %>" <%= (c.tags || []).includes(t) ? 'checked' : '' %> />
+                <span><%= t %></span>
+              </label>
+            <% }) %>
+          </div>
+        </details>
+
+        <a href="/campgrounds" class="filter-reset">Reset all</a>
+      </div>
+    </form>
+  </section>
+
+  <div class="explore-body">
     <main class="explore-results">
 
       <!-- Results count bar -->
@@ -110,54 +212,183 @@
         <span class="results-count">
           Showing <strong><%= campgrounds.length %></strong> of <strong><%= pagination.totalDocs %></strong> campgrounds
         </span>
+        <a href="/campgrounds/new" class="btn-musafir btn-musafir--outline btn-musafir--sm">
+          + Add Campground
+        </a>
       </div>
+
+      <!-- What was asked for, stated back -->
+      <% if (discovery.summary) { %>
+        <p class="survey-summary"><%= discovery.summary %>.</p>
+      <% } %>
+
+      <!-- Campgrounds we could not judge are set aside, not failed. Saying so
+           is the difference between an honest count and a wrong one. -->
+      <% if (discovery.skipped > 0) { %>
+        <p class="survey-note">
+          <%= discovery.skipped %> of <%= discovery.total %> campgrounds have no survey data yet and were not considered.
+        </p>
+      <% } %>
 
       <!-- Empty state -->
       <% if (campgrounds.length === 0) { %>
         <div class="explore-empty">
-          <p class="explore-empty__title">No campgrounds found</p>
-          <p class="explore-empty__sub">Try adjusting your filters or <a href="/campgrounds">clear all</a>.</p>
+          <p class="explore-empty__title">Nothing matches</p>
+
+          <% if (discovery.relaxations.length) { %>
+            <p class="explore-empty__sub">Drop one condition:</p>
+            <ul class="relax-list">
+              <% discovery.relaxations.slice(0, 3).forEach(r => { %>
+                <li class="relax-item">
+                  <a href="<%= r.href %>">Without <em><%= r.phrase %></em></a>
+                  <span class="relax-item__count"><%= r.count %></span>
+                </li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p class="explore-empty__sub">Try adjusting your filters or <a href="/campgrounds">clear all</a>.</p>
+          <% } %>
         </div>
 
       <% } else { %>
 
-        <!-- Campground cards -->
+        <!-- Once, not once per row. Repeating a legend eleven times is the
+             clutter a legend is meant to avoid. -->
+        <p class="results-key">
+          <span class="results-key__swatch" aria-hidden="true"></span>
+          Solid means go · bar height is the monthly mean temperature
+        </p>
+
+        <!-- Campground rows. Two plates each: the land in brown, the sky in
+             purple, side by side. -->
         <div class="campground-list">
           <% for (let campground of campgrounds) { %>
-          <div class="camp-card" data-lat="<%= campground.geometry.coordinates[1] %>" data-lng="<%= campground.geometry.coordinates[0] %>">
+          <% const card = cards.get(String(campground._id)) || {};
+             const wx = weather.get(String(campground._id));
+             const season = card.season; %>
+          <a class="camp-card" href="/campgrounds/<%= campground._id %>"
+             data-lat="<%= campground.geometry.coordinates[1] %>" data-lng="<%= campground.geometry.coordinates[0] %>">
 
-            <!-- Image -->
             <div class="camp-card__img">
               <% if (campground.images.length) { %>
                 <img src="<%= campground.images[0].url %>" alt="<%= campground.title %>" />
               <% } else { %>
                 <img src="https://res.cloudinary.com/dzwjyg2ai/image/upload/v1756312011/musafir/e9z56wsbx8tl1hon1vhm.jpg" alt="<%= campground.title %>" />
               <% } %>
-              <!-- Price overlay -->
-              <span class="camp-card__price">₹<%= campground.price %><span class="camp-card__price-night">/night</span></span>
             </div>
 
-            <!-- Body -->
-            <div class="camp-card__body">
-              <div class="camp-card__top">
+            <!-- Identity. The description excerpt used to sit here and was cut:
+                 seeded descriptions are assembled from the same measurements as
+                 terrain.summary, so it printed the next column twice. -->
+            <div class="camp-card__id">
+              <!-- Conditions sit with the title, beside the photograph. The
+                   purple against a brown title is the same deliberate mixed
+                   row the show page uses for its hero measures: the ink still
+                   follows the plate, only the position is shared. -->
+              <div class="camp-card__head">
                 <h2 class="camp-card__title"><%= campground.title %></h2>
-                <p class="camp-card__location">
-                  <span class="loc-icon">⊙</span> <%= campground.location %>
-                </p>
-                <p class="camp-card__desc">
-                  <%= campground.description.substring(0, 160) %><%= campground.description.length > 160 ? '...' : '' %>
-                </p>
+                <% if (wx) { %>
+                  <span class="camp-card__wx">
+                    <img class="wx wx--card" src="<%= wx.icon %>" alt="" />
+                    <span class="camp-card__temp"><%= wx.temp_c %>°</span>
+                    <span class="camp-card__wxnote">now</span>
+                  </span>
+                <% } %>
               </div>
+              <p class="camp-card__location"><span class="loc-icon">⊙</span> <%= campground.location %></p>
 
-              <div class="camp-card__footer">
-                <span class="distance-badge" style="display:none"></span>
-                <a class="btn-musafir btn-musafir--primary" href="/campgrounds/<%= campground._id %>">
-                  View Details →
-                </a>
-              </div>
+              <% if (card.verdict) { %>
+                <p class="camp-verdict <%= card.verdict.good ? 'camp-verdict--go' : '' %>">
+                  <% if (card.verdict.good) { %>
+                    Good now<% if (card.verdict.frost) { %><span class="camp-verdict__note">, freezing nights</span><% } %>
+                  <% } else { %>
+                    <%= card.verdict.label %> now<% if (card.verdict.next) { %><span class="camp-verdict__note">, good from <%= card.verdict.next %></span><% } %>
+                  <% } %>
+                </p>
+              <% } %>
+
+              <% if (card.reviews) { %>
+                <p class="camp-card__reviews">
+                  <span class="camp-card__stars" aria-hidden="true"><%= '★'.repeat(Math.round(card.reviews.mean)) %><span class="camp-card__stars-off"><%= '★'.repeat(5 - Math.round(card.reviews.mean)) %></span></span>
+                  <%= card.reviews.mean %> <span class="camp-card__reviews-n">· <%= card.reviews.count %> note<%= card.reviews.count === 1 ? '' : 's' %></span>
+                </p>
+              <% } %>
+
+              <p class="camp-card__cost">₹<%= campground.price %> <span class="camp-card__cost-unit">/ night</span></p>
+              <span class="distance-badge" style="display:none"></span>
             </div>
 
-          </div>
+            <!-- THE LAND -->
+            <div class="camp-card__land">
+              <span class="camp-card__plate-label">The land</span>
+              <% if (card.profile) { %>
+                <span class="camp-spark" data-profile="<%= card.profile.map(v => Math.round(v)).join(',') %>"></span>
+              <% } %>
+              <% if (campground.terrain && campground.terrain.summary) { %>
+                <p class="camp-card__terrain"><%= campground.terrain.summary %>.</p>
+              <% } else { %>
+                <p class="camp-card__terrain camp-card__terrain--none">No survey data yet.</p>
+              <% } %>
+              <% if (typeof campground.elevation === 'number') { %>
+                <p class="camp-card__elev"><%= Math.round(campground.elevation).toLocaleString('en-IN') %> m</p>
+              <% } %>
+
+              <!-- Tags and amenities. Amenities come straight from OSM tags and
+                   only 16 of 45 sites have any, so absence is stated rather
+                   than filled in with a plausible guess. -->
+              <% if (campground.tags.length || campground.amenities.length) { %>
+                <div class="camp-chips">
+                  <% campground.tags.forEach(t => { %>
+                    <span class="camp-chip camp-chip--tag"><%= t %></span>
+                  <% }) %>
+                  <% campground.amenities.forEach(a => { %>
+                    <span class="camp-chip"><%= a %></span>
+                  <% }) %>
+                </div>
+              <% } else { %>
+                <p class="camp-card__nochips">No amenities recorded</p>
+              <% } %>
+            </div>
+
+            <!-- THE SKY -->
+            <div class="camp-card__sky">
+              <% if (season) { %>
+                <%
+                  // Two variables, one ink. Bar height is the monthly mean,
+                  // solid fill means prime. Same formula as the show page's
+                  // strip so the two can never disagree; the five-state
+                  // texture stays there, where its key is.
+                  const means = season.months.map(m => (m.tMax + m.tMin) / 2);
+                  const lo = Math.min.apply(null, means);
+                  const hi = Math.max.apply(null, means);
+                  const barHeight = (m) => Math.round(20 + (((m.tMax + m.tMin) / 2 - lo) / ((hi - lo) || 1)) * 80);
+                  const thisMonth = new Date().getMonth();
+                %>
+                <span class="camp-card__plate-label camp-card__plate-label--sky">When to go</span>
+                <div class="camp-strip">
+                  <% season.months.forEach((m, i) => { %>
+                    <span class="camp-strip__m <%= m.state === 'prime' ? 'camp-strip__m--go' : '' %> <%= i === thisMonth ? 'camp-strip__m--now' : '' %>"
+                          title="<%= m.name %>: <%= m.label %><%= m.frost ? ', freezing nights' : '' %>. <%= Math.round(m.tMax) %>°/<%= Math.round(m.tMin) %>°">
+                      <span class="camp-strip__bar" style="height:<%= barHeight(m) %>%"></span>
+                    </span>
+                  <% }) %>
+                </div>
+                <div class="camp-strip__temps" aria-hidden="true">
+                  <% season.months.forEach(m => { %><span class="camp-strip__t"><b><%= Math.round(m.tMax) %></b><i><%= Math.round(m.tMin) %></i></span><% }) %>
+                </div>
+                <div class="camp-strip__scale" aria-hidden="true">
+                  <% season.months.forEach(m => { %><span><%= m.short %></span><% }) %>
+                </div>
+                <p class="camp-card__when">
+                  <% if (season.bestWindow) { %>
+                    Best <%= season.bestWindow.phrase %>
+                  <% } else { %>
+                    No comfortable window
+                  <% } %>
+                </p>
+              <% } %>
+            </div>
+          </a>
           <% } %>
         </div>
 
@@ -166,10 +397,10 @@
         <%
           const startPage = Math.max(1, pagination.page - 2);
           const endPage = Math.min(pagination.totalPages, pagination.page + 2);
-          const qBase = (filters.search ? '&search=' + filters.search : '') +
-                        (filters.minPrice ? '&minPrice=' + filters.minPrice : '') +
-                        (filters.maxPrice ? '&maxPrice=' + filters.maxPrice : '') +
-                        (filters.sort ? '&sort=' + filters.sort : '');
+          // Built in the controller from the whole query string. Assembling it
+          // from named fields here dropped every terrain and season constraint
+          // the moment you paged past the first page.
+          const qBase = pagination.base ? '&' + pagination.base : '';
         %>
         <nav class="pagination-nav" aria-label="Campgrounds pagination">
 
@@ -216,5 +447,6 @@
   const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
   const campgrounds = <%- JSON.stringify(clusterMapData) %>;
 </script>
+<script src="/javascripts/cardSpark.js"></script>
 <script src="/javascripts/mapTheme.js"></script>
 <script src="/javascripts/clusterMap.js"></script>

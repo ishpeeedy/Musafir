@@ -9,6 +9,72 @@ const WEATHER_API_KEY = process.env.WEATHER_API;
 const BASE_URL = "https://api.weatherapi.com/v1";
 
 /**
+ * In-process cache for the explore page only.
+ *
+ * The show page fetches 8 calls and never caches, because it is one campground
+ * and the reader is looking at it now. The explore page renders ten cards, so
+ * an uncached current-conditions call per card would make the list page cost
+ * more than a detail page.
+ *
+ * This does not break "weather is never stored". Nothing goes near the
+ * database, the process forgets it on restart, and the window is short enough
+ * that nothing stale is ever shown as current. The intended end state is a
+ * periodic background fetch written to the campground document; see md/PLAN.md.
+ */
+const CURRENT_TTL_MS = 30 * 60 * 1000;
+const currentCache = new Map();
+
+/**
+ * Current conditions only, one API call.
+ *
+ * Coordinates are rounded to 2dp (~1km) for the cache key so that repeat views
+ * of the same list share entries. WeatherAPI resolves to the nearest station
+ * well beyond that distance, so the rounding costs no accuracy.
+ *
+ * @returns {Promise<{temp_c: number, condition: string, icon: string}|null>}
+ *   null on any failure. Weather is enhancement; a card renders without it.
+ */
+async function getCurrentWeather(lat, lon) {
+  if (!WEATHER_API_KEY) return null;
+
+  const key = `${lat.toFixed(2)},${lon.toFixed(2)}`;
+  const hit = currentCache.get(key);
+  if (hit && Date.now() - hit.at < CURRENT_TTL_MS) return hit.value;
+
+  try {
+    const { data } = await axios.get(`${BASE_URL}/current.json`, {
+      params: { key: WEATHER_API_KEY, q: key, aqi: "no" },
+    });
+    const value = {
+      temp_c: Math.round(data.current.temp_c),
+      condition: data.current.condition.text,
+      isDay: data.current.is_day === 1,
+    };
+    currentCache.set(key, { at: Date.now(), value });
+    return value;
+  } catch (e) {
+    console.error("Current weather fetch failed:", e.message);
+    return null;
+  }
+}
+
+/**
+ * Current conditions for many campgrounds at once, in parallel, each cached.
+ * Never rejects: a campground whose fetch failed simply has no weather.
+ */
+async function getCurrentWeatherFor(campgrounds) {
+  const out = new Map();
+  await Promise.all(
+    campgrounds.map(async (c) => {
+      const [lon, lat] = c.geometry.coordinates;
+      const wx = await getCurrentWeather(lat, lon);
+      if (wx) out.set(String(c._id), wx);
+    }),
+  );
+  return out;
+}
+
+/**
  * Get weather data for a location (3-day forecast + 7-day history)
  * @param {number} lat - Latitude
  * @param {number} lon - Longitude
@@ -209,6 +275,8 @@ function getDayOfWeek(dateStr) {
 
 module.exports = {
   getWeatherData,
+  getCurrentWeather,
+  getCurrentWeatherFor,
   formatDate,
   getDayOfWeek,
 };

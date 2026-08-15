@@ -66,10 +66,20 @@ The ground was lifted twice. The first build used `#bda291`, where body copy sat
 at 4.82:1 and both `-soft` tokens failed outright. It is now light enough that
 the weakest pair on the page clears AA by a comfortable margin.
 
-**Type scale is 1.25x**, and one declaration does it, because everything is
-sized in rem and rem resolves against the root:
-`html:has(.detail-page) { font-size: 20px }`. 18px below 720px. Still
-page-scoped; see the loose end in `CLAUDE.md`.
+**Type scale is 1.25x sitewide**, and one declaration does it, because
+everything is sized in rem and rem resolves against the root:
+`html { font-size: 20px }`, dropping to 18px below 720px.
+
+Two consequences that are easy to undo by accident:
+
+- **Container widths must be `rem`, never px.** `page-main` is `75rem`, not
+  1200px. A fixed pixel container does not grow with the type, so the page
+  reads cramped rather than larger.
+- **Breakpoints must be px, scaled by hand.** `rem` inside a media query
+  resolves against the *browser default*, not this rule, so a media query
+  written in rem silently keeps the 16px basis. Every non-detail breakpoint is
+  the old value times 1.25. The detail page's own (980px, 720px, 460px) were
+  tuned at a 20px root already and are left alone.
 
 ---
 
@@ -160,6 +170,32 @@ Every device maps onto something the show page already renders.
 | Radiating rhumb lines | Very faint page background behind everything, 4 to 6% opacity | Not done |
 | Structure from repeated tiny text | Section dividers, topo card border | Not done |
 | Angled hand-lettered labels | Amenity and tag chips, 1 to 2 degrees maximum or it becomes a costume | Not done |
+| Title block along an edge | The explore page's constraint band, full width under the map. A survey sheet carries its apparatus in a block, never a left rail | Done |
+| The two plates at row scale | Each explore row is image, identity, then a brown land column (fall-line sparkline, terrain prose, elevation, tags and amenities) beside a purple sky column (twelve-month strip, best window, current conditions) | Done |
+
+### What belongs on a results row
+
+**A results row's job is to let you eliminate a campground, not to describe
+one.** Ten rows on screen means hunting for reasons to discard nine. A field
+earns its place by answering "can I rule this out" or "how does this differ from
+the row above". Anything that only matters once you have decided belongs on the
+show page.
+
+Three things were cut under that test, and should stay cut:
+
+- **The description excerpt.** Seeded descriptions are assembled from the same
+  measurements as `terrain.summary`, so the row printed the same sentence twice.
+- **A per-row legend.** Repeating a key eleven times is the clutter a key
+  exists to prevent. It sits once above the list.
+- **The price badge.** Price is the one invented field in the entire project
+  (`md/DATA.md`), and it had the loudest treatment in the system, a solid
+  knockout panel. It is a line of text now. **Never give the least trustworthy
+  number the most emphatic typography.**
+
+Also deliberately absent: relief, slope, ruggedness and position as separate
+figures. They are already in the terrain sentence, and four more numbers per row
+turns a scannable list into a spreadsheet. They are filter inputs, not display
+fields.
 
 ### Motion
 

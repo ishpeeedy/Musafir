@@ -198,7 +198,15 @@ argued with and changed without a refetch or a migration.
 
 **Weather** (`utils/weatherService.js`). Current conditions, a 3-day forecast,
 and 7 days of history, one request per historical day, issued in parallel.
-Fetched on every page view, never stored.
+Fetched on every show-page view, never stored.
+
+The explore cards use a second path, `getCurrentWeather`, which is current
+conditions only and therefore one call per card. It keeps a 30 minute
+in-process cache keyed on coordinates rounded to 2dp, so ten cards cost ten
+calls at most and repeat views usually cost none. Nothing reaches the database
+and the process forgets it on restart. **This is interim**: the intended end
+state is a periodic background fetch written to the document with a visible
+`fetchedAt`. See `md/PLAN.md`.
 
 **Daylight** (`utils/sunService.js`) costs no network call at all: sunrise and
 sunset arrive in WeatherAPI's astro block alongside the forecast, in the
@@ -265,7 +273,7 @@ thing in the output a reader should not trust.
 |---|---|---|
 | OpenTopoData | 1000/day, 1/sec, 100 locations/request | 1 per campground, ever |
 | Open-Meteo | 429s early on the archive endpoint | 1 per campground, ever |
-| WeatherAPI | Per the account plan | 8 per page view, uncached |
+| WeatherAPI | 1M/month on the free tier | 8 per show-page view, uncached; up to 10 per explore-page view, cached 30 min |
 | Overpass | Fair use | Build time only, cached locally |
 
 The first two are one-time costs per campground and are already paid for all 45

@@ -36,6 +36,10 @@
 
   --radius: 2px;
 
+  /* Disclosure caret, as a mask so it takes currentColor and inherits the ink
+     of whatever it sits on. A solid triangle, pointing right when closed. */
+  --caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 10'%3E%3Cpath d='M0 0l8 5-8 5z' fill='%23000'/%3E%3C/svg%3E");
+
   /* Mats a white-carded GIF into the paper. Used by the weather art and by the
      marker on the cross-section, so the two cannot drift apart. The hue
      rotation lands it on the purple plate; drop it to 0deg for a brown one. */
@@ -110,7 +114,7 @@ body {
 .page-main {
   flex: 1;
   width: 100%;
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
   padding: 3rem 1rem 0;
 }
@@ -119,6 +123,29 @@ body {
 .page-main:has(.detail-page) {
   max-width: none;
   padding: 0;
+}
+
+/* The explore page opens on the map hero, which carries its own header padding.
+   page-main's 3rem top on top of that left a visible dead band under the
+   navbar. The page runs its own gutters from here down. */
+.page-main:has(.explore-page) {
+  padding-top: 0;
+}
+
+/* Spinner arrows on number fields, everywhere. They are a chrome widget in a
+   face and weight we do not control, they land on every price, elevation and
+   relief input, and nobody nudges a price by one rupee with an arrow. Typing
+   and the arrow keys both still work. */
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
 }
 
 img {
@@ -222,7 +249,7 @@ a:hover {
 }
 
 .navbar-inner {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
@@ -412,7 +439,7 @@ a:hover {
 }
 
 /* Mobile */
-@media (max-width: 991px) {
+@media (max-width: 1239px) {
   .navbar-toggler {
     display: flex;
     align-items: center;
@@ -773,7 +800,7 @@ a:hover {
 
 .auth-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 26.25rem;
   background: var(--paper-hi);
   border-radius: var(--radius);
   border: 1px solid var(--wash);
@@ -844,7 +871,7 @@ a:hover {
 
 .form-page__inner {
   width: 100%;
-  max-width: 680px;
+  max-width: 42.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -1017,7 +1044,7 @@ a:hover {
 /* ============================================================
    Responsive
    ============================================================ */
-@media (max-width: 600px) {
+@media (max-width: 750px) {
   .auth-card {
     padding: 2rem 1.25rem;
   }
@@ -1049,8 +1076,8 @@ a:hover {
 }
 
 .explore-map-header {
-  padding: 2rem 2rem 1rem;
-  max-width: 1200px;
+  padding: 1.5rem 2rem 1rem;
+  max-width: 75rem;
   margin: 0 auto;
 }
 
@@ -1070,56 +1097,178 @@ a:hover {
   margin: 0;
 }
 
-.explore-map-hero #map {
+/* The frame is the visible window; the canvas inside is grown past it so the
+   bottom and left edges fall outside. That drops MapTiler's logo (bottom left)
+   and its attribution (bottom right) without touching the zoom controls, which
+   sit top right. Credit is given back in .explore-map-credit.
+
+   Trap 10: #map is shared with the show page, so this is scoped to the frame.
+   Unscoped, the show page's own crop and this one fight and one of them wins. */
+.explore-map-frame {
+  position: relative;
   width: 100%;
   height: 420px;
-  border-radius: 0;
-  border: none;
+  overflow: hidden;
   border-top: 1px solid var(--wash);
   border-bottom: 1px solid var(--wash);
 }
 
-/* ------------------------------------------------------------
-   Two-column explore body
-   ------------------------------------------------------------ */
-.explore-body {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  max-width: 1200px;
+.explore-map-frame #map {
+  position: absolute;
+  left: -34px;
+  bottom: -34px;
+  width: calc(100% + 34px);
+  height: calc(100% + 34px);
+  border-radius: 0;
+  border: none;
+}
+
+.explore-map-credit {
+  max-width: 75rem;
   margin: 0 auto;
-  padding: 2rem 2rem 4rem;
-  align-items: start;
-  gap: 2.5rem;
+  padding: 0.4rem 2rem 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.explore-map-credit a {
+  color: var(--ink-soft);
 }
 
 /* ------------------------------------------------------------
-   Filter Sidebar
+   Explore body
+
+   Single column since the constraint band took the filters full width.
+   The results get the whole 1200px, which is what lets the cards run two
+   and three across.
    ------------------------------------------------------------ */
-.explore-sidebar {
-  position: sticky;
-  top: 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.explore-body {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 4rem;
+}
+
+/* ------------------------------------------------------------
+   Constraint band
+
+   Full width under the map, not a sidebar. A survey sheet carries its
+   apparatus in a title block along an edge, and 280px could not hold
+   fourteen controls. The band is --paper so the controls, which are
+   --paper-hi, lift off it.
+   ------------------------------------------------------------ */
+.filter-band {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule-faint);
 }
 
 .filter-form {
-  background: var(--paper-hi);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-  border: 1px solid var(--wash);
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 1.25rem 2rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 0.85rem;
 }
 
-.filter-header {
+/* Primary conditions. auto-fit rather than fixed columns so the row reflows
+   without a breakpoint for every width. */
+.filter-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem 1.25rem;
+  align-items: end;
+}
+
+.filter-row--dense {
+  padding-top: 0.9rem;
+}
+
+.filter-group--wide {
+  grid-column: span 2;
+}
+
+.filter-group--action {
+  align-self: end;
+}
+
+.filter-folds {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 1.5rem;
+  border-top: 1px solid var(--rule-faint);
+  padding-top: 0.7rem;
+}
+
+/* Native details, so the folds work with no JavaScript at all. */
+.filter-fold {
+  flex: 1 1 100%;
+  order: 2;
+}
+
+.filter-fold__summary {
+  display: inline-block;
+  width: auto;
+  cursor: pointer;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding: 0.2rem 0;
+  list-style: none;
+}
+
+.filter-fold__summary::-webkit-details-marker {
+  display: none;
+}
+
+/* An inline SVG data URI rather than a ▸ glyph. The character depends on the
+   font having it and on the stylesheet's encoding surviving every tool that
+   touches the file; this depends on neither. Stroke colour is baked in because
+   presentation attributes inside a data URI cannot resolve var(). */
+.filter-fold__summary::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 0.5rem;
+  background: currentColor;
+  -webkit-mask: var(--caret) no-repeat center / contain;
+  mask: var(--caret) no-repeat center / contain;
+  transition: transform 0.15s;
+}
+
+.filter-fold[open] > .filter-fold__summary::before {
+  transform: rotate(90deg);
+}
+
+.filter-fold__summary:hover {
+  color: var(--ink-deep);
+}
+
+.filter-fold__count {
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--knockout);
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 0 0.35em;
+  font-size: 0.9em;
+}
+
+/* Amenity and tag chips run as a wrapping row across the band rather than the
+   two-column stack a 280px sidebar forced. */
+.check-grid--band {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 0 0.25rem;
 }
 
 .filter-reset {
+  order: 1;
+  margin-left: auto;
   font-size: 0.72rem;
   color: var(--ink-soft);
   text-decoration: none;
@@ -1159,8 +1308,12 @@ a:hover {
 
 .filter-input {
   width: 100%;
-  background: rgba(41, 26, 18, 0.6);
-  border: 1px solid var(--wash);
+  /* Was rgba(41,26,18,0.6), a dark wash left over from the dark-forest palette
+     where the text on it was white. After the migration the text became
+     --ink-deep and this stayed dark, leaving 2.83:1. Lifted paper reads 10.6:1
+     against the same ink. */
+  background: var(--paper-hi);
+  border: 1px solid var(--rule-faint);
   border-radius: var(--radius);
   color: var(--ink-deep);
   padding: 0.6rem 0.85rem 0.6rem 2.2rem;
@@ -1176,7 +1329,7 @@ a:hover {
 
 .filter-input::placeholder {
   color: var(--ink-soft);
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
 /* Price inputs — no icon padding needed */
@@ -1199,8 +1352,12 @@ a:hover {
 
 .filter-select {
   width: 100%;
-  background: rgba(41, 26, 18, 0.6);
-  border: 1px solid var(--wash);
+  /* Was rgba(41,26,18,0.6), a dark wash left over from the dark-forest palette
+     where the text on it was white. After the migration the text became
+     --ink-deep and this stayed dark, leaving 2.83:1. Lifted paper reads 10.6:1
+     against the same ink. */
+  background: var(--paper-hi);
+  border: 1px solid var(--rule-faint);
   border-radius: var(--radius);
   color: var(--ink-deep);
   padding: 0.6rem 0.85rem;
@@ -1225,21 +1382,21 @@ a:hover {
   color: var(--ink-deep);
 }
 
-/* Sidebar add CTA */
-.sidebar-add-cta {
-  background: var(--paper-hi);
-  border-radius: var(--radius);
-  padding: 1.1rem 1.25rem;
-  border: 1px solid var(--wash);
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+/* Season constraints are sky, so their controls are lettered in the second ink.
+   Only the linework and text move; the paper underneath does not, because a
+   control that changed colour would read as a different kind of control. */
+.filter-label--sky {
+  color: var(--plum);
 }
 
-.sidebar-add-cta__text {
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-  margin: 0;
+.filter-input--sky,
+.filter-select--sky {
+  color: var(--plum-deep);
+  border-color: var(--rule-sky);
+}
+
+.check-chip--sky {
+  color: var(--plum);
 }
 
 /* ------------------------------------------------------------
@@ -1295,9 +1452,63 @@ a:hover {
   color: var(--ink-deep);
 }
 
+/* The query stated back in prose, the way a plate carries its own caption. */
+.survey-summary {
+  font-family: var(--font-hand);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* Campgrounds that could not be judged for want of survey data. Never a
+   failure, so it is set apart from the count rather than folded into it. */
+.survey-note {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* Which single condition to drop, and what it would find. This is the whole
+   difference between a filter that shrugs and a tool that answers. */
+.relax-list {
+  list-style: none;
+  margin: 1rem auto 0;
+  padding: 0;
+  max-width: 26rem;
+  text-align: left;
+}
+
+.relax-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule-faint);
+  font-size: 0.9rem;
+}
+
+.relax-item a {
+  color: var(--ink-deep);
+}
+
+.relax-item em {
+  font-family: var(--font-hand);
+}
+
+.relax-item__count {
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
 /* ------------------------------------------------------------
    Campground Cards
    ------------------------------------------------------------ */
+/* One row per result. Cards two and three across were too narrow to carry the
+   terrain prose and the season strip without both being cramped; a full-width
+   row gives each plate its own column. */
 .campground-list {
   display: flex;
   flex-direction: column;
@@ -1305,8 +1516,11 @@ a:hover {
 }
 
 .camp-card {
+  /* Image, identity, then the two plates side by side. The sky column is the
+     widest because it carries twelve months of bars, temperatures and
+     initials, and those have to stay legible. */
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 15rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.6fr);
   background: var(--paper-hi);
   border-radius: var(--radius);
   border: 1px solid var(--wash);
@@ -1314,20 +1528,28 @@ a:hover {
   transition:
     border-color 0.2s,
     transform 0.2s;
-  min-height: 200px;
+  /* The whole plate is the link now, so the card needs no button of its own. */
+  text-decoration: none;
+  color: inherit;
 }
 
+/* The whole row is one anchor, so the global a:hover underline would strike
+   every line of text in it. The lift and the image zoom carry the affordance;
+   .camp-card:hover (0,2,0) outweighs a:hover (0,1,1) without !important. */
 .camp-card:hover {
   border-color: var(--rule-faint);
   transform: translateY(-1px);
+  text-decoration: none;
 }
 
-/* Image column */
+/* Square, and pinned to the top rather than stretched. As a plain grid cell it
+   grew to whatever the tallest column was, which on a long row gave a 1:2
+   portrait crop out of landscape photographs. */
 .camp-card__img {
   position: relative;
   overflow: hidden;
-  height: 100%;
-  min-height: 200px;
+  aspect-ratio: 1 / 1;
+  align-self: start;
 }
 
 .camp-card__img img {
@@ -1342,41 +1564,136 @@ a:hover {
   transform: scale(1.04);
 }
 
-/* Price overlay on image */
-.camp-card__price {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: rgba(41, 26, 18, 0.85);
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  padding: 0.25rem 0.6rem;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--ink-deep);
-  backdrop-filter: blur(4px);
+/* Price is the one invented field on the whole page (md/DATA.md), so it is set
+   as a line of text rather than the solid knockout panel it used to be. Giving
+   the least trustworthy number the loudest treatment in the system was
+   backwards. */
+.camp-card__cost {
+  font-size: 0.85rem;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--ink);
+  margin: 0;
 }
 
-.camp-card__price-night {
-  font-size: 0.65rem;
-  font-weight: 400;
+.camp-card__cost-unit {
+  font-size: 0.72rem;
   color: var(--ink-soft);
 }
 
-/* Body column */
-.camp-card__body {
-  padding: 1.25rem 1.5rem;
+/* The three text columns. Each is a plate or the identity block; the rules
+   between them are the panel seams. */
+.camp-card__id,
+.camp-card__land,
+.camp-card__sky {
+  padding: 1rem 1.15rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.35rem;
+  min-width: 0;
 }
 
-.camp-card__top {
+.camp-card__land {
+  border-left: 1px solid var(--rule-faint);
+}
+
+.camp-card__sky {
+  border-left: 1px solid var(--rule-sky);
+}
+
+.camp-card__plate-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.camp-card__plate-label--sky {
+  color: var(--plum-soft);
+}
+
+/* The headline finding, and the one line on the row that answers the question
+   the product exists to ask. Set in the sky ink, because it is a statement
+   about season. */
+.camp-verdict {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--plum);
+  margin: 0.3rem 0 0;
+}
+
+/* Go is the one solid mark on the row, matching the strip's solid-means-go. */
+.camp-verdict--go {
+  display: inline-block;
+  align-self: flex-start;
+  background: var(--plum-deep);
+  color: var(--knockout);
+  border-radius: var(--radius);
+  padding: 0.1rem 0.45rem;
+}
+
+.camp-verdict__note {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0;
+  opacity: 0.85;
+}
+
+/* The only signal on the page that is not derived from a measurement, which is
+   exactly why it carries weight. */
+.camp-card__reviews {
+  font-size: 0.8rem;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--ink);
+  margin: 0.25rem 0 0;
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.camp-card__stars {
+  color: var(--ink-deep);
+  letter-spacing: 0.06em;
+}
+
+.camp-card__stars-off {
+  color: var(--rule-faint);
+}
+
+.camp-card__reviews-n {
+  color: var(--ink-soft);
+}
+
+/* Tags and amenities. Both are hard filters in a real decision, so they earn a
+   place on the row rather than only on the detail page. */
+.camp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.45rem;
+}
+
+.camp-chip {
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule-faint);
+  border-radius: var(--radius);
+  padding: 0.1rem 0.4rem;
+}
+
+/* Tags are ours, derived; amenities are recorded by a mapper. Weighting the
+   derived one lighter keeps the distinction visible. */
+.camp-chip--tag {
+  color: var(--ink);
+  border-color: var(--rule);
+}
+
+.camp-card__nochips {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0.45rem 0 0;
 }
 
 .camp-card__title {
@@ -1399,18 +1716,200 @@ a:hover {
   gap: 0.3rem;
 }
 
-.camp-card__desc {
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-  line-height: 1.65;
-  margin: 0.25rem 0 0;
+/* ------------------------------------------------------------
+   Card plates
+
+   Two on every card: the land in brown, the sky in purple beneath it.
+   The same split the show page uses, at card scale.
+   ------------------------------------------------------------ */
+/* The fall-line cross-section. Full bleed to the column's padding, because a
+   profile is a section of ground and ground does not have margins. */
+.camp-spark {
+  display: block;
+  height: 40px;
+  margin: 0.1rem -1.15rem 0.2rem;
 }
 
-.camp-card__footer {
+.camp-spark svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.camp-spark__fill {
+  fill: var(--wash);
+}
+
+.camp-spark__line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.camp-spark__pin {
+  fill: var(--ink-deep);
+}
+
+.camp-card__terrain {
+  font-family: var(--font-hand);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.camp-card__terrain--none {
+  color: var(--ink-soft);
+}
+
+.camp-card__elev {
+  font-size: 0.95rem;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--ink-deep);
+  margin: 0.2rem 0 0;
+}
+
+/* Twelve months at card scale, with the month initials under them so the strip
+   can be read without a key. */
+.camp-strip {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1px;
+  height: 22px;
+}
+
+/* Max over min per month, between the bars and the initials. Stacked rather
+   than side by side because twelve columns of "24/12" on one line stops being
+   readable well before the column runs out of room. */
+.camp-strip__temps {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1px;
+  font-variant-numeric: lining-nums tabular-nums;
+  text-align: center;
+  margin-top: 0.2rem;
+}
+
+.camp-strip__t {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.camp-strip__t b {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: var(--plum-deep);
+}
+
+.camp-strip__t i {
+  font-size: 0.56rem;
+  font-style: normal;
+  color: var(--plum-soft);
+}
+
+.camp-strip__scale {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1px;
+  font-size: 0.56rem;
+  letter-spacing: 0.02em;
+  color: var(--plum);
+  text-align: center;
+  border-top: 1px solid var(--rule-sky);
+  padding-top: 0.15rem;
+  margin-top: 0.15rem;
+}
+
+/* Two variables in one mark, and neither needs a key.
+   Height is the monthly mean temperature. Fill is binary: solid means go.
+   The five-state engraved texture stays on the show page, where the legend
+   that decodes it also lives. A card cannot carry an encoding the reader has
+   to leave the page to understand. */
+.camp-strip__m {
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--rule-sky);
+}
+
+.camp-strip__bar {
+  width: 100%;
+  background: var(--rule-sky);
+}
+
+.camp-strip__m--go .camp-strip__bar {
+  background: var(--plum-deep);
+}
+
+.camp-strip__m--now {
+  outline: 1px solid var(--plum-soft);
+  outline-offset: 1px;
+}
+
+.camp-card__when {
+  font-size: 0.85rem;
+  color: var(--plum);
+  margin: 0.15rem 0 0;
+}
+
+/* Title and current conditions on one line, so the reading is next to the
+   photograph rather than at the far end of the row. */
+.camp-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.camp-card__wx {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+/* One line above the whole list, not one per row. */
+.results-key {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--plum-soft);
+  margin: 0;
+}
+
+.results-key__swatch {
+  width: 10px;
+  height: 14px;
+  background: var(--plum-deep);
+  flex-shrink: 0;
+}
+
+.camp-card__wxnote {
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--plum-soft);
+}
+
+/* Trap 5: img { max-width: 100% } clamps against the grid track and stretches
+   the art, so weather opts out and guards with object-fit. */
+.wx--card {
+  width: 32px;
+  height: 32px;
+  max-width: none;
+  object-fit: contain;
+  filter: var(--gif-mat);
+  mix-blend-mode: multiply;
+}
+
+.camp-card__temp {
+  font-size: 0.9rem;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--plum-deep);
 }
 
 .distance-badge {
@@ -1484,22 +1983,16 @@ a:hover {
 /* ------------------------------------------------------------
    Responsive
    ------------------------------------------------------------ */
-@media (max-width: 900px) {
+@media (max-width: 1125px) {
   .explore-body {
-    grid-template-columns: 1fr;
     padding: 1.5rem 1rem 3rem;
-    gap: 1.5rem;
   }
 
-  .explore-sidebar {
-    position: static;
+  .filter-form {
+    padding: 1rem 1rem 0.85rem;
   }
 
-  .filter-header {
-    cursor: pointer;
-  }
-
-  .explore-map-hero #map {
+  .explore-map-frame {
     height: 300px;
   }
 
@@ -1508,18 +2001,60 @@ a:hover {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1250px) {
+  /* Four across will not fit. The image spans both rows on the left, identity
+     runs across the top, and the two plates keep their side-by-side pairing
+     underneath. Letting the grid reflow on its own put the land column under
+     the image, which is the narrowest track on the row. */
+  .camp-card {
+    grid-template-columns: 12rem minmax(0, 1fr) minmax(0, 1.4fr);
+  }
+
+  .camp-card__img {
+    grid-row: span 2;
+  }
+
+  .camp-card__id {
+    grid-column: 2 / span 2;
+  }
+
+  .camp-card__land,
+  .camp-card__sky {
+    border-top: 1px solid var(--rule-faint);
+  }
+
+  .camp-card__land {
+    border-left: none;
+  }
+}
+
+@media (max-width: 750px) {
   .camp-card {
     grid-template-columns: 1fr;
   }
 
   .camp-card__img {
-    height: 200px;
-    min-height: 200px;
+    grid-row: auto;
+    /* A square at full card width would be enormous once stacked, so the
+       photograph becomes a banner instead. */
+    aspect-ratio: 2 / 1;
+  }
+
+  .camp-card__id {
+    grid-column: auto;
+  }
+
+  .camp-card__sky {
+    border-left: none;
+    border-top: 1px solid var(--rule-sky);
   }
 
   .explore-map-header {
     padding: 1.25rem 1rem 0.75rem;
+  }
+
+  .explore-map-credit {
+    padding: 0.4rem 1rem 0;
   }
 }
 
@@ -1527,15 +2062,21 @@ a:hover {
    DETAIL PAGE — the campground sheet, laid out as a folio plate
    ============================================================ */
 
-/* Everything here is sized in rem, so this one line is the 1.25x scale. Still
-   scoped: explore and the forms were laid out against a 16px root and have not
-   been checked at 20px. */
-html:has(.detail-page) {
+/* Everything is sized in rem, so this one line is the 1.25x scale, and it now
+   applies to every page rather than only the detail one. That is why the
+   containers below are in rem: at a fixed 1200px they would not grow with the
+   type and every page would read cramped. Media queries are the exception,
+   because rem inside a media query resolves against the browser default
+   regardless of this rule, so those breakpoints are scaled by hand instead.
+   See md/DESIGN.md. */
+html {
   font-size: 20px;
 }
 
 .detail-page {
-  max-width: 1240px;
+  /* 62rem at the 20px root is the 1240px this always was. Unchanged, since the
+     detail page was already living at this scale. */
+  max-width: 62rem;
   margin: 0 auto;
   padding: 0 clamp(1rem, 4vw, 3.25rem) 5rem;
   /* Opaque, and load bearing. This element creates a stacking context, so
@@ -2308,6 +2849,15 @@ html:has(.detail-page) {
   min-height: 1.5em;
 }
 
+/* Frost is a modifier, not a state, so it gets a footnote mark rather than its
+   own fill. A prime month can still freeze overnight, and saying only "prime"
+   is what got Shimla wrong. */
+.season-month__frost {
+  font-style: normal;
+  color: var(--plum-deep);
+  margin-left: 0.15em;
+}
+
 .season-month__temp {  font-size: 0.72rem;
   color: var(--plum-deep);
 }
@@ -2453,7 +3003,7 @@ html:has(.detail-page) {
 .field-note-form {
   border: 1px solid var(--rule);
   padding: 1.4rem 1.5rem 1.6rem;
-  max-width: 640px;
+  max-width: 40rem;
 }
 
 /* ------------------------------------------------------------
@@ -2588,7 +3138,7 @@ html:has(.detail-page) {
 }
 
 @media (max-width: 720px) {
-  html:has(.detail-page) {
+  html {
     font-size: 18px;
   }
 
@@ -2647,7 +3197,7 @@ html:has(.detail-page) {
 }
 
 .footer-content {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
@@ -2719,7 +3269,7 @@ html:has(.detail-page) {
   opacity: 0.6;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .footer-content {
     flex-direction: column;
     text-align: center;

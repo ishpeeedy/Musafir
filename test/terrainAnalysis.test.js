@@ -13,6 +13,60 @@ const grid = (f) => {
   return out;
 };
 
+test("the fall line is sampled down the slope, not across it", async (t) => {
+  const { sampleFallLine } = analyseTerrain;
+
+  await t.test("descends monotonically on a uniform slope", () => {
+    // Rises 100m per row northward, so the land falls due south, bearing 180.
+    const line = sampleFallLine(grid((row) => row * 100), 180, { samples: 10 });
+    assert.strictEqual(line.length, 10);
+    for (let i = 1; i < line.length; i++) {
+      assert.ok(line[i] < line[i - 1], `sample ${i} should be lower than ${i - 1}`);
+    }
+  });
+
+  await t.test("spans the real relief, unlike a cut across the hill", () => {
+    const g = grid((row) => row * 100);
+    const down = sampleFallLine(g, 180, { samples: 10 });
+    const across = sampleFallLine(g, 90, { samples: 10 });
+    assert.ok(Math.max(...down) - Math.min(...down) > 800, "fall line should span the slope");
+    assert.ok(
+      Math.max(...across) - Math.min(...across) < 1,
+      "a cut across a uniform slope is flat, which is the reason not to use one",
+    );
+  });
+
+  await t.test("the centre sample is the campground's own elevation", () => {
+    const line = sampleFallLine(grid((row) => row * 100), 180, { samples: 11 });
+    assert.strictEqual(Math.round(line[5]), 450);
+  });
+
+  await t.test("a null bearing falls back to west-east", () => {
+    // Ground too flat to have a fall line still gets a cut, and the fallback is
+    // the same west-east one the show page uses. Land rising eastward, so a
+    // west-east cut spans the whole range.
+    const line = sampleFallLine(grid((row, col) => col * 100), null, { samples: 10 });
+    assert.strictEqual(line.length, 10);
+    assert.ok(Math.max(...line) - Math.min(...line) > 800);
+  });
+
+  await t.test("a flat grid stays flat", () => {
+    const line = sampleFallLine(grid(() => 500), null, { samples: 8 });
+    assert.ok(line.every((v) => Math.abs(v - 500) < 1e-9));
+  });
+
+  await t.test("stays inside the grid on a diagonal", () => {
+    const g = grid((row, col) => row * 10 + col);
+    const line = sampleFallLine(g, 225, { samples: 12 });
+    assert.ok(line.every((v) => v >= Math.min(...g) && v <= Math.max(...g)));
+  });
+
+  await t.test("rejects a grid it cannot use", () => {
+    assert.strictEqual(sampleFallLine([1, 2, 3], 180), null);
+    assert.strictEqual(sampleFallLine(grid(() => NaN), 180), null);
+  });
+});
+
 test("aspect points downhill, not uphill", async (t) => {
   await t.test("land rising north faces south", () => {
     const r = analyseTerrain(grid((row) => row * 100));
